@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Чат - ПСБ Академия</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="img/app-icon.png">
+    <meta name="theme-color" content="#2D2B84">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            margin: 0 auto;
+            width: 100%;
+            background: #F2F2F2;
+        }
+        
+        .dark-mode .chat-container {
+            background: #0f0f1a;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #1e2a4a, #2D2B84);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .chat-header-back {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .chat-header-info {
+            flex: 1;
+        }
+        
+        .chat-header-title {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .chat-header-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            position: relative;
+        }
+        
+        .message-incoming {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .dark-mode .message-incoming {
+            background: #1e2a4a;
+        }
+        
+        .message-outgoing {
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message-author {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2D2B84;
+            margin-bottom: 4px;
+        }
+        
+        .dark-mode .message-author {
+            color: #818CF8;
+        }
+        
+        .message-outgoing .message-author {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .message-text {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #1F2937;
+            word-wrap: break-word;
+        }
+        
+        .dark-mode .message-text {
+            color: #F3F4F6;
+        }
+        
+        .message-outgoing .message-text {
+            color: white;
+        }
+        
+        .message-time {
+            font-size: 10px;
+            color: #9CA3AF;
+            margin-top: 4px;
+            text-align: right;
+        }
+        
+        .message-outgoing .message-time {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .chat-input-container {
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .dark-mode .chat-input-container {
+            background: #1e2a4a;
+            border-color: #374151;
+        }
+        
+        .chat-input {
+            flex: 1;
+            border: 2px solid #E5E7EB;
+            border-radius: 24px;
+            padding: 12px 18px;
+            font-size: 15px;
+            outline: none;
+            resize: none;
+            max-height: 120px;
+            font-family: inherit;
+        }
+        
+        .chat-input:focus {
+            border-color: #2D2B84;
+        }
+        
+        .dark-mode .chat-input {
+            background: #0f0f1a;
+            border-color: #374151;
+            color: #F3F4F6;
+        }
+        
+        .dark-mode .chat-input:focus {
+            border-color: #818CF8;
+        }
+        
+        .chat-send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .chat-send-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .chat-send-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .date-divider {
+            text-align: center;
+            font-size: 12px;
+            color: #9CA3AF;
+            padding: 8px 0;
+        }
+        
+        .auth-required {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .auth-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .auth-icon i {
+            font-size: 36px;
+            color: white;
+        }
+        
+        .auth-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 8px;
+        }
+        
+        .dark-mode .auth-title {
+            color: #F3F4F6;
+        }
+        
+        .auth-text {
+            font-size: 14px;
+            color: #6B7280;
+            margin-bottom: 24px;
+            max-width: 280px;
+        }
+        
+        .dark-mode .auth-text {
+            color: #9CA3AF;
+        }
+        
+        .telegram-auth-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #0088cc, #00a0dc);
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .telegram-open-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+        
+        .empty-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9CA3AF;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .empty-chat i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .online-count {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+        }
+    </style>
+</head>
+<body class="bg-[#F2F2F2]">
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <a href="index.html" class="chat-header-back">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+            <div class="chat-header-info">
+                <div class="chat-header-title">Чат студентов</div>
+                <div class="chat-header-subtitle online-count">
+                    <span class="online-dot"></span>
+                    <span id="online-count">Загрузка...</span>
+                </div>
+            </div>
+            <a href="https://t.me/c/3345532243" target="_blank" class="chat-header-back" title="Открыть в Telegram" id="telegram-link" style="display: none;">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+        </div>
+        
+        <!-- Auth Required (показывается если не авторизован) -->
+        <div class="auth-required" id="auth-required" style="display: none;">
+            <div class="auth-icon">
+                <i class="fa-solid fa-comments"></i>
+            </div>
+            <div class="auth-title">Чат студентов</div>
+            <div class="auth-text">
+                Авторизуйтесь через Telegram, чтобы участвовать в обсуждениях с другими студентами
+            </div>
+            <a href="https://t.me/APSB_AI_Prompter_bot?start=auth" class="telegram-auth-btn">
+                <i class="fa-brands fa-telegram"></i>
+                Войти через Telegram
+            </a>
+            <a href="https://t.me/c/3345532243" target="_blank" class="telegram-open-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Открыть чат в Telegram
+            </a>
+        </div>
+        
+        <!-- Messages -->
+        <div class="chat-messages" id="chat-messages" style="display: none;">
+            <div class="empty-chat" id="empty-chat">
+                <i class="fa-regular fa-comments"></i>
+                <div>Сообщений пока нет</div>
+                <div style="font-size: 13px; margin-top: 4px;">Будьте первым!</div>
+            </div>
+        </div>
+        
+        <!-- Input -->
+        <div class="chat-input-container" id="chat-input-container" style="display: none;">
+            <textarea 
+                class="chat-input" 
+                id="message-input" 
+                placeholder="Написать сообщение..." 
+                rows="1"
+                maxlength="1000"
+            ></textarea>
+            <button class="chat-send-btn" id="send-btn" onclick="sendMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+    <script src="js/app.js"></script>
+    <script>
+        // Firebase конфигурация
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhUac_lBghIEQ8Sj15iCsWu7GVZcCOA3Y",
+            authDomain: "psb-academy-chat.firebaseapp.com",
+            databaseURL: "https://psb-academy-chat-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "psb-academy-chat",
+            storageBucket: "psb-academy-chat.firebasestorage.app",
+            messagingSenderId: "701758501216",
+            appId: "1:701758501216:web:6311fcc657b0d350626e05"
+        };
+        
+        // Telegram группа
+        const TELEGRAM_GROUP_LINK = 'https://t.me/c/3345532243';
+        
+        let currentUser = null;
+        let messagesRef = null;
+        let isFirebaseConfigured = false;
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            // Применяем тёмную тему
+            if (localStorage.getItem('psb_darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // Проверяем авторизацию
+            checkAuth();
+        });
+        
+        function checkAuth() {
+            // Проверяем Telegram WebApp
+            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+            
+            if (tgUser) {
+                // В Telegram - перенаправляем в группу
+                currentUser = {
+                    id: tgUser.id,
+                    name: `${tgUser.first_name}${tgUser.last_name ? ' ' + tgUser.last_name : ''}`,
+                    username: tgUser.username
+                };
+                
+                // В Telegram Mini App показываем кнопку перехода в группу
+                document.getElementById('auth-required').style.display = 'flex';
+                document.querySelector('.auth-title').textContent = 'Перейти в чат';
+                document.querySelector('.auth-text').textContent = 'Чат студентов находится в Telegram группе';
+                document.querySelector('.telegram-auth-btn').style.display = 'none';
+                document.querySelector('.telegram-open-btn').innerHTML = '<i class="fa-brands fa-telegram"></i> Открыть чат в Telegram';
+                return;
+            }
+            
+            // Проверяем локальный профиль или Telegram авторизацию
+            const profile = PSBApp.storage.get('userProfile');
+            const telegramAuth = PSBApp.storage.get('telegramAuth');
+            
+            if (profile || telegramAuth) {
+                currentUser = {
+                    id: telegramAuth?.id || profile?.odId || Date.now(),
+                    name: telegramAuth ? 
+                        `${telegramAuth.first_name}${telegramAuth.last_name ? ' ' + telegramAuth.last_name : ''}` :
+                        `${profile.firstName}${profile.lastName ? ' ' + profile.lastName : ''}`,
+                    username: telegramAuth?.username || null
+                };
+                
+                initChat();
+            } else {
+                // Не авторизован - показываем форму
+                document.getElementById('auth-required').style.display = 'flex';
+            }
+        }
+        
+        function initChat() {
+            // Проверяем конфигурацию Firebase
+            if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
+                // Firebase не настроен - показываем сообщение
+                document.getElementById('auth-required').style.display = 'flex';
+                document.querySelector('.auth-title').textContent = 'Чат в Telegram';
+                document.querySelector('.auth-text').textContent = 'Присоединяйтесь к обсуждению в нашей Telegram группе';
+                document.querySelector('.telegram-auth-btn').style.display = 'none';
+                return;
+            }
+            
+            isFirebaseConfigured = true;
+            
+            // Инициализируем Firebase
+            firebase.initializeApp(firebaseConfig);
+            messagesRef = firebase.database().ref('messages');
+            
+            // Показываем чат
+            document.getElementById('auth-required').style.display = 'none';
+            document.getElementById('chat-messages').style.display = 'flex';
+            document.getElementById('chat-input-container').style.display = 'flex';
+            document.getElementById('telegram-link').style.display = 'flex';
+            
+            // Загружаем сообщения
+            loadMessages();
+            
+            // Автоматически расширяем textarea
+            const input = document.getElementById('message-input');
+            input.addEventListener('input', autoResize);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Обновляем счётчик онлайн
+            updateOnlineCount();
+        }
+        
+        function loadMessages() {
+            messagesRef.orderByChild('timestamp').limitToLast(100).on('child_added', (snapshot) => {
+                const message = snapshot.val();
+                displayMessage(message);
+                
+                // Скрываем пустой чат
+                document.getElementById('empty-chat').style.display = 'none';
+                
+                // Прокручиваем вниз
+                const container = document.getElementById('chat-messages');
+                container.scrollTop = container.scrollHeight;
+            });
+        }
+        
+        function displayMessage(message) {
+            const container = document.getElementById('chat-messages');
+            const isOwn = message.userId === currentUser?.id;
+            
+            const msgEl = document.createElement('div');
+            msgEl.className = `message ${isOwn ? 'message-outgoing' : 'message-incoming'}`;
+            
+            const time = new Date(message.timestamp).toLocaleTimeString('ru-RU', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            msgEl.innerHTML = `
+                ${!isOwn ? `<div class="message-author">${escapeHtml(message.userName)}</div>` : ''}
+                <div class="message-text">${escapeHtml(message.text)}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            container.appendChild(msgEl);
+        }
+        
+        function sendMessage() {
+            if (!isFirebaseConfigured || !currentUser) return;
+            
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            
+            const message = {
+                userId: currentUser.id,
+                userName: currentUser.name,
+                text: text,
+                timestamp: Date.now()
+            };
+            
+            messagesRef.push(message);
+            
+            input.value = '';
+            input.style.height = 'auto';
+            
+            PSBApp.haptic.light();
+        }
+        
+        function autoResize() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        }
+        
+        function updateOnlineCount() {
+            // Простой счётчик - в реальном приложении используйте Firebase Presence
+            document.getElementById('online-count').textContent = 'Чат студентов';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

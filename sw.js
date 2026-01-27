@@ -19,10 +19,11 @@ const STATIC_ASSETS = [
     `${BASE_PATH}/glossary.html`,
     `${BASE_PATH}/stats.html`,
     `${BASE_PATH}/settings.html`,
+    `${BASE_PATH}/chat.html`,
     `${BASE_PATH}/css/styles.css`,
     `${BASE_PATH}/js/app.js`,
     `${BASE_PATH}/manifest.json`,
-    `${BASE_PATH}/img/1.png`,
+    `${BASE_PATH}/img/app-icon.png`,
     `${BASE_PATH}/img/Hero.png`,
     `${BASE_PATH}/img/hero_lk.png`,
     `${BASE_PATH}/img/hero menu.png`,
@@ -168,8 +169,8 @@ self.addEventListener('push', (event) => {
     let data = {
         title: 'ПСБ Академия',
         body: 'Новое уведомление',
-        icon: `${BASE_PATH}/img/1.png`,
-        badge: `${BASE_PATH}/img/1.png`
+        icon: `${BASE_PATH}/img/app-icon.png`,
+        badge: `${BASE_PATH}/img/app-icon.png`
     };
     
     if (event.data) {

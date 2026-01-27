@@ -1,23 +1,59 @@
 {
-    "name": "ПСБ Академия - Промт-инженер",
+    "name": "ПСБ Академия - Промпт-инженер",
     "short_name": "ПСБ Академия",
-    "description": "Программа повышения квалификации «Промт-инженер: работа с нейросетями»",
+    "description": "Программа повышения квалификации «Промпт-инженер: работа с нейросетями»",
     "start_url": "/prompt/index.html",
     "scope": "/prompt/",
     "display": "standalone",
-    "background_color": "#F2F2F2",
+    "background_color": "#2D2B84",
     "theme_color": "#2D2B84",
     "orientation": "portrait",
     "lang": "ru",
     "icons": [
         {
-            "src": "/prompt/img/1.png",
+            "src": "/prompt/img/app-icon.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/prompt/img/app-icon.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/prompt/img/app-icon.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/prompt/img/app-icon.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/prompt/img/app-icon.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/prompt/img/app-icon.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable"
         },
         {
-            "src": "/prompt/img/1.png",
+            "src": "/prompt/img/app-icon.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/prompt/img/app-icon.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
@@ -38,21 +74,21 @@
             "short_name": "Вебинары",
             "description": "Посмотреть расписание вебинаров",
             "url": "/prompt/index.html",
-            "icons": [{"src": "/prompt/img/1.png", "sizes": "96x96"}]
+            "icons": [{"src": "/prompt/img/app-icon.png", "sizes": "96x96"}]
         },
         {
             "name": "Программа курса",
             "short_name": "Программа",
             "description": "Программа обучения",
             "url": "/prompt/course_program.html",
-            "icons": [{"src": "/prompt/img/1.png", "sizes": "96x96"}]
+            "icons": [{"src": "/prompt/img/app-icon.png", "sizes": "96x96"}]
         },
         {
             "name": "FAQ",
             "short_name": "FAQ",
             "description": "Часто задаваемые вопросы",
             "url": "/prompt/faq.html",
-            "icons": [{"src": "/prompt/img/1.png", "sizes": "96x96"}]
+            "icons": [{"src": "/prompt/img/app-icon.png", "sizes": "96x96"}]
         }
     ]
 }

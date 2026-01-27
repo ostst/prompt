@@ -3,16 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Программа повышения квалификации «Промт-инженер: работа с нейросетями» — обучение работе с ИИ и нейросетями от ПСБ Академии">
+    <meta name="description" content="Программа повышения квалификации «Промпт-инженер: работа с нейросетями» — обучение работе с ИИ и нейросетями от ПСБ Академии">
     <meta name="theme-color" content="#2D2B84">
+    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ПСБ Академия">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="ПСБ Академия">
     
-    <link rel="icon" type="image/png" href="img/1.png">
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/app-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/app-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="img/app-icon.png">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="img/1.png">
     
-    <title>Промт-инженер | ПСБ Академия</title>
+    <title>Промпт-инженер | ПСБ Академия</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -770,7 +784,7 @@
 
     <div class="relative z-10 p-5">
         <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
-            Программа повышения квалификации «Промт-инженер: работа с нейросетями»
+            Программа повышения квалификации «Промпт-инженер: работа с нейросетями»
         </h1>
         <div class="flex items-center gap-2 text-white/80">
                     <i class="fa-regular fa-calendar text-xs" aria-hidden="true"></i>
@@ -856,7 +870,7 @@
         <div id="content-upcoming" class="flex overflow-x-auto gap-3 hide-scrollbar mb-3 pb-2 w-full" role="tabpanel" aria-labelledby="tab-upcoming">
 
     <!-- Карточка 1 -->
-            <article class="event-card" data-date="2026-01-27T12:00" data-title="Вебинар № 1: Введение в ИИ и нейросети" data-description="История развития ИИ и нейросетей. Кто такой промт-инженер. Современные возможности, риски и угрозы использования LLM." data-duration="2">
+            <article class="event-card" data-date="2026-01-27T12:00" data-title="Вебинар № 1: Введение в ИИ и нейросети" data-description="История развития ИИ и нейросетей. Кто такой промпт-инженер. Современные возможности, риски и угрозы использования LLM." data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
             <span class="date-label text-[10px] text-gray-400 font-medium mt-1">27.01.2026 • 12:00-14:00 • МСК</span>
             <div class="flex gap-1.5">
@@ -869,7 +883,7 @@
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 1</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">История развития ИИ и нейросетей. Кто такой промт-инженер.<br>Современные возможности, риски и угрозы использования<br>LLM. Основные правила формирования запросов к LLM.</p>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">История развития ИИ и нейросетей. Кто такой промпт-инженер.<br>Современные возможности, риски и угрозы использования<br>LLM. Основные правила формирования запросов к LLM.</p>
         <div class="mt-auto flex items-center gap-3">
                     <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
             <div>
@@ -1170,6 +1184,24 @@
         </div>
     </a>
 
+            <!-- 6. Чат студентов -->
+            <a href="chat.html" id="chat-link" class="col-span-2 group relative h-20 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg" style="background: linear-gradient(135deg, #2D2B84 0%, #4F46E5 100%);">
+                <div class="absolute inset-0 flex items-center justify-between px-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-comments text-white text-xl"></i>
+</div>
+                        <div>
+                            <p class="text-white font-bold text-[15px]">Чат студентов</p>
+                            <p class="text-white/70 text-xs">Общайтесь с однокурсниками</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/20 w-10 h-10 flex items-center justify-center rounded-xl">
+                        <i class="fa-solid fa-arrow-right text-white"></i>
+                    </div>
+                </div>
+            </a>
+
         </nav>
 
     </main>
@@ -1467,29 +1499,61 @@
         function addWatchedButtons() {
             // Добавляем кнопки для ВСЕХ вебинаров
             const allCards = document.querySelectorAll('.event-card');
+            const now = new Date();
             
             allCards.forEach(card => {
                 const title = card.dataset.title;
-                if (!title) return;
+                const dateStr = card.dataset.date;
+                const duration = parseInt(card.dataset.duration) || 2; // часы
+                
+                if (!title || !dateStr) return;
                 
                 // Создаем уникальный ID из названия
                 const webinarId = title.replace(/[^a-zA-Z0-9а-яА-Я]/g, '-').toLowerCase();
                 card.dataset.webinarId = webinarId;
                 
+                // Вычисляем время начала и окончания
+                const webinarStart = new Date(dateStr);
+                const webinarEnd = new Date(webinarStart.getTime() + duration * 60 * 60 * 1000);
+                
+                // Проверяем статус вебинара
+                const hasStarted = now >= webinarStart;
+                const hasEnded = now >= webinarEnd;
+                const isWatched = isWebinarWatched(webinarId);
+                
                 // Проверяем, есть ли уже кнопка
                 if (card.querySelector('.watched-btn')) return;
                 
-                const isWatched = isWebinarWatched(webinarId);
-                
                 const btn = document.createElement('button');
-                btn.className = isWatched ? 'watched-btn is-watched' : 'watched-btn not-watched';
-                btn.innerHTML = isWatched 
-                    ? '<i class="fa-solid fa-check-double"></i> Просмотрено'
-                    : '<i class="fa-solid fa-check"></i> Отметить просмотренным';
-                btn.onclick = (e) => {
-                    e.stopPropagation();
-                    toggleWatched(btn, webinarId);
-                };
+                
+                if (isWatched) {
+                    // Уже отмечен
+                    btn.className = 'watched-btn is-watched';
+                    btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Просмотрено';
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleWatched(btn, webinarId);
+                    };
+                } else if (!hasStarted) {
+                    // Вебинар ещё не начался - кнопка неактивна
+                    btn.className = 'watched-btn not-watched';
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                    btn.innerHTML = '<i class="fa-solid fa-clock"></i> Вебинар ещё не начался';
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        PSBApp.showToast('Вебинар ещё не начался', 'info');
+                        PSBApp.haptic.warning();
+                    };
+                } else {
+                    // Вебинар начался или закончился - можно отметить
+                    btn.className = 'watched-btn not-watched';
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Отметить просмотренным';
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleWatched(btn, webinarId);
+                    };
+                }
                 
                 card.appendChild(btn);
                 
@@ -1498,24 +1562,81 @@
                 if (playBtn && !playBtn.dataset.watchHandler) {
                     playBtn.dataset.watchHandler = 'true';
                     playBtn.addEventListener('click', (e) => {
-                        // Отмечаем вебинар как просмотренный
-                        if (!isWebinarWatched(webinarId)) {
+                        // Отмечаем только если вебинар начался
+                        if (hasStarted && !isWebinarWatched(webinarId)) {
                             const watchedCount = saveWatchedWebinar(webinarId);
                             
                             // Обновляем кнопку
                             btn.className = 'watched-btn is-watched';
+                            btn.style.opacity = '1';
+                            btn.style.cursor = 'pointer';
                             btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Просмотрено';
                             
                             // Обновляем достижения
                             updateAchievements(watchedCount);
                             
-                            // Уведомление
                             PSBApp.showToast('Вебинар отмечен как просмотренный!', 'success');
                             PSBApp.analytics.trackAction('Переход на вебинар', webinarId);
                         }
                     });
                 }
+                
+                // Планируем уведомление через 10 минут после окончания
+                if (!isWatched && hasStarted) {
+                    scheduleWatchReminder(webinarId, title, webinarEnd);
+                }
             });
+        }
+        
+        // Планирование напоминания об отметке вебинара
+        function scheduleWatchReminder(webinarId, title, endTime) {
+            const now = new Date();
+            const reminderTime = new Date(endTime.getTime() + 10 * 60 * 1000); // +10 минут после окончания
+            
+            // Проверяем, не отправляли ли уже напоминание
+            const remindedWebinars = PSBApp.storage.get('remindedWebinars') || [];
+            if (remindedWebinars.includes(webinarId)) return;
+            
+            // Если время напоминания уже прошло, но вебинар не отмечен - показываем сразу
+            if (now >= reminderTime && !isWebinarWatched(webinarId)) {
+                showWatchReminder(webinarId, title);
+                return;
+            }
+            
+            // Если время напоминания ещё не наступило - планируем
+            if (now < reminderTime) {
+                const delay = reminderTime - now;
+                setTimeout(() => {
+                    if (!isWebinarWatched(webinarId)) {
+                        showWatchReminder(webinarId, title);
+                    }
+                }, delay);
+            }
+        }
+        
+        function showWatchReminder(webinarId, title) {
+            // Сохраняем что уже напомнили
+            const remindedWebinars = PSBApp.storage.get('remindedWebinars') || [];
+            if (!remindedWebinars.includes(webinarId)) {
+                remindedWebinars.push(webinarId);
+                PSBApp.storage.set('remindedWebinars', remindedWebinars);
+            }
+            
+            // Показываем уведомление
+            const shortTitle = title.split(':')[0];
+            
+            // Проверяем поддержку уведомлений
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('📚 Отметьте вебинар!', {
+                    body: `${shortTitle} закончился. Отметьте его как просмотренный и получите достижение!`,
+                    icon: 'img/app-icon.png',
+                    tag: 'watch-reminder-' + webinarId
+                });
+            }
+            
+            // Toast в приложении
+            PSBApp.showToast(`${shortTitle} закончился! Отметьте просмотр 🏆`, 'info');
+            PSBApp.haptic.notification();
         }
         
         function updateProgressBar(watchedCount) {
@@ -1843,8 +1964,8 @@
             if (Notification.permission === 'granted') {
                 const notification = new Notification('ПСБ Академия', {
                     body: `Вебинар "${webinar.element.dataset.title}" начнётся через 1 час!`,
-                    icon: 'img/1.png',
-                    badge: 'img/1.png',
+                    icon: 'img/app-icon.png',
+                    badge: 'img/app-icon.png',
                     tag: 'webinar-reminder',
                     requireInteraction: true
                 });
@@ -2540,6 +2661,20 @@
             
             // Показываем баннер установки PWA (после онбординга)
             setTimeout(showPWAInstallBanner, 3000);
+            
+            // Настраиваем ссылку чата
+            const chatLink = document.getElementById('chat-link');
+            if (chatLink) {
+                const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
+                if (inTelegram) {
+                    // В Telegram - открываем группу
+                    chatLink.href = 'https://t.me/c/3345532243';
+                    chatLink.target = '_blank';
+                } else {
+                    // В браузере - открываем встроенный чат
+                    chatLink.href = 'chat.html';
+                }
+            }
             
             // Показываем попап подтверждения просмотра (после всех других попапов)
             setTimeout(() => {
