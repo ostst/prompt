@@ -1206,9 +1206,13 @@
             <i class="fa-solid fa-book" aria-hidden="true"></i>
             <span>Глоссарий</span>
         </a>
-        <a href="faq.html" class="nav-item" aria-label="FAQ">
+        <a href="faq.html" class="nav-item" aria-label="FAQ" id="nav-faq">
             <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
             <span>FAQ</span>
+        </a>
+        <a href="https://ostst.github.io/prompt/" target="_blank" class="nav-item" aria-label="Приложение" id="nav-app" style="display: none;">
+            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
+            <span>Приложение</span>
         </a>
     </nav>
 
@@ -2638,6 +2642,17 @@
             
             // Показываем баннер установки PWA (после онбординга)
             setTimeout(showPWAInstallBanner, 3000);
+            
+            // Настраиваем нижнюю навигацию для Telegram Web App
+            const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
+            const navFaq = document.getElementById('nav-faq');
+            const navApp = document.getElementById('nav-app');
+            
+            if (inTelegram && navFaq && navApp) {
+                // В Telegram - показываем кнопку "Приложение" вместо FAQ
+                navFaq.style.display = 'none';
+                navApp.style.display = 'flex';
+            }
             
             // Показываем попап подтверждения просмотра (после всех других попапов)
             setTimeout(() => {

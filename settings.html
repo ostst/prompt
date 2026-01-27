@@ -295,6 +295,11 @@
             color: #9CA3AF;
         }
         
+        /* Header dark mode */
+        .dark-mode header h1 {
+            color: #F3F4F6;
+        }
+        
         /* Telegram Login Widget */
         .telegram-login-container {
             margin: 16px 0;
@@ -312,10 +317,10 @@
         
         <!-- Header -->
         <header class="flex items-center gap-4 mb-6">
-            <a href="index.html" class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <i class="fa-solid fa-chevron-left text-gray-600"></i>
+            <a href="index.html" class="w-10 h-10 rounded-full bg-gradient-to-r from-[#1e2a4a] to-[#2D2B84] flex items-center justify-center shadow-sm hover:opacity-90 transition">
+                <i class="fa-solid fa-chevron-left text-white"></i>
             </a>
-            <h1 class="text-xl font-bold text-gray-900">Настройки</h1>
+            <h1 class="text-xl font-bold text-gray-900 dark-mode-text">Настройки</h1>
         </header>
         
         <!-- User Profile Section -->
@@ -344,15 +349,11 @@
                     Авторизуйтесь для получения уведомлений в Telegram и синхронизации прогресса
                 </p>
                 
-                <!-- Telegram Login Widget -->
-                <script async src="https://telegram.org/js/telegram-widget.js?22" 
-                    data-telegram-login="APSB_AI_Prompter_bot" 
-                    data-size="large" 
-                    data-onauth="onTelegramAuth(user)" 
-                    data-request-access="write"
-                    data-userpic="true"
-                    data-radius="12">
-                </script>
+                <!-- Кнопка авторизации через Telegram -->
+                <button onclick="loginWithTelegram()" class="telegram-login-btn w-full">
+                    <i class="fa-brands fa-telegram"></i>
+                    <span>Войти через Telegram</span>
+                </button>
                 
                 <div class="info-banner">
                     <i class="fa-solid fa-circle-info"></i>
@@ -489,7 +490,7 @@
         </section>
         
         <!-- Logout Button -->
-        <button onclick="logout()" class="w-full py-3.5 px-4 rounded-xl bg-red-50 text-red-600 font-semibold text-[15px] mt-4 hover:bg-red-100 active:scale-[0.98] transition" id="logout-btn" style="display: none;">
+        <button onclick="logout()" class="w-full py-3.5 px-4 rounded-xl font-semibold text-[15px] mt-4 active:scale-[0.98] transition" id="logout-btn" style="display: none; background: linear-gradient(135deg, #2D2B84, #4F46E5); color: white;">
             <i class="fa-solid fa-right-from-bracket mr-2"></i>
             Выйти из аккаунта
         </button>
@@ -595,6 +596,42 @@
                 
                 // Скрываем секцию Telegram уведомлений если не авторизован
                 document.getElementById('telegram-notifications-section').style.opacity = '0.5';
+            }
+        }
+        
+        function loginWithTelegram() {
+            // Используем Telegram Login Widget через iframe
+            // Создаём контейнер для виджета если его нет
+            let widgetContainer = document.getElementById('telegram-widget-container');
+            if (!widgetContainer) {
+                widgetContainer = document.createElement('div');
+                widgetContainer.id = 'telegram-widget-container';
+                widgetContainer.style.cssText = 'margin: 16px 0; text-align: center;';
+                
+                const authSection = document.querySelector('.telegram-auth-section');
+                const button = authSection.querySelector('.telegram-login-btn');
+                button.parentNode.insertBefore(widgetContainer, button.nextSibling);
+                
+                // Создаём скрипт виджета
+                const script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://telegram.org/js/telegram-widget.js?22';
+                script.setAttribute('data-telegram-login', 'APSB_AI_Prompter_bot');
+                script.setAttribute('data-size', 'large');
+                script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+                script.setAttribute('data-request-access', 'write');
+                script.setAttribute('data-userpic', 'true');
+                script.setAttribute('data-radius', '12');
+                
+                widgetContainer.appendChild(script);
+                
+                // Скрываем кнопку
+                button.style.display = 'none';
+                
+                PSBApp.showToast('Нажмите на кнопку ниже для авторизации', 'info');
+            } else {
+                // Если виджет уже есть - просто показываем сообщение
+                PSBApp.showToast('Используйте виджет ниже для авторизации', 'info');
             }
         }
         
