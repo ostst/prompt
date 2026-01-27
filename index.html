@@ -437,6 +437,93 @@
             transform: translateY(0);
         }
         
+        /* Форма регистрации */
+        .registration-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .registration-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            max-width: 360px;
+            width: 100%;
+            animation: scaleIn 0.3s ease-out;
+        }
+        
+        .dark-mode .registration-card {
+            background: #1e2a4a;
+        }
+        
+        .avatar-upload {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+        
+        .avatar-upload:hover {
+            transform: scale(1.05);
+        }
+        
+        .avatar-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-upload-icon {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 10px;
+            padding: 4px;
+            text-align: center;
+        }
+        
+        .reg-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 15px;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        
+        .reg-input:focus {
+            border-color: #2D2B84;
+        }
+        
+        .dark-mode .reg-input {
+            background: #0f0f1a;
+            border-color: #374151;
+            color: #F3F4F6;
+        }
+        
+        .dark-mode .reg-input:focus {
+            border-color: #818CF8;
+        }
+
         /* PWA Install Banner */
         .pwa-banner {
             position: fixed;
@@ -553,7 +640,7 @@
                 <div class="flex items-center gap-3">
                     <div id="user-avatar" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg">
                         <i class="fa-solid fa-user"></i>
-                    </div>
+    </div>
                     <div>
                         <p id="user-name" class="font-bold text-[15px] text-white">Пользователь</p>
                         <p id="user-status" class="text-xs text-white/70">Слушатель курса</p>
@@ -569,17 +656,17 @@
         <!-- ГЛАВНЫЙ БАННЕР -->
         <header class="relative w-full rounded-[20px] shadow-lg mb-4 overflow-hidden min-h-[180px] flex flex-col justify-end group" role="banner">
             <div class="hero-banner absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-105"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-0"></div>
-            
-            <div class="relative z-10 p-5">
-                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
-                    Программа повышения квалификации «Промт-инженер: работа с нейросетями»
-                </h1>
-                <div class="flex items-center gap-2 text-white/80">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-0"></div>
+
+    <div class="relative z-10 p-5">
+        <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+            Программа повышения квалификации «Промт-инженер: работа с нейросетями»
+        </h1>
+        <div class="flex items-center gap-2 text-white/80">
                     <i class="fa-regular fa-calendar text-xs" aria-hidden="true"></i>
-                    <p class="text-xs font-medium">27.01.2026 – 31.03.2026</p>
-                </div>
-            </div>
+            <p class="text-xs font-medium">27.01.2026 – 31.03.2026</p>
+        </div>
+    </div>
         </header>
 
         <!-- ТАЙМЕР ДО БЛИЖАЙШЕГО ВЕБИНАРА -->
@@ -587,7 +674,7 @@
             <div class="flex items-center gap-2 mb-3">
                 <div class="w-2 h-2 rounded-full bg-green-400 live-indicator"></div>
                 <span id="countdown-title" class="text-white text-sm font-bold">До вебинара № 1</span>
-            </div>
+</div>
             <div id="countdown-container"></div>
         </section>
 
@@ -613,7 +700,7 @@
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-trophy text-yellow-400"></i>
                     <span class="text-white font-bold text-sm">Мои достижения</span>
-                </div>
+        </div>
                 <span id="achievements-count" class="text-white/70 text-xs">0 из 6</span>
             </div>
             <div id="achievements-list" class="flex flex-wrap gap-2">
@@ -655,323 +742,323 @@
             </button>
         </div>
 
-        <!-- КАРУСЕЛЬ ПРЕДСТОЯЩИХ -->
+       <!-- КАРУСЕЛЬ ПРЕДСТОЯЩИХ -->
         <div id="content-upcoming" class="flex overflow-x-auto gap-3 hide-scrollbar mb-3 pb-2 w-full" role="tabpanel" aria-labelledby="tab-upcoming">
 
-            <!-- Карточка 1 -->
+    <!-- Карточка 1 -->
             <article class="event-card" data-date="2026-01-27T12:00" data-title="Вебинар № 1: Введение в ИИ и нейросети" data-description="История развития ИИ и нейросетей. Кто такой промт-инженер. Современные возможности, риски и угрозы использования LLM." data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">27.01.2026 • 12:00-14:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">27.01.2026 • 12:00-14:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="https://my.mts-link.ru/j/psbacademy/9615477419" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 1</h3>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 1</h3>
                 <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">История развития ИИ и нейросетей. Кто такой промт-инженер.<br>Современные возможности, риски и угрозы использования<br>LLM. Основные правила формирования запросов к LLM.</p>
-                <div class="mt-auto flex items-center gap-3">
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Жемал Хамидун</div>
+            <div>
+                <div class="text-xs font-bold">Жемал Хамидун</div>
                         <div class="text-[10px] text-gray-400">Спикер по текстовым нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 2 -->
+    <!-- Карточка 2 -->
             <article class="event-card" data-date="2026-01-29T10:00" data-title="Вебинар № 2: Китайские ИИ-сервисы" data-description="Китайские ИИ-сервисы для работы с текстами" data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">29.01.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">29.01.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="https://my.mts-link.ru/j/psbacademy/10026672068" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 2</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Китайские ИИ-сервисы для работы с текстами</p>
-                <div class="mt-auto flex items-center gap-3">
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 2</h3>
+        <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Китайские ИИ-сервисы для работы с текстами</p>
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Олег.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Олег Сиротюк" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Олег Сиротюк</div>
+            <div>
+                <div class="text-xs font-bold">Олег Сиротюк</div>
                         <div class="text-[10px] text-gray-400">Спикер по китайским нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 3 -->
+    <!-- Карточка 3 -->
             <article class="event-card" data-date="2026-02-05T12:00" data-title="Вебинар № 3: Чат-боты и ИИ-агенты" data-description="Чат-боты, ИИ-ассистенты, ИИ-агенты." data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.02.2026 • 12:00-14:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.02.2026 • 12:00-14:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="https://my.mts-link.ru/j/psbacademy/10026812261" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 3</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Чат-боты, ИИ-ассистенты, ИИ-агенты.</p>
-                <div class="mt-auto flex items-center gap-3">
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 3</h3>
+        <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Чат-боты, ИИ-ассистенты, ИИ-агенты.</p>
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Жемал Хамидун</div>
+            <div>
+                <div class="text-xs font-bold">Жемал Хамидун</div>
                         <div class="text-[10px] text-gray-400">Спикер по текстовым нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 4 -->
+    <!-- Карточка 4 -->
             <article class="event-card" data-date="2026-02-12T10:00" data-title="Вебинар № 4: Нейросети в дизайне" data-description="Нейросети в дизайне: создание сайтов, презентаций и фирменного стиля" data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.02.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.02.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 4</h3>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 4</h3>
                 <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в дизайне: создание сайтов,<br>презентаций и фирменного стиля</p>
-                <div class="mt-auto flex items-center gap-3">
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Дарина Костина</div>
+            <div>
+                <div class="text-xs font-bold">Дарина Костина</div>
                         <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 5 -->
+    <!-- Карточка 5 -->
             <article class="event-card" data-date="2026-02-19T10:00" data-title="Вебинар № 5: Генерация изображений" data-description="Нейросети в дизайне: генерация изображений, обработка фото" data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.02.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.02.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 5</h3>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 5</h3>
                 <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в дизайне: генерация изображений,<br>обработка фото</p>
-                <div class="mt-auto flex items-center gap-3">
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Дарина Костина</div>
+            <div>
+                <div class="text-xs font-bold">Дарина Костина</div>
                         <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 6 -->
+    <!-- Карточка 6 -->
             <article class="event-card" data-date="2026-02-26T10:00" data-title="Вебинар № 6: Анимация и видео" data-description="Нейросети для анимации изображений, создания видео и цифровых двойников" data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">26.02.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">26.02.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 6</h3>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 6</h3>
                 <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети для анимации изображений,<br>создания видео и цифровых двойников</p>
-                <div class="mt-auto flex items-center gap-3">
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Дарина Костина</div>
+            <div>
+                <div class="text-xs font-bold">Дарина Костина</div>
                         <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 7 -->
+    <!-- Карточка 7 -->
             <article class="event-card" data-date="2026-03-05T10:00" data-title="Вебинар № 7: Обработка аудио" data-description="Нейросети в обработке аудио: от транскрибации записей до генерации музыки" data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.03.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.03.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 7</h3>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 7</h3>
                 <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в обработке аудио: от транскрибации записей<br>до генерации музыки</p>
-                <div class="mt-auto flex items-center gap-3">
+        <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
-                    <div>
-                        <div class="text-xs font-bold">Дарина Костина</div>
+            <div>
+                <div class="text-xs font-bold">Дарина Костина</div>
                         <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
-                    </div>
-                </div>
+            </div>
+        </div>
             </article>
 
-            <!-- Карточка 8 -->
+    <!-- Карточка 8 -->
             <article class="event-card" data-date="2026-03-12T10:00" data-title="Вебинар № 8: ИИ в банковской сфере" data-description="Использование ИИ в банковских продуктах и процессах. Этические и правовые аспекты использования нейронных сетей в банках." data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.03.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.03.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 8</h3>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 8</h3>
                 <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Использование ИИ в банковских продуктах и процессах.<br>Этические и правовые аспекты использования нейронных сетей.</p>
             </article>
 
-            <!-- Карточка 9 -->
+    <!-- Карточка 9 -->
             <article class="event-card" data-date="2026-03-19T10:00" data-title="Вебинар № 9: Внедрение ИИ в ПСБ" data-description="Внедрение ИИ в Банке ПСБ" data-duration="2">
-                <div class="w-full flex justify-between items-start mb-2">
-                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.03.2026 • 10:00-12:00 • МСК</span>
-                    <div class="flex gap-1.5">
+        <div class="w-full flex justify-between items-start mb-2">
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.03.2026 • 10:00-12:00 • МСК</span>
+            <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
-                        </button>
+                </button>
                         <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3 class="font-bold text-lg mb-2">Вебинар № 9</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Внедрение ИИ в Банке ПСБ</p>
+                </a>
+            </div>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Вебинар № 9</h3>
+        <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Внедрение ИИ в Банке ПСБ</p>
             </article>
 
-        </div>
+</div>
 
-        <!-- Индикатор карточек (точки) для предстоящих -->
+<!-- Индикатор карточек (точки) для предстоящих -->
         <div id="dots-upcoming" class="dots mb-3" role="tablist" aria-label="Навигация по вебинарам"></div>
 
         <!-- КАРУСЕЛЬ ПРОШЕДШИХ (скрыта по умолчанию) -->
         <div id="content-past" class="hidden overflow-x-auto gap-3 hide-scrollbar pb-2 w-full" role="tabpanel" aria-labelledby="tab-past"></div>
-        
-        <!-- Индикатор карточек (точки) для прошедших -->
+
+<!-- Индикатор карточек (точки) для прошедших -->
         <div id="dots-past" class="hidden dots mb-3"></div>
 
-        <!-- Пустое состояние для прошедших -->
-        <div id="empty-past" class="hidden flex-col items-center justify-center py-8 mb-3">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+<!-- Пустое состояние для прошедших -->
+<div id="empty-past" class="hidden flex-col items-center justify-center py-8 mb-3">
+    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                 <i class="fa-regular fa-calendar-check text-2xl text-gray-400" aria-hidden="true"></i>
-            </div>
-            <p class="text-sm text-gray-500 text-center">Пока нет прошедших вебинаров</p>
-        </div>
+    </div>
+    <p class="text-sm text-gray-500 text-center">Пока нет прошедших вебинаров</p>
+</div>
 
-        <!-- Пустое состояние для предстоящих -->
-        <div id="empty-upcoming" class="hidden flex-col items-center justify-center py-8 mb-3">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+<!-- Пустое состояние для предстоящих -->
+<div id="empty-upcoming" class="hidden flex-col items-center justify-center py-8 mb-3">
+    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                 <i class="fa-regular fa-calendar text-2xl text-gray-400" aria-hidden="true"></i>
-            </div>
-            <p class="text-sm text-gray-500 text-center">Все вебинары завершены</p>
-        </div>
+    </div>
+    <p class="text-sm text-gray-500 text-center">Все вебинары завершены</p>
+</div>
 
         <!-- ЛИЧНЫЙ КАБИНЕТ -->
         <section class="lk-banner relative rounded-[16px] overflow-hidden h-44 mb-4 shadow-sm" aria-label="Личный кабинет">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-            <div class="relative z-10 p-4 h-full flex flex-col justify-between">
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+    <div class="relative z-10 p-4 h-full flex flex-col justify-between">
                 <h2 class="text-white font-bold text-[17px] leading-tight w-3/4 drop-shadow-md">Личный кабинет</h2>
-                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-[12px] p-2">
-                    <div class="flex gap-2">
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-[12px] p-2">
+            <div class="flex gap-2">
                         <a href="https://psb-academy.ru/account/my-education" target="_blank" rel="noopener" onclick="if(window.Telegram && window.Telegram.WebApp) { Telegram.WebApp.openLink(this.href); return false; }" class="bg-white text-gray-900 text-xs font-bold py-2.5 px-4 rounded-[8px] flex-1 text-center flex items-center justify-center hover:bg-gray-100 transition shadow-sm">
-                            Мое обучение
-                        </a>
+                   Мое обучение
+                </a>
                         <a href="https://psb-academy.ru/account/my-education" target="_blank" rel="noopener" onclick="if(window.Telegram && window.Telegram.WebApp) { Telegram.WebApp.openLink(this.href); return false; }" class="bg-white w-9 h-9 rounded-[8px] flex items-center justify-center text-gray-900 text-xs hover:bg-gray-100 transition shadow-sm" aria-label="Перейти в личный кабинет">
                             <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                         </a>
-                    </div>
-                </div>
             </div>
+        </div>
+    </div>
         </section>
 
         <!-- НАВИГАЦИОННАЯ СЕТКА -->
         <nav class="grid grid-cols-2 gap-3" aria-label="Разделы приложения">
 
-            <!-- 1. Информация о программе -->
+    <!-- 1. Информация о программе -->
             <a href="program_info.html" class="category-card menu-card-1 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
-                <div class="absolute top-0 left-0 p-3 w-full z-10">
-                    <p class="text-white font-bold text-sm leading-tight">Информация<br>о программе</p>
-                </div>
-                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+        <div class="absolute top-0 left-0 p-3 w-full z-10">
+            <p class="text-white font-bold text-sm leading-tight">Информация<br>о программе</p>
+        </div>
+        <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </div>
-            </a>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+        </div>
+    </a>
 
-            <!-- 2. Программа курса -->
+    <!-- 2. Программа курса -->
             <a href="course_program.html" class="category-card menu-card-2 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
-                <div class="absolute top-0 left-0 p-3 w-full z-10">
-                    <p class="text-white font-bold text-sm leading-tight">Программа<br>курса</p>
-                </div>
-                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+        <div class="absolute top-0 left-0 p-3 w-full z-10">
+            <p class="text-white font-bold text-sm leading-tight">Программа<br>курса</p>
+        </div>
+        <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </div>
-            </a>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+        </div>
+    </a>
 
-            <!-- 3. Связаться с куратором -->
+    <!-- 3. Связаться с куратором -->
             <a href="https://t.me/seledka3388" target="_blank" rel="noopener" class="category-card menu-card-3 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
-                <div class="absolute top-0 left-0 p-3 w-full z-10">
-                    <p class="text-white font-bold text-sm leading-tight">Связаться с<br>куратором</p>
-                </div>
-                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+        <div class="absolute top-0 left-0 p-3 w-full z-10">
+            <p class="text-white font-bold text-sm leading-tight">Связаться с<br>куратором</p>
+        </div>
+        <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </div>
-            </a>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+        </div>
+    </a>
 
             <!-- 4. Образовательная платформа -->
             <a href="platform_info.html" class="category-card menu-card-4 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
-                <div class="absolute top-0 left-0 p-3 w-full z-10">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+        <div class="absolute top-0 left-0 p-3 w-full z-10">
                     <p class="text-white font-bold text-sm leading-tight">Образовательная<br>платформа</p>
-                </div>
-                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+        </div>
+        <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </div>
-            </a>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+        </div>
+    </a>
 
             <!-- 5. FAQ (Широкая) -->
             <a href="faq.html" class="category-card menu-card-5 col-span-2 group relative h-28 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
-                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
-                <div class="absolute top-0 left-0 p-4 w-full z-10">
-                    <p class="text-white font-bold text-sm leading-tight">Ответы на<br>частые вопросы</p>
-                </div>
-                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+        <div class="absolute top-0 left-0 p-4 w-full z-10">
+            <p class="text-white font-bold text-sm leading-tight">Ответы на<br>частые вопросы</p>
+        </div>
+        <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
-                </div>
-            </a>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+        </div>
+    </a>
 
         </nav>
 
@@ -1394,7 +1481,7 @@
                 tabPast.setAttribute('aria-selected', 'false');
                 
                 if (hasUpcoming) {
-                    contentUpcoming.classList.remove('hidden');
+                    contentUpcoming.classList.remove('hidden'); 
                     contentUpcoming.classList.add('flex');
                     dotsUpcoming.classList.remove('hidden');
                     dotsUpcoming.classList.add('flex');
@@ -1406,7 +1493,7 @@
                     emptyUpcoming.classList.add('flex');
                 }
                 
-                contentPast.classList.add('hidden');
+                contentPast.classList.add('hidden'); 
                 contentPast.classList.remove('flex');
                 dotsPast.classList.add('hidden');
                 dotsPast.classList.remove('flex');
@@ -1419,7 +1506,7 @@
                 tabPast.classList.add('active');
                 tabPast.setAttribute('aria-selected', 'true');
                 
-                contentUpcoming.classList.add('hidden');
+                contentUpcoming.classList.add('hidden'); 
                 contentUpcoming.classList.remove('flex');
                 dotsUpcoming.classList.add('hidden');
                 dotsUpcoming.classList.remove('flex');
@@ -1427,7 +1514,7 @@
                 emptyUpcoming.classList.remove('flex');
                 
                 if (hasPast) {
-                    contentPast.classList.remove('hidden');
+                    contentPast.classList.remove('hidden'); 
                     contentPast.classList.add('flex');
                     dotsPast.classList.remove('hidden');
                     dotsPast.classList.add('flex');
@@ -1559,6 +1646,9 @@
             // Не показываем если уже установлено как PWA
             if (window.matchMedia('(display-mode: standalone)').matches) return;
             
+            // Если в Telegram - показываем специальный баннер
+            const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
+            
             // Проверяем, не закрывали ли уже баннер
             const dismissed = PSBApp.storage.get('pwaBannerDismissed');
             if (dismissed) {
@@ -1639,6 +1729,39 @@
             
             const isDark = document.body.classList.contains('dark-mode');
             
+            // Если в Telegram - показываем кнопку открытия в браузере
+            if (inTelegram) {
+                const banner = document.createElement('div');
+                banner.className = 'pwa-banner';
+                banner.id = 'pwa-banner';
+                banner.innerHTML = `
+                    <button class="pwa-banner-close" onclick="dismissPWABanner()">
+                        <i class="fa-solid fa-times text-sm" style="color: #9CA3AF"></i>
+                    </button>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2D2B84] to-[#4F46E5] flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-mobile-screen text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-[15px]" style="color: ${isDark ? '#FFFFFF' : '#1F2937'}">Установить приложение</h3>
+                            <p class="text-xs" style="color: ${isDark ? '#D1D5DB' : '#6B7280'}">Полноценное PWA с уведомлениями</p>
+                        </div>
+                    </div>
+                    <p class="text-sm mb-4" style="color: ${isDark ? '#D1D5DB' : '#4B5563'}">
+                        Для установки PWA-версии с push-уведомлениями, откройте приложение в браузере:
+                    </p>
+                    <button onclick="openInBrowser()" class="w-full py-3 px-4 rounded-xl bg-[#2D2B84] text-white font-semibold text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Открыть в браузере
+                    </button>
+                    <button onclick="dismissPWABanner()" class="w-full mt-2 py-2.5 px-4 rounded-xl font-semibold text-sm" style="background: ${isDark ? '#374151' : '#F3F4F6'}; color: ${isDark ? '#D1D5DB' : '#374151'}">
+                        Продолжить в Telegram
+                    </button>
+                `;
+                document.body.appendChild(banner);
+                return;
+            }
+            
             const banner = document.createElement('div');
             banner.className = 'pwa-banner';
             banner.id = 'pwa-banner';
@@ -1684,6 +1807,20 @@
             if (understood) {
                 PSBApp.showToast('Отлично! Следуйте инструкции', 'success');
             }
+        }
+        
+        function openInBrowser() {
+            const url = 'https://ostst.github.io/prompt/';
+            
+            // Пробуем открыть через Telegram WebApp
+            if (window.Telegram?.WebApp?.openLink) {
+                window.Telegram.WebApp.openLink(url);
+            } else {
+                window.open(url, '_blank');
+            }
+            
+            dismissPWABanner();
+            PSBApp.haptic.success();
         }
         
         // ========================================
@@ -1819,6 +1956,163 @@
         }
         
         // ========================================
+        // ФОРМА РЕГИСТРАЦИИ (только для браузера)
+        // ========================================
+        function showRegistrationForm() {
+            // Показываем только если:
+            // 1. Не в Telegram
+            // 2. Пользователь не зарегистрирован и не пропустил
+            const inTelegram = window.Telegram?.WebApp?.initDataUnsafe?.user;
+            const userProfile = PSBApp.storage.get('userProfile');
+            const skippedRegistration = PSBApp.storage.get('skippedRegistration');
+            
+            if (inTelegram || userProfile || skippedRegistration) {
+                return;
+            }
+            
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'registration-overlay';
+            overlay.id = 'registration-overlay';
+            overlay.innerHTML = `
+                <div class="registration-card">
+                    <h2 style="font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 8px; color: ${isDark ? '#FFFFFF' : '#1F2937'}">
+                        Добро пожаловать!
+                    </h2>
+                    <p style="font-size: 14px; text-align: center; margin-bottom: 24px; color: ${isDark ? '#9CA3AF' : '#6B7280'}">
+                        Заполните профиль для отслеживания прогресса
+                    </p>
+                    
+                    <div class="avatar-upload" onclick="document.getElementById('avatar-input').click()">
+                        <i class="fa-solid fa-user text-white text-3xl" id="avatar-placeholder"></i>
+                        <img id="avatar-preview" style="display: none;">
+                        <div class="avatar-upload-icon">
+                            <i class="fa-solid fa-camera"></i> Фото
+                        </div>
+                    </div>
+                    <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="previewAvatar(this)">
+                    
+                    <input type="text" class="reg-input" id="reg-firstname" placeholder="Имя" maxlength="50">
+                    <input type="text" class="reg-input" id="reg-lastname" placeholder="Фамилия" maxlength="50">
+                    <input type="email" class="reg-input" id="reg-email" placeholder="Email (необязательно)" maxlength="100">
+                    
+                    <button onclick="saveRegistration()" class="w-full py-3.5 px-4 rounded-xl bg-[#2D2B84] text-white font-bold text-[15px] mt-2 hover:opacity-90 active:scale-[0.98] transition">
+                        Сохранить
+                    </button>
+                    
+                    <button onclick="skipRegistration()" class="w-full py-3 px-4 mt-2 text-sm font-medium" style="color: ${isDark ? '#9CA3AF' : '#6B7280'}">
+                        Пропустить
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+        }
+        
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('avatar-preview');
+                    const placeholder = document.getElementById('avatar-placeholder');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function saveRegistration() {
+            const firstname = document.getElementById('reg-firstname').value.trim();
+            const lastname = document.getElementById('reg-lastname').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const avatarPreview = document.getElementById('avatar-preview');
+            
+            if (!firstname) {
+                PSBApp.showToast('Введите имя', 'error');
+                return;
+            }
+            
+            const profile = {
+                firstName: firstname,
+                lastName: lastname,
+                email: email,
+                avatar: avatarPreview.style.display !== 'none' ? avatarPreview.src : null,
+                registeredAt: Date.now()
+            };
+            
+            PSBApp.storage.set('userProfile', profile);
+            
+            // Обновляем отображение профиля
+            updateProfileDisplay(profile);
+            
+            // Закрываем форму
+            closeRegistrationForm();
+            
+            PSBApp.haptic.success();
+            PSBApp.showToast('Профиль сохранён!', 'success');
+            
+            // Отправляем в аналитику
+            PSBApp.analytics.trackAction('Регистрация', `${firstname} ${lastname}`);
+        }
+        
+        function skipRegistration() {
+            PSBApp.storage.set('skippedRegistration', true);
+            closeRegistrationForm();
+            PSBApp.haptic.light();
+        }
+        
+        function closeRegistrationForm() {
+            const overlay = document.getElementById('registration-overlay');
+            if (overlay) {
+                overlay.style.animation = 'fadeOut 0.3s ease-out forwards';
+                setTimeout(() => overlay.remove(), 300);
+            }
+        }
+        
+        function updateProfileDisplay(profile) {
+            const userName = document.getElementById('user-name');
+            const userAvatar = document.getElementById('user-avatar');
+            const userStatus = document.getElementById('user-status');
+            
+            if (userName && profile) {
+                userName.textContent = `${profile.firstName}${profile.lastName ? ' ' + profile.lastName : ''}`;
+            }
+            
+            if (userAvatar && profile?.avatar) {
+                userAvatar.innerHTML = `<img src="${profile.avatar}" class="w-full h-full rounded-full object-cover" alt="Аватар">`;
+            } else if (userAvatar && profile?.firstName) {
+                userAvatar.innerHTML = `<span>${profile.firstName.charAt(0).toUpperCase()}</span>`;
+            }
+            
+            if (userStatus) {
+                const completed = PSBApp.progress.getCompleted().length;
+                if (completed === 0) {
+                    userStatus.textContent = 'Новый слушатель';
+                } else if (completed < 3) {
+                    userStatus.textContent = 'Начинающий';
+                } else if (completed < 6) {
+                    userStatus.textContent = 'Продвинутый';
+                } else {
+                    userStatus.textContent = 'Эксперт';
+                }
+            }
+        }
+        
+        // Загружаем профиль при старте (для браузера)
+        function loadBrowserProfile() {
+            const inTelegram = window.Telegram?.WebApp?.initDataUnsafe?.user;
+            if (inTelegram) return; // В Telegram профиль загружается из API
+            
+            const profile = PSBApp.storage.get('userProfile');
+            if (profile) {
+                updateProfileDisplay(profile);
+            }
+        }
+        
+        // ========================================
         // ИНИЦИАЛИЗАЦИЯ ВСЕХ МОДУЛЕЙ
         // ========================================
         document.addEventListener('DOMContentLoaded', () => {
@@ -1831,8 +2125,18 @@
             // Инициализация отслеживания событий
             initEventTracking();
             
-            // Показываем онбординг для новых пользователей
-            setTimeout(showOnboarding, 1000);
+            // Загружаем профиль для браузера
+            loadBrowserProfile();
+            
+            // Показываем форму регистрации (для браузера)
+            setTimeout(showRegistrationForm, 500);
+            
+            // Показываем онбординг для новых пользователей (после регистрации)
+            setTimeout(() => {
+                if (!document.getElementById('registration-overlay')) {
+                    showOnboarding();
+                }
+            }, 1000);
             
             // Показываем баннер установки PWA (после онбординга)
             setTimeout(showPWAInstallBanner, 3000);
