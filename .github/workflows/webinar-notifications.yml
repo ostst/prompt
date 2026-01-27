@@ -1,0 +1,42 @@
+name: Webinar Notifications
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check and send webinar notification
+        env:
+          ONESIGNAL_APP_ID: d496aabd-b8cf-4d18-946b-8228b23392f7
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+        run: |
+          CURRENT_HOUR=$(TZ="Europe/Moscow" date +"%Y-%m-%d %H:00")
+          echo "Checking: $CURRENT_HOUR"
+          
+          WEBINARS=(
+            "2026-01-27 11:00|Вебинар № 1|Введение в ИИ и нейросети. Начало в 12:00 МСК"
+            "2026-01-29 09:00|Вебинар № 2|Китайские ИИ-сервисы. Начало в 10:00 МСК"
+            "2026-02-05 11:00|Вебинар № 3|Чат-боты и ИИ-агенты. Начало в 12:00 МСК"
+            "2026-02-12 09:00|Вебинар № 4|Нейросети в дизайне. Начало в 10:00 МСК"
+            "2026-02-19 09:00|Вебинар № 5|Генерация изображений. Начало в 10:00 МСК"
+            "2026-02-26 09:00|Вебинар № 6|Видео и анимация. Начало в 10:00 МСК"
+            "2026-03-05 09:00|Вебинар № 7|Обработка аудио. Начало в 10:00 МСК"
+            "2026-03-12 09:00|Вебинар № 8|ИИ в бизнесе. Начало в 10:00 МСК"
+            "2026-03-19 09:00|Вебинар № 9|Внедрение ИИ в Банке. Начало в 10:00 МСК"
+          )
+          
+          for webinar in "${WEBINARS[@]}"; do
+            IFS='|' read -r NOTIFY_TIME TITLE MESSAGE <<< "$webinar"
+            if [ "$CURRENT_HOUR" == "$NOTIFY_TIME" ]; then
+              echo "Sending: $TITLE"
+              curl -X POST "https://onesignal.com/api/v1/notifications" \
+                -H "Content-Type: application/json; charset=utf-8" \
+                -H "Authorization: Basic $ONESIGNAL_API_KEY" \
+                -d '{"app_id":"'"$ONESIGNAL_APP_ID"'","included_segments":["All"],"headings":{"en":"⏰ Вебинар через 1 час!"},"contents":{"en":"'"$TITLE"' - '"$MESSAGE"'"},"url":"https://ostst.github.io/prompt/"}'
+            fi
+          done
