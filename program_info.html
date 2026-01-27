@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Информация о программе повышения квалификации «Промт-инженер: работа с нейросетями» — цели, структура, спикеры">
+    <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    <title>О программе | ПСБ Академия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Стили для списка модулей */
+        .module-item {
+            padding-left: 1rem;
+            border-left: 2px solid #E5E7EB;
+            margin-bottom: 12px;
+        }
+        .module-item h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1F2937;
+        }
+        .module-item p {
+            font-size: 11px;
+            color: #6B7280;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body class="text-[#1F2937]">
+
+    <!-- ШАПКА -->
+    <div class="page-header">
+        <div class="header-bg" style="background-image: url('img/Hero.png');"></div>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="nav-top">
+                <a href="index.html" class="btn-back" aria-label="Назад на главную">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+                <span class="badge">Курс</span>
+            </div>
+            <div>
+                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+                    Информация<br>о программе
+                </h1>
+                <p class="text-white/80 text-sm">
+                    Цели, структура и преподаватели
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОНТЕНТ -->
+    <main class="max-w-md mx-auto px-4 space-y-4 fade-in" role="main">
+
+        <!-- 1. О ПРОГРАММЕ -->
+        <section class="card" aria-labelledby="about-title">
+            <button onclick="PSBApp.toggleAccordion(1)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="true" aria-controls="content-1">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-info text-blue-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="about-title" class="font-bold text-[15px] text-gray-900 leading-snug">О программе</h2>
+                </div>
+                <i id="icon-1" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon open" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-1" class="accordion-content open bg-white px-5 pb-6">
+                <!-- 1. Для кого -->
+                <div class="mb-5">
+                    <h3 class="font-bold text-[14px] text-gray-900 mb-2 flex items-center gap-2">
+                        <span class="w-5 h-5 bg-blue-500 text-white rounded flex items-center justify-center text-[11px] font-bold">1</span>
+                        Для кого
+                    </h3>
+                    <p class="text-[13px] text-gray-600 leading-relaxed">
+                        Программа создана для всех, кто стремится использовать возможности нейросетей для повышения личной и профессиональной эффективности — никаких навыков программирования не требуется!
+                    </p>
+                </div>
+
+                <!-- 2. Что даст программа -->
+                <div class="mb-5">
+                    <h3 class="font-bold text-[14px] text-gray-900 mb-3 flex items-center gap-2">
+                        <span class="w-5 h-5 bg-blue-500 text-white rounded flex items-center justify-center text-[11px] font-bold">2</span>
+                        Что даст программа
+                    </h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-500 mt-1 text-[12px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Освоите основы промт-инжиниринга и научитесь управлять ИИ через текстовые запросы.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-500 mt-1 text-[12px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Будете создавать тексты для разных задач — от креативных идей до технических описаний — и автоматизировать рутину с помощью ИИ-ассистентов.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-500 mt-1 text-[12px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Овладеете генерацией изображений в Midjourney, Kandinski, Stable Diffusion и научитесь создавать презентации, сайты и фирменный стиль.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-500 mt-1 text-[12px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Научитесь создавать видеоконтент с ИИ-инструментами, разрабатывать цифровых аватаров и обрабатывать аудио для мультимедиа-проектов.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3. Формат -->
+                <div>
+                    <h3 class="font-bold text-[14px] text-gray-900 mb-3 flex items-center gap-2">
+                        <span class="w-5 h-5 bg-blue-500 text-white rounded flex items-center justify-center text-[11px] font-bold">3</span>
+                        Формат
+                    </h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle text-blue-500 mt-1.5 text-[6px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">144 ак. часа (2 месяца)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle text-blue-500 mt-1.5 text-[6px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Очно-заочное обучение с онлайн-вебинарами и практикой</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle text-blue-500 mt-1.5 text-[6px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Итоговый проект с обратной связью от экспертов</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle text-blue-500 mt-1.5 text-[6px]" aria-hidden="true"></i>
+                            <span class="text-[13px] text-gray-600 leading-snug">Удостоверение о повышении квалификации АНО ДПО «Академия ПСБ»</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. СТРУКТУРА МОДУЛЕЙ -->
+        <section class="card" aria-labelledby="modules-title">
+            <button onclick="PSBApp.toggleAccordion(2)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-2">
+                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-list-check text-purple-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="modules-title" class="font-bold text-[15px] text-gray-900 leading-snug">Структура модулей</h2>
+                </div>
+                <i id="icon-2" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-2" class="accordion-content bg-white px-5 pb-6">
+                <div class="space-y-4">
+
+                    <!-- Модуль 1 -->
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-7 h-7 flex items-center justify-center bg-purple-600 rounded-lg text-white text-xs font-bold">1</div>
+                            <p class="text-[13px] font-bold text-gray-900">Введение в ИИ и нейросети (теоретический блок)</p>
+                        </div>
+                        <div class="space-y-2 text-[11px]">
+                            <div>
+                                <span class="text-purple-600 font-bold">Что нового Вы узнаете:</span>
+                                <span class="text-gray-600"> Простое и понятное объяснение, как работают нейросети, зачем нужен промт-инженер, основные принципы ИИ, этика и защита данных</span>
+                            </div>
+                            <div>
+                                <span class="text-green-600 font-bold">Чему Вы научитесь:</span>
+                                <span class="text-gray-600"> Разбираться в базовых принципах ИИ, понимать роль промт-инженера и уверенно ориентироваться в теме</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Модуль 2 -->
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-7 h-7 flex items-center justify-center bg-purple-600 rounded-lg text-white text-xs font-bold">2</div>
+                            <p class="text-[13px] font-bold text-gray-900">Нейросети для генерации текстов</p>
+                        </div>
+                        <div class="space-y-2 text-[11px]">
+                            <div>
+                                <span class="text-purple-600 font-bold">Что нового Вы узнаете:</span>
+                                <span class="text-gray-600"> Практика работы с большими языковыми моделями (ChatGPT, GigaChat и др.), основы промт-инжиниринга, знакомство с чат-ботами и ИИ-агентами</span>
+                            </div>
+                            <div>
+                                <span class="text-green-600 font-bold">Чему Вы научитесь:</span>
+                                <span class="text-gray-600"> Формулировать точные промты, генерировать тексты для бизнеса, маркетинга и обучения, использовать ИИ как личного ассистента</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Модуль 3 -->
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-7 h-7 flex items-center justify-center bg-purple-600 rounded-lg text-white text-xs font-bold">3</div>
+                            <p class="text-[13px] font-bold text-gray-900">Графические нейросети</p>
+                        </div>
+                        <div class="space-y-2 text-[11px]">
+                            <div>
+                                <span class="text-purple-600 font-bold">Что нового Вы узнаете:</span>
+                                <span class="text-gray-600"> Создание изображений и анимаций для дизайна, маркетинга и соцсетей. Практика работы с нейросетями для креативных задач</span>
+                            </div>
+                            <div>
+                                <span class="text-green-600 font-bold">Чему Вы научитесь:</span>
+                                <span class="text-gray-600"> Генерировать профессиональные визуалы, создавать дизайн-материалы для презентаций и проектов</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Модуль 4 -->
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-7 h-7 flex items-center justify-center bg-purple-600 rounded-lg text-white text-xs font-bold">4</div>
+                            <p class="text-[13px] font-bold text-gray-900">Нейросети для работы с видео и аудио</p>
+                        </div>
+                        <div class="space-y-2 text-[11px]">
+                            <div>
+                                <span class="text-purple-600 font-bold">Что нового Вы узнаете:</span>
+                                <span class="text-gray-600"> Технологии генерации видео, цифровые аватары и двойники, нейросети для музыки, озвучки и обработки аудио</span>
+                            </div>
+                            <div>
+                                <span class="text-green-600 font-bold">Чему Вы научитесь:</span>
+                                <span class="text-gray-600"> Создавать видео и аудио-контент, работать с цифровыми аватарами и использовать ИИ для мультимедиа-проектов</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Модуль 5 -->
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-7 h-7 flex items-center justify-center bg-purple-600 rounded-lg text-white text-xs font-bold">5</div>
+                            <p class="text-[13px] font-bold text-gray-900">Нейросети в банковском секторе</p>
+                        </div>
+                        <div class="space-y-2 text-[11px]">
+                            <div>
+                                <span class="text-purple-600 font-bold">Что нового Вы узнаете:</span>
+                                <span class="text-gray-600"> Конкретные кейсы применения ИИ в бизнесе и финансах, работа с данными, этические и правовые аспекты</span>
+                            </div>
+                            <div>
+                                <span class="text-green-600 font-bold">Чему Вы научитесь:</span>
+                                <span class="text-gray-600"> Находить рабочие сценарии внедрения ИИ, понимать ограничения и минимизировать риски при использовании технологий</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ЧЕМУ ВЫ НАУЧИТЕСЬ -->
+        <section class="card" aria-labelledby="skills-title">
+            <button onclick="PSBApp.toggleAccordion(3)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-3">
+                <div class="w-8 h-8 rounded-full bg-[#2D2B84] flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-rocket text-white text-sm" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="skills-title" class="font-bold text-[15px] text-gray-900 leading-snug">Чему вы научитесь</h2>
+                </div>
+                <i id="icon-3" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-3" class="accordion-content bg-[#2D2B84] px-5 pb-5 text-white">
+                <p class="text-[13px] leading-relaxed mb-3">
+                    <span class="font-bold">Программа построена так, чтобы вы не просто познакомились с нейросетями, а смогли сразу внедрять их в свою работу.</span>
+                </p>
+                <p class="text-[12px] font-bold mb-2 text-white/90">Уже после прохождения модулей вы будете уметь:</p>
+                <ul class="space-y-2 text-[12px] text-white/90">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-white mt-1.5 text-[5px]" aria-hidden="true"></i>
+                        <span>генерировать тексты, изображения, видео и аудио для любых задач,</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-white mt-1.5 text-[5px]" aria-hidden="true"></i>
+                        <span>создавать эффективные промты и работать с ИИ-ассистентами,</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-white mt-1.5 text-[5px]" aria-hidden="true"></i>
+                        <span>автоматизировать рутинные процессы и экономить время,</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-white mt-1.5 text-[5px]" aria-hidden="true"></i>
+                        <span>применять ИИ в бизнесе и профессиональной деятельности.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 4. СПИКЕРЫ КУРСА -->
+        <section class="card" aria-labelledby="speakers-title">
+            <button onclick="PSBApp.toggleAccordion(4)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-4">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-user-tie text-green-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="speakers-title" class="font-bold text-[15px] text-gray-900 leading-snug">Спикеры курса</h2>
+                </div>
+                <i id="icon-4" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-4" class="accordion-content bg-white px-5 pb-6">
+                <div class="space-y-5">
+
+                    <!-- Спикер 1 -->
+                    <div class="border-b border-gray-100 pb-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="img/Дарина.jpg" class="w-12 h-12 rounded-full object-cover bg-purple-100" alt="Дарина Костина" loading="lazy">
+                            <div>
+                                <p class="text-[14px] font-bold text-gray-900 leading-tight">Дарина Костина</p>
+                                <p class="text-[11px] text-purple-600 font-medium">Спикер по генеративным нейросетям в дизайне</p>
+                            </div>
+                        </div>
+                        <p class="text-[12px] text-gray-500 leading-relaxed">
+                            Владелица дизайн-студии и школы «Karma.web», эксперт по нейросетям и автор курсов «Нейросети» для учащихся 9–11 классов, «Цифровой куратор» для Future Prof.
+                        </p>
+                    </div>
+
+                    <!-- Спикер 2 -->
+                    <div class="border-b border-gray-100 pb-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="img/Жемал.jpg" class="w-12 h-12 rounded-full object-cover bg-blue-100" alt="Жемал Хамидун" loading="lazy">
+                            <div>
+                                <p class="text-[14px] font-bold text-gray-900 leading-tight">Жемал Хамидун</p>
+                                <p class="text-[11px] text-blue-600 font-medium">Спикер по текстовым нейросетям и ИИ-ассистентам</p>
+                            </div>
+                        </div>
+                        <p class="text-[12px] text-gray-500 leading-relaxed">
+                            Эксперт по генеративному ИИ и продуктовому менеджменту. Директор по цифровым продуктам Alpina Digital. Имеет 10+ лет опыта в области трансформации бизнеса.
+                        </p>
+                    </div>
+
+                    <!-- Спикер 3 -->
+                    <div class="border-b border-gray-100 pb-4">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="img/Олег.jpg" class="w-12 h-12 rounded-full object-cover bg-green-100" alt="Олег Сиротюк" loading="lazy">
+                            <div>
+                                <p class="text-[14px] font-bold text-gray-900 leading-tight">Олег Сиротюк</p>
+                                <p class="text-[11px] text-green-600 font-medium">Спикер по китайским генеративным нейросетям</p>
+                            </div>
+                        </div>
+                        <p class="text-[12px] text-gray-500 leading-relaxed">
+                            Независимый эксперт, ктн. Опытный руководитель и технический эксперт с более чем 20-летним опытом в сфере информационных технологий, искусственного интеллекта и open-source решений.
+                        </p>
+                    </div>
+
+                    <!-- Спикер 4 -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-users text-orange-600" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="text-[14px] font-bold text-gray-900 leading-tight">Команда ПСБ</p>
+                                <p class="text-[11px] text-orange-600 font-medium">Спикеры по внедрению ИИ в банковский сектор</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. КАК ПРОХОДИТ ОБУЧЕНИЕ -->
+        <section class="card" aria-labelledby="learning-title">
+            <button onclick="PSBApp.toggleAccordion(5)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-5">
+                <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-chalkboard-user text-indigo-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="learning-title" class="font-bold text-[15px] text-gray-900 leading-snug">Как проходит обучение</h2>
+                </div>
+                <i id="icon-5" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-5" class="accordion-content bg-white px-5 pb-6">
+
+                <!-- Как проходит обучение -->
+                <div class="bg-indigo-50 rounded-xl p-4 mb-4">
+                    <h3 class="font-bold text-[13px] text-indigo-900 mb-3">Как проходит обучение</h3>
+                    <ul class="space-y-2 text-[12px] text-indigo-800">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Еженедельные интерактивные вебинары для разбора сложных тем и отработки практических навыков с ведущими специалистами в области ИИ.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Домашние задания как элемент подготовки итогового проекта с обратной связью от кураторов;</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Микролернинги для освоения практических навыков в короткие промежутки времени;</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Нагрузка -->
+                <div class="bg-indigo-50 rounded-xl p-4 mb-4">
+                    <h3 class="font-bold text-[13px] text-indigo-900 mb-3">Нагрузка</h3>
+                    <ul class="space-y-2 text-[12px] text-indigo-800">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Длительность программы — 2 месяца (144 ак. ч.);</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Среднее время обучения — ≈2-3 часа в день.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Дополнительно -->
+                <div class="bg-indigo-50 rounded-xl p-4 mb-4">
+                    <h3 class="font-bold text-[13px] text-indigo-900 mb-3">Дополнительно</h3>
+                    <ul class="space-y-2 text-[12px] text-indigo-800">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Доступ к платформе на 9 месяцев;</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-indigo-500 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Чаты для обмена опытом и поддержки от кураторов.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Итоговая аттестация -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <h3 class="font-bold text-[13px] text-gray-900 mb-3">Итоговая аттестация</h3>
+                    <ul class="space-y-2 text-[12px] text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-gray-400 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>Итоговый проект, выполненный с помощью нейросетей;</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-circle text-gray-400 mt-1.5 text-[5px]" aria-hidden="true"></i>
+                            <span>По итогу успешного обучения выдаётся удостоверение повышения квалификации установленного Академией ПСБ образца, вносятся сведения о выданном удостоверении в ФИС ФРДО.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. ФОРМАТ ОБУЧЕНИЯ -->
+        <section class="card" aria-labelledby="format-title">
+            <button onclick="PSBApp.toggleAccordion(6)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-6">
+                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-graduation-cap text-blue-600 text-sm" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="format-title" class="font-bold text-[15px] text-gray-900 leading-snug">Формат обучения</h2>
+                </div>
+                <i id="icon-6" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-6" class="accordion-content bg-white px-5 pb-6">
+
+                <!-- Теги -->
+                <div class="flex gap-2 mb-4">
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[11px] font-bold">144 ак. часа</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-[11px] font-bold">2 месяца</span>
+                </div>
+
+                <!-- Основной список -->
+                <ul class="text-[13px] text-gray-600 space-y-2 mb-6">
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-gray-400 w-5 text-center" aria-hidden="true"></i>
+                        Входное тестирование
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-play-circle text-gray-400 w-5 text-center" aria-hidden="true"></i>
+                        Видеолекции
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-comment-dots text-gray-400 w-5 text-center" aria-hidden="true"></i>
+                        Обратная связь от преподавателя
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-video text-gray-400 w-5 text-center" aria-hidden="true"></i>
+                        Вебинары
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <i class="fa-solid fa-file-pen text-gray-400 w-5 text-center" aria-hidden="true"></i>
+                        Итоговая аттестация
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-certificate text-[#EA580C] w-5 text-center mt-0.5" aria-hidden="true"></i>
+                        <span>Выдача удостоверения о повышении квалификации</span>
+                    </li>
+                </ul>
+
+                <!-- Блок "Для вас" -->
+                <div class="border-t border-gray-100 pt-4">
+                    <p class="font-bold text-[14px] text-gray-900 mb-3">Для вас:</p>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-gray-50 rounded-lg p-3 flex flex-col items-start gap-2">
+                            <i class="fa-solid fa-users text-blue-500 text-sm" aria-hidden="true"></i>
+                            <span class="text-[11px] leading-tight font-medium text-gray-700">Сопровождение кураторов</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 flex flex-col items-start gap-2">
+                            <i class="fa-solid fa-life-ring text-blue-500 text-sm" aria-hidden="true"></i>
+                            <span class="text-[11px] leading-tight font-medium text-gray-700">Методическая поддержка</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 flex flex-col items-start gap-2">
+                            <i class="fa-solid fa-book-open text-blue-500 text-sm" aria-hidden="true"></i>
+                            <span class="text-[11px] leading-tight font-medium text-gray-700">Доступ к онлайн-библиотеке</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 flex flex-col items-start gap-2">
+                            <i class="fa-solid fa-comments text-blue-500 text-sm" aria-hidden="true"></i>
+                            <span class="text-[11px] leading-tight font-medium text-gray-700">Обратная связь от преподавателя</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

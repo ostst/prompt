@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Дополнительные материалы для программы «Промт-инженер: работа с нейросетями»">
+    <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    <title>Материалы | ПСБ Академия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="text-[#1F2937]">
+
+    <!-- ШАПКА -->
+    <div class="page-header">
+        <div class="header-bg" style="background-image: url('img/Hero.png');"></div>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="nav-top">
+                <a href="index.html" class="btn-back" aria-label="Назад">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <span class="badge">Ресурсы</span>
+            </div>
+            <div>
+                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+                    Полезные<br>материалы
+                </h1>
+                <p class="text-white/80 text-sm">
+                    Статьи, инструменты и ресурсы для изучения
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОНТЕНТ -->
+    <main class="max-w-md mx-auto px-4 space-y-4 fade-in" role="main">
+
+        <!-- Поиск -->
+        <div class="search-container">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="Поиск по материалам..." aria-label="Поиск">
+        </div>
+
+        <!-- Категория: Нейросети для текста -->
+        <section class="card" aria-labelledby="text-ai-title">
+            <button onclick="PSBApp.toggleAccordion(1)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-1">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-font text-blue-600 text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="text-ai-title" class="font-bold text-[15px] text-gray-900">Нейросети для текста</h2>
+                    <p class="text-xs text-gray-500 mt-1">ChatGPT, GigaChat, Claude и другие</p>
+                </div>
+                <i id="icon-1" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </button>
+
+            <div id="content-1" class="accordion-content bg-gray-50 px-5 pb-5">
+                <div class="space-y-3">
+                    <!-- Ссылка 1 -->
+                    <a href="https://chat.openai.com" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-blue-200 transition" data-search="chatgpt openai">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-robot text-green-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">ChatGPT</p>
+                            <p class="text-xs text-gray-500">OpenAI — самая популярная LLM</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <!-- Ссылка 2 -->
+                    <a href="https://gigachat.ru" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-blue-200 transition" data-search="gigachat сбер">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-comments text-green-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">GigaChat</p>
+                            <p class="text-xs text-gray-500">Сбер — российская LLM</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <!-- Ссылка 3 -->
+                    <a href="https://claude.ai" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-blue-200 transition" data-search="claude anthropic">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-brain text-orange-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Claude</p>
+                            <p class="text-xs text-gray-500">Anthropic — продвинутый ИИ-ассистент</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <!-- Ссылка 4 -->
+                    <a href="https://yandex.ru/alice" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-blue-200 transition" data-search="yandexgpt алиса яндекс">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-y text-yellow-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">YandexGPT</p>
+                            <p class="text-xs text-gray-500">Яндекс — нейросеть от Алисы</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Категория: Нейросети для изображений -->
+        <section class="card" aria-labelledby="image-ai-title">
+            <button onclick="PSBApp.toggleAccordion(2)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-2">
+                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-image text-purple-600 text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="image-ai-title" class="font-bold text-[15px] text-gray-900">Нейросети для изображений</h2>
+                    <p class="text-xs text-gray-500 mt-1">Midjourney, DALL-E, Kandinsky</p>
+                </div>
+                <i id="icon-2" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </button>
+
+            <div id="content-2" class="accordion-content bg-gray-50 px-5 pb-5">
+                <div class="space-y-3">
+                    <a href="https://midjourney.com" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-purple-200 transition" data-search="midjourney мидджорни">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Midjourney</p>
+                            <p class="text-xs text-gray-500">Лучшее качество изображений</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://openai.com/dall-e-3" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-purple-200 transition" data-search="dalle dall-e openai">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-paintbrush text-green-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">DALL-E 3</p>
+                            <p class="text-xs text-gray-500">OpenAI — генератор изображений</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://fusionbrain.ai" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-purple-200 transition" data-search="kandinsky кандинский сбер">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-palette text-blue-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Kandinsky</p>
+                            <p class="text-xs text-gray-500">Сбер — бесплатный генератор</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://stability.ai" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-purple-200 transition" data-search="stable diffusion стейбл">
+                        <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-atom text-indigo-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Stable Diffusion</p>
+                            <p class="text-xs text-gray-500">Открытая модель для локального запуска</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Категория: Нейросети для видео -->
+        <section class="card" aria-labelledby="video-ai-title">
+            <button onclick="PSBApp.toggleAccordion(3)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-3">
+                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-video text-red-600 text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="video-ai-title" class="font-bold text-[15px] text-gray-900">Нейросети для видео</h2>
+                    <p class="text-xs text-gray-500 mt-1">Runway, Pika, HeyGen</p>
+                </div>
+                <i id="icon-3" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </button>
+
+            <div id="content-3" class="accordion-content bg-gray-50 px-5 pb-5">
+                <div class="space-y-3">
+                    <a href="https://runwayml.com" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-red-200 transition" data-search="runway ранвей видео">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-film text-red-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Runway ML</p>
+                            <p class="text-xs text-gray-500">Генерация и редактирование видео</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://pika.art" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-red-200 transition" data-search="pika пика видео">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-clapperboard text-pink-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Pika</p>
+                            <p class="text-xs text-gray-500">Простое создание коротких видео</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://heygen.com" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-red-200 transition" data-search="heygen аватар">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-user-astronaut text-blue-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">HeyGen</p>
+                            <p class="text-xs text-gray-500">Цифровые аватары и двойники</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Категория: Нейросети для аудио -->
+        <section class="card" aria-labelledby="audio-ai-title">
+            <button onclick="PSBApp.toggleAccordion(4)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-4">
+                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-music text-green-600 text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="audio-ai-title" class="font-bold text-[15px] text-gray-900">Нейросети для аудио</h2>
+                    <p class="text-xs text-gray-500 mt-1">Музыка, озвучка, транскрибация</p>
+                </div>
+                <i id="icon-4" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </button>
+
+            <div id="content-4" class="accordion-content bg-gray-50 px-5 pb-5">
+                <div class="space-y-3">
+                    <a href="https://elevenlabs.io" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-green-200 transition" data-search="elevenlabs озвучка голос">
+                        <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-microphone text-indigo-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">ElevenLabs</p>
+                            <p class="text-xs text-gray-500">Реалистичная озвучка текста</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://suno.ai" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-green-200 transition" data-search="suno музыка">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-headphones text-purple-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Suno</p>
+                            <p class="text-xs text-gray-500">Генерация музыки с вокалом</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://whisper.ai" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-green-200 transition" data-search="whisper транскрибация">
+                        <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-file-audio text-gray-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Whisper</p>
+                            <p class="text-xs text-gray-500">Транскрибация аудио в текст</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Категория: Обучающие материалы -->
+        <section class="card" aria-labelledby="learn-title">
+            <button onclick="PSBApp.toggleAccordion(5)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-5">
+                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-book-open text-yellow-600 text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="learn-title" class="font-bold text-[15px] text-gray-900">Обучающие материалы</h2>
+                    <p class="text-xs text-gray-500 mt-1">Статьи, курсы, гайды</p>
+                </div>
+                <i id="icon-5" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon"></i>
+            </button>
+
+            <div id="content-5" class="accordion-content bg-gray-50 px-5 pb-5">
+                <div class="space-y-3">
+                    <a href="https://learnprompting.org" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-yellow-200 transition" data-search="промптинг обучение курс">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-graduation-cap text-yellow-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Learn Prompting</p>
+                            <p class="text-xs text-gray-500">Бесплатный курс по промт-инженерингу</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://platform.openai.com/docs" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-yellow-200 transition" data-search="openai документация api">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-file-lines text-green-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">OpenAI Docs</p>
+                            <p class="text-xs text-gray-500">Официальная документация OpenAI</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+
+                    <a href="https://promptingguide.ai" target="_blank" class="material-item flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:border-yellow-200 transition" data-search="гайд промпты">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-lightbulb text-blue-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm text-gray-900">Prompt Engineering Guide</p>
+                            <p class="text-xs text-gray-500">Полный гайд по промтам</p>
+                        </div>
+                        <i class="fa-solid fa-external-link text-gray-300 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item active" aria-current="page" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация поиска
+            PSBApp.initSearch('search-input', '.material-item', ['textContent', 'data-search']);
+            
+            // Открываем первую секцию
+            PSBApp.toggleAccordion(1, false);
+        });
+    </script>
+</body>
+</html>

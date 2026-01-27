@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Инструкция по работе с образовательной платформой ПСБ Академии">
+    <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    <title>Платформа | ПСБ Академия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Стили для квадратиков с цифрами */
+        .step-num {
+            width: 24px;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .step-blue { background-color: #E0E7FF; color: #2D2B84; }
+        .step-green { background-color: #DCFCE7; color: #166534; }
+    </style>
+</head>
+<body class="text-[#1F2937]">
+
+    <!-- ШАПКА -->
+    <div class="page-header">
+        <div class="header-bg" style="background-image: url('img/Hero.png');"></div>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="nav-top">
+                <a href="index.html" class="btn-back" aria-label="Назад на главную">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+                <span class="badge">Помощь</span>
+            </div>
+            <div>
+                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+                    Образовательная<br>платформа
+                </h1>
+                <p class="text-white/80 text-sm">
+                    Инструкции по входу и навигации
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОНТЕНТ -->
+    <main class="max-w-md mx-auto px-4 space-y-4 fade-in" role="main">
+
+        <!-- КАРТОЧКА 1: Не могу зайти -->
+        <section class="card" aria-labelledby="login-title">
+            <button onclick="PSBApp.toggleAccordion(1)" class="w-full p-5 flex items-start gap-4 text-left active:bg-gray-50 transition" aria-expanded="true" aria-controls="content-1">
+                <div class="mt-0.5 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-lock text-[#EF4444] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="login-title" class="font-bold text-[15px] text-gray-900 leading-snug">Не могу зайти на образовательную платформу</h2>
+                </div>
+                <div class="mt-1">
+                    <i id="icon-1" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon open" aria-hidden="true"></i>
+                </div>
+            </button>
+
+            <div id="content-1" class="accordion-content open bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-800 mb-4 font-medium">Если у вас не получается войти, попробуйте следующие шаги:</p>
+                <div class="space-y-4">
+                    <div class="flex gap-3">
+                        <div class="step-num step-blue">1</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Проверьте, правильно ли введены логин и пароль при входе в личный кабинет на сайте: <br>
+                            <a href="https://psb-academy.ru/auth" target="_blank" rel="noopener" class="text-blue-600 font-medium underline decoration-blue-200 decoration-2 underline-offset-2">psb-academy.ru/auth</a>
+                            <div class="text-[11px] text-gray-400 mt-1 leading-tight">(убедитесь, что раскладка клавиатуры и язык верные, отключен CapsLock).</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="step-num step-blue">2</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Если забыли пароль — используйте кнопку <b>«Забыли пароль?»</b> на странице входа и восстановите доступ через email.
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="step-num step-blue">3</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Очистите кэш и куки браузера или попробуйте открыть платформу в режиме <b>инкогнито</b> либо в другом браузере.
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="step-num step-blue">4</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Попробуйте зайти с другого устройства или сети (например, с телефона через мобильный интернет).
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="step-num step-blue">5</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Если сложности сохраняются, свяжитесь с куратором обучения.
+                            <a href="https://t.me/seledka3388" target="_blank" rel="noopener" class="inline-block mt-1.5 bg-gray-100 px-3 py-1.5 rounded-lg text-xs font-bold text-gray-800 hover:bg-gray-200 transition">
+                                <i class="fa-brands fa-telegram mr-1" aria-hidden="true"></i> Написать куратору
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- КАРТОЧКА 2: Как начать обучение -->
+        <section class="card" aria-labelledby="start-title">
+            <button onclick="PSBApp.toggleAccordion(2)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-2">
+                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-play text-[#22C55E] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 id="start-title" class="font-bold text-[15px] text-gray-900 leading-snug">Как начать обучение</h2>
+                </div>
+                <i id="icon-2" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            
+            <div id="content-2" class="accordion-content bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-600 mb-4 leading-relaxed">
+                    После входа в систему вы попадаете в раздел <b>«Библиотека курсов»</b>. Здесь собраны курсы предлагаемые к изучению.
+                </p>
+                <p class="text-[13px] text-gray-800 font-medium mb-3">Чтобы открыть именно ваш курс необходимо:</p>
+
+                <div class="space-y-3 mb-5">
+                    <div class="flex gap-3">
+                        <div class="step-num step-green">1</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Перейти в раздел <b>«Мое обучение»</b>, далее раздел <b>«Программы и курсы»</b>.
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="step-num step-green">2</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            Нажать на название курса, на который вы записаны.
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="step-num step-green">3</div>
+                        <div class="text-[13px] text-gray-600 leading-relaxed">
+                            В открывшемся окне выберите первый урок или нажмите кнопку <b>«Начать курс»</b>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок ВАЖНО -->
+                <div class="bg-[#FFFBEB] rounded-xl p-4 border border-[#FEF3C7] mb-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-regular fa-lightbulb text-[#D97706] text-sm" aria-hidden="true"></i>
+                        <span class="text-[#D97706] font-bold text-sm">Важно:</span>
+                    </div>
+                    <ul class="list-disc pl-5 text-[12px] text-gray-700 space-y-1">
+                        <li>В <b>Библиотеке</b> вы видите весь каталог курсов Академии ПСБ.</li>
+                        <li>В разделе <b>«Мое обучение»</b> — только те курсы, на которые вы записаны.</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-100 rounded-xl p-3 text-[11px] text-gray-500 leading-tight">
+                    Если вы не нашли курс в «Текущих», убедитесь, что регистрация на него завершена. При проблемах напишите в поддержку.
+                </div>
+            </div>
+        </section>
+
+        <!-- КАРТОЧКА 3: Быстрые действия -->
+        <section class="card p-5" aria-labelledby="quick-actions-title">
+            <h2 id="quick-actions-title" class="font-bold text-[15px] text-gray-900 mb-4">Быстрые действия</h2>
+            
+            <div class="space-y-3">
+                <a href="https://psb-academy.ru/auth" target="_blank" rel="noopener" onclick="if(window.Telegram && window.Telegram.WebApp) { Telegram.WebApp.openLink(this.href); return false; }" class="flex items-center gap-3 p-3 bg-blue-50 rounded-xl hover:bg-blue-100 transition">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-right-to-bracket text-white" aria-hidden="true"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-gray-900">Войти на платформу</p>
+                        <p class="text-xs text-gray-500">psb-academy.ru/auth</p>
+                    </div>
+                    <i class="fa-solid fa-external-link text-blue-400 text-xs" aria-hidden="true"></i>
+                </a>
+
+                <a href="https://psb-academy.ru/account/my-education" target="_blank" rel="noopener" onclick="if(window.Telegram && window.Telegram.WebApp) { Telegram.WebApp.openLink(this.href); return false; }" class="flex items-center gap-3 p-3 bg-green-50 rounded-xl hover:bg-green-100 transition">
+                    <div class="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-graduation-cap text-white" aria-hidden="true"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-gray-900">Мое обучение</p>
+                        <p class="text-xs text-gray-500">Перейти к курсам</p>
+                    </div>
+                    <i class="fa-solid fa-external-link text-green-400 text-xs" aria-hidden="true"></i>
+                </a>
+
+                <a href="https://t.me/seledka3388" target="_blank" rel="noopener" class="flex items-center gap-3 p-3 bg-orange-50 rounded-xl hover:bg-orange-100 transition">
+                    <div class="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-brands fa-telegram text-white" aria-hidden="true"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-gray-900">Написать куратору</p>
+                        <p class="text-xs text-gray-500">Telegram</p>
+                    </div>
+                    <i class="fa-solid fa-external-link text-orange-400 text-xs" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Глоссарий терминов искусственного интеллекта и нейросетей">
+    <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    <title>Глоссарий | ПСБ Академия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .term-card {
+            border-left: 3px solid var(--color-accent);
+        }
+        .term-letter {
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            z-index: 10;
+        }
+        .dark-mode .term-letter {
+            background: var(--bg-primary);
+        }
+    </style>
+</head>
+<body class="text-[#1F2937]">
+
+    <!-- ШАПКА -->
+    <div class="page-header">
+        <div class="header-bg" style="background-image: url('img/Hero.png');"></div>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="nav-top">
+                <a href="index.html" class="btn-back" aria-label="Назад">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <span class="badge">Справочник</span>
+            </div>
+            <div>
+                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+                    Глоссарий<br>терминов
+                </h1>
+                <p class="text-white/80 text-sm">
+                    Основные понятия AI и нейросетей
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОНТЕНТ -->
+    <main class="max-w-md mx-auto px-4 fade-in" role="main">
+
+        <!-- Поиск -->
+        <div class="search-container mb-4">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="Поиск термина..." aria-label="Поиск термина">
+        </div>
+
+        <!-- Быстрый переход по буквам -->
+        <div class="flex flex-wrap gap-2 mb-4" role="navigation" aria-label="Алфавит">
+            <a href="#letter-A" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">A</a>
+            <a href="#letter-C" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">C</a>
+            <a href="#letter-D" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">D</a>
+            <a href="#letter-F" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">F</a>
+            <a href="#letter-G" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">G</a>
+            <a href="#letter-L" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">L</a>
+            <a href="#letter-M" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">M</a>
+            <a href="#letter-N" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">N</a>
+            <a href="#letter-P" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">P</a>
+            <a href="#letter-R" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">R</a>
+            <a href="#letter-T" class="w-8 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-bold text-gray-700 hover:bg-orange-100 hover:text-orange-600 transition">T</a>
+        </div>
+
+        <!-- Термины -->
+        <div id="terms-container" class="space-y-4">
+
+            <!-- Буква A -->
+            <div id="letter-A" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">A</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="ai artificial intelligence искусственный интеллект">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">AI (Artificial Intelligence)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    <strong>Искусственный интеллект</strong> — область компьютерных наук, которая занимается созданием систем, способных выполнять задачи, требующие человеческого интеллекта: распознавание речи, принятие решений, перевод языков.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="api application programming interface программный интерфейс">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">API (Application Programming Interface)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    <strong>Программный интерфейс</strong> — набор правил и протоколов, позволяющих различным программам взаимодействовать друг с другом. Через API можно интегрировать нейросети в свои приложения.
+                </p>
+            </article>
+
+            <!-- Буква C -->
+            <div id="letter-C" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">C</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="chatbot чатбот чат-бот бот">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Chatbot (Чат-бот)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Программа, которая имитирует разговор с пользователем на естественном языке. Современные чат-боты на базе LLM способны вести сложные диалоги и выполнять разнообразные задачи.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="context window контекстное окно контекст">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Context Window (Контекстное окно)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Максимальное количество токенов, которое модель может обработать за один раз. Определяет, сколько текста модель «помнит» в рамках одного диалога.
+                </p>
+            </article>
+
+            <!-- Буква D -->
+            <div id="letter-D" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">D</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="deep learning глубокое обучение нейросети">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Deep Learning (Глубокое обучение)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Метод машинного обучения, использующий многослойные нейронные сети. Позволяет моделям самостоятельно выявлять сложные паттерны в данных.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="diffusion диффузия модель генерация изображений">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Diffusion Model (Диффузионная модель)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Тип генеративной модели, которая создаёт изображения путём постепенного «очищения» шума. Используется в Midjourney, DALL-E, Stable Diffusion.
+                </p>
+            </article>
+
+            <!-- Буква F -->
+            <div id="letter-F" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">F</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="fine-tuning дообучение настройка модели">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Fine-tuning (Дообучение)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Процесс дополнительного обучения предобученной модели на специфических данных для улучшения её работы в конкретной области.
+                </p>
+            </article>
+
+            <!-- Буква G -->
+            <div id="letter-G" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">G</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="gpt generative pre-trained transformer генеративный трансформер">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">GPT (Generative Pre-trained Transformer)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Семейство языковых моделей от OpenAI. GPT-4 — одна из самых мощных LLM, способная генерировать текст, код, анализировать изображения.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="generative ai генеративный ии генерация">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Generative AI (Генеративный ИИ)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    ИИ-системы, способные создавать новый контент: текст, изображения, музыку, видео. Включает LLM, диффузионные модели и другие генеративные архитектуры.
+                </p>
+            </article>
+
+            <!-- Буква L -->
+            <div id="letter-L" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">L</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="llm large language model большая языковая модель">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">LLM (Large Language Model)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    <strong>Большая языковая модель</strong> — нейросеть с миллиардами параметров, обученная на огромных объёмах текста. Примеры: GPT-4, Claude, GigaChat, LLaMA.
+                </p>
+            </article>
+
+            <!-- Буква M -->
+            <div id="letter-M" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">M</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="machine learning машинное обучение ml">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Machine Learning (Машинное обучение)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Область ИИ, где системы учатся на данных без явного программирования. Модели выявляют паттерны и делают прогнозы на основе обучающих примеров.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="multimodal мультимодальный модель несколько модальностей">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Multimodal (Мультимодальный)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Модели, способные работать с несколькими типами данных одновременно: текст, изображения, аудио. Пример: GPT-4V может анализировать изображения и текст.
+                </p>
+            </article>
+
+            <!-- Буква N -->
+            <div id="letter-N" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">N</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="neural network нейронная сеть нейросеть">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Neural Network (Нейронная сеть)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Вычислительная система, вдохновлённая биологическим мозгом. Состоит из слоёв «нейронов», которые обрабатывают информацию и учатся на примерах.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="nlp natural language processing обработка языка">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">NLP (Natural Language Processing)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    <strong>Обработка естественного языка</strong> — область ИИ, занимающаяся взаимодействием компьютеров с человеческим языком: понимание, генерация, перевод текста.
+                </p>
+            </article>
+
+            <!-- Буква P -->
+            <div id="letter-P" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">P</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="prompt промпт запрос инструкция">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Prompt (Промпт)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Текстовая инструкция или запрос, который пользователь отправляет нейросети для получения нужного результата. Качество промпта напрямую влияет на качество ответа.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="prompt engineering промпт-инженерия инженер">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Prompt Engineering (Промпт-инженерия)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Искусство и наука составления эффективных промптов. Включает техники: few-shot learning, chain-of-thought, role prompting и другие методы улучшения результатов.
+                </p>
+            </article>
+
+            <!-- Буква R -->
+            <div id="letter-R" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">R</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="rag retrieval augmented generation дополненная генерация поиск">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">RAG (Retrieval-Augmented Generation)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Метод, при котором LLM дополняется внешней базой знаний. Модель сначала ищет релевантную информацию, затем генерирует ответ на её основе.
+                </p>
+            </article>
+
+            <!-- Буква T -->
+            <div id="letter-T" class="term-letter py-2">
+                <span class="text-lg font-bold text-orange-600">T</span>
+            </div>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="token токен единица текста">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Token (Токен)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Базовая единица текста для LLM. Один токен — примерно 4 символа или 3/4 слова на английском. На русском — обычно меньше из-за кириллицы.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="transformer трансформер архитектура внимание">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Transformer (Трансформер)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Архитектура нейросети, использующая механизм внимания (attention). Основа всех современных LLM — GPT, BERT, Claude и других.
+                </p>
+            </article>
+
+            <article class="term-card bg-white rounded-xl p-4 shadow-sm" data-term="temperature температура параметр случайность">
+                <h3 class="font-bold text-[15px] text-gray-900 mb-2">Temperature (Температура)</h3>
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    Параметр, управляющий «креативностью» модели. Низкая температура (0.1-0.3) — предсказуемые ответы, высокая (0.7-1.0) — более разнообразные и творческие.
+                </p>
+            </article>
+
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item active" aria-current="page" aria-label="Глоссарий">
+            <i class="fa-solid fa-book"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Поиск по терминам
+            const searchInput = document.getElementById('search-input');
+            const termsContainer = document.getElementById('terms-container');
+            const allItems = termsContainer.querySelectorAll('article, [id^="letter-"]');
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                
+                if (!query) {
+                    allItems.forEach(item => item.style.display = '');
+                    return;
+                }
+                
+                // Скрываем все буквы-заголовки
+                termsContainer.querySelectorAll('[id^="letter-"]').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Фильтруем термины
+                termsContainer.querySelectorAll('article').forEach(article => {
+                    const term = article.getAttribute('data-term') || '';
+                    const text = article.textContent.toLowerCase();
+                    const match = term.includes(query) || text.includes(query);
+                    article.style.display = match ? '' : 'none';
+                });
+                
+                PSBApp.haptic.selection();
+            });
+        });
+    </script>
+</body>
+</html>

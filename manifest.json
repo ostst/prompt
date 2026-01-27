@@ -1,0 +1,57 @@
+{
+    "name": "ПСБ Академия - Промт-инженер",
+    "short_name": "ПСБ Академия",
+    "description": "Программа повышения квалификации «Промт-инженер: работа с нейросетями»",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#F2F2F2",
+    "theme_color": "#2D2B84",
+    "orientation": "portrait",
+    "lang": "ru",
+    "icons": [
+        {
+            "src": "img/1.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "img/1.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["education", "productivity"],
+    "screenshots": [
+        {
+            "src": "img/Hero.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Расписание вебинаров",
+            "short_name": "Вебинары",
+            "description": "Посмотреть расписание вебинаров",
+            "url": "/index.html",
+            "icons": [{"src": "img/1.png", "sizes": "96x96"}]
+        },
+        {
+            "name": "Программа курса",
+            "short_name": "Программа",
+            "description": "Программа обучения",
+            "url": "/course_program.html",
+            "icons": [{"src": "img/1.png", "sizes": "96x96"}]
+        },
+        {
+            "name": "FAQ",
+            "short_name": "FAQ",
+            "description": "Часто задаваемые вопросы",
+            "url": "/faq.html",
+            "icons": [{"src": "img/1.png", "sizes": "96x96"}]
+        }
+    ]
+}

@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Программа повышения квалификации «Промт-инженер: работа с нейросетями» — обучение работе с ИИ и нейросетями от ПСБ Академии">
+    <meta name="theme-color" content="#2D2B84">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    
+    <title>Промт-инженер | ПСБ Академия</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        /* Локальные стили для главной */
+        .hero-banner {
+            background-image: url('img/hero menu.png');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .lk-banner {
+            background-image: url('img/hero_lk.png');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-card {
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Живой индикатор (пульсация) */
+        .live-indicator {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Темная тема для карточек вебинаров */
+        .dark-mode .event-card {
+            background: #1e2a4a;
+        }
+        
+        .dark-mode .event-card h3 {
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .event-card p {
+            color: #B8C4D9 !important;
+        }
+        
+        .dark-mode .event-card .date-label {
+            color: #9CA3AF !important;
+        }
+        
+        .dark-mode .event-card .text-xs.font-bold {
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .event-card .text-\[10px\] {
+            color: #A0AEC0 !important;
+        }
+        
+        /* Прогресс-бар в темной теме */
+        .dark-mode #course-progress {
+            background: #1e2a4a;
+        }
+        
+        .dark-mode #course-progress span {
+            color: #E5E7EB;
+        }
+        
+        /* Табы в темной теме */
+        .dark-mode .tabs {
+            background: rgba(30, 42, 74, 0.5);
+        }
+        
+        .dark-mode .tab {
+            color: #9CA3AF;
+        }
+        
+        .dark-mode .tab.active {
+            background: #1e2a4a;
+            color: #FFFFFF;
+        }
+        
+        /* Кнопка "Мое обучение" в темной теме */
+        .dark-mode .lk-banner .bg-white {
+            background: #2D2B84 !important;
+        }
+        
+        .dark-mode .lk-banner .bg-white.text-gray-900 {
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .lk-banner a.bg-white {
+            background: #2D2B84 !important;
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .lk-banner a.bg-white i {
+            color: #FFFFFF !important;
+        }
+        
+        /* Карточки меню в темной теме */
+        .dark-mode .category-card {
+            background-color: #1e2a4a;
+        }
+        
+        .dark-mode .category-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+        
+        .dark-mode .category-card > div:first-child {
+            background: rgba(0, 0, 0, 0.5) !important;
+        }
+        
+        /* Затемнение на карточках в темной теме */
+        .dark-mode .category-card .bg-black\/40 {
+            background: rgba(0, 0, 0, 0.6) !important;
+        }
+        
+        /* Прогресс-бар контейнер */
+        .dark-mode #course-progress {
+            background: #1e2a4a !important;
+        }
+        
+        .dark-mode #course-progress .text-gray-700 {
+            color: #E5E7EB !important;
+        }
+        
+        .dark-mode #course-progress .bg-gray-200 {
+            background: #374151 !important;
+        }
+        
+        .dark-mode #course-progress .text-gray-500 {
+            color: #9CA3AF !important;
+        }
+        
+        /* Секция таймера */
+        .dark-mode #countdown-section {
+            background: linear-gradient(135deg, #1e2a4a 0%, #2D2B84 100%) !important;
+        }
+        
+        /* Личный кабинет баннер */
+        .dark-mode .lk-banner {
+            background-color: #1e2a4a;
+        }
+        
+        /* Пустые состояния */
+        .dark-mode #empty-past,
+        .dark-mode #empty-upcoming {
+            background: transparent;
+        }
+        
+        .dark-mode #empty-past .bg-gray-100,
+        .dark-mode #empty-upcoming .bg-gray-100 {
+            background: #1e2a4a !important;
+        }
+        
+        .dark-mode #empty-past .text-gray-400,
+        .dark-mode #empty-upcoming .text-gray-400,
+        .dark-mode #empty-past .text-gray-500,
+        .dark-mode #empty-upcoming .text-gray-500 {
+            color: #9CA3AF !important;
+        }
+        
+        /* Профиль пользователя - всегда тёмный фон со светлым текстом */
+        #user-profile #user-name {
+            color: #FFFFFF !important;
+        }
+        
+        #user-profile #user-status {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        
+        #user-profile .theme-toggle {
+            color: #FFFFFF !important;
+        }
+        
+        /* Переключатель темы */
+        .dark-mode .theme-icon-light {
+            display: none !important;
+        }
+        
+        .dark-mode .theme-icon-dark {
+            display: block !important;
+        }
+        
+        .theme-icon-dark {
+            display: none;
+        }
+        
+        /* Бейджи достижений */
+        .achievement-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .badge-bronze {
+            background: linear-gradient(135deg, #CD7F32, #8B4513);
+            color: white;
+        }
+        
+        .badge-silver {
+            background: linear-gradient(135deg, #C0C0C0, #808080);
+            color: white;
+        }
+        
+        .badge-gold {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1F2937;
+        }
+        
+        .badge-platinum {
+            background: linear-gradient(135deg, #E5E4E2, #BCC6CC);
+            color: #1F2937;
+        }
+        
+        /* Секция достижений */
+        .achievements-section {
+            background: linear-gradient(135deg, #1e2a4a 0%, #2D2B84 100%);
+        }
+        
+        /* Уведомление prompt в темной теме */
+        .dark-mode #notification-prompt {
+            background: #1e2a4a !important;
+        }
+        
+        .dark-mode #notification-prompt p.text-gray-900 {
+            color: #F3F4F6 !important;
+        }
+        
+        .dark-mode #notification-prompt .bg-gray-100 {
+            background: #374151 !important;
+        }
+        
+        /* ========================================
+           ОНБОРДИНГ
+           ======================================== */
+        .onboarding-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .onboarding-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            max-width: 340px;
+            text-align: center;
+            animation: scaleIn 0.3s ease-out;
+        }
+        
+        .onboarding-card h2 {
+            color: #1F2937 !important;
+        }
+        
+        .onboarding-card p {
+            color: #374151 !important;
+        }
+        
+        .dark-mode .onboarding-card {
+            background: #1e2a4a;
+        }
+        
+        .dark-mode .onboarding-card h2 {
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .onboarding-card p {
+            color: #D1D5DB !important;
+        }
+        
+        .onboarding-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+        
+        .onboarding-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #D1D5DB;
+            transition: all 0.3s ease;
+        }
+        
+        .onboarding-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #2D2B84;
+        }
+        
+        
+        /* ========================================
+           МИКРОАНИМАЦИИ
+           ======================================== */
+        .tab-content {
+            animation: fadeSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .achievement-badge {
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-badge:not(.bg-white\/10):hover {
+            transform: scale(1.05);
+        }
+        
+        .achievement-badge.just-unlocked {
+            animation: badgeUnlock 0.6s ease-out;
+        }
+        
+        @keyframes badgeUnlock {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .event-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .event-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* Кнопки с эффектом нажатия */
+        .haptic-btn {
+            transition: transform 0.1s ease;
+        }
+        
+        .haptic-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Skeleton shimmer */
+        .skeleton-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        .dark-mode .skeleton-shimmer {
+            background: linear-gradient(90deg, #1e2a4a 25%, #2d3748 50%, #1e2a4a 75%);
+            background-size: 200% 100%;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Плавный переход между табами */
+        .tabs-container {
+            position: relative;
+        }
+        
+        .tab-indicator {
+            position: absolute;
+            bottom: 4px;
+            height: 3px;
+            background: #2D2B84;
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Offline banner */
+        .offline-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #EF4444;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 9998;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .offline-banner.show {
+            transform: translateY(0);
+        }
+        
+        /* PWA Install Banner */
+        .pwa-banner {
+            position: fixed;
+            bottom: 80px;
+            left: 16px;
+            right: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9997;
+            animation: slideUpBanner 0.4s ease-out;
+        }
+        
+        .dark-mode .pwa-banner {
+            background: #1e2a4a;
+        }
+        
+        @keyframes slideUpBanner {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .pwa-banner-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #F3F4F6;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .dark-mode .pwa-banner-close {
+            background: #374151;
+            color: #9CA3AF;
+        }
+        
+        .pwa-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+        }
+        
+        .pwa-step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2D2B84;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .pwa-step-text {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.4;
+        }
+        
+        .dark-mode .pwa-step-text {
+            color: #D1D5DB;
+        }
+        
+        .pwa-step-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: #F3F4F6;
+            border-radius: 6px;
+            margin: 0 2px;
+            vertical-align: middle;
+        }
+        
+        .dark-mode .pwa-step-icon {
+            background: #374151;
+        }
+        
+        /* Карточки меню */
+        .menu-card-1 { background-image: url('img/Сategory сard.png'); }
+        .menu-card-2 { background-image: url('img/Сategory сard 2.png'); }
+        .menu-card-3 { background-image: url('img/Сategory сard 3.png'); }
+        .menu-card-4 { background-image: url('img/Сategory сard 4.png'); }
+        .menu-card-5 { background-image: url('img/Сategory сard 5.png'); }
+    </style>
+</head>
+
+<body class="pb-24 text-gray-800">
+    <main class="max-w-md mx-auto p-3 fade-in" role="main">
+
+        <!-- ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ -->
+        <section id="user-profile" class="bg-gradient-to-r from-[#1e2a4a] to-[#2D2B84] rounded-[16px] p-4 mb-4 shadow-lg hidden" aria-label="Профиль пользователя">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div id="user-avatar" class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <p id="user-name" class="font-bold text-[15px] text-white">Пользователь</p>
+                        <p id="user-status" class="text-xs text-white/70">Слушатель курса</p>
+                    </div>
+                </div>
+                <button onclick="PSBApp.toggleDarkMode()" class="theme-toggle w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 active:scale-95 transition" aria-label="Переключить тему">
+                    <i class="fa-solid fa-sun theme-icon-light"></i>
+                    <i class="fa-solid fa-moon theme-icon-dark hidden"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ГЛАВНЫЙ БАННЕР -->
+        <header class="relative w-full rounded-[20px] shadow-lg mb-4 overflow-hidden min-h-[180px] flex flex-col justify-end group" role="banner">
+            <div class="hero-banner absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-105"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-0"></div>
+            
+            <div class="relative z-10 p-5">
+                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+                    Программа повышения квалификации «Промт-инженер: работа с нейросетями»
+                </h1>
+                <div class="flex items-center gap-2 text-white/80">
+                    <i class="fa-regular fa-calendar text-xs" aria-hidden="true"></i>
+                    <p class="text-xs font-medium">27.01.2026 – 31.03.2026</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- ТАЙМЕР ДО БЛИЖАЙШЕГО ВЕБИНАРА -->
+        <section id="countdown-section" class="bg-gradient-to-r from-[#2D2B84] to-[#4F46E5] rounded-[16px] p-4 mb-4 shadow-lg hidden" aria-label="Таймер до вебинара">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-2 h-2 rounded-full bg-green-400 live-indicator"></div>
+                <span id="countdown-title" class="text-white text-sm font-bold">До вебинара № 1</span>
+            </div>
+            <div id="countdown-container"></div>
+        </section>
+
+        <!-- ПРОГРЕСС КУРСА -->
+        <section id="course-progress" class="bg-white rounded-[12px] p-4 mb-4 shadow-sm" aria-label="Прогресс курса">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-gray-700">Прогресс курса</span>
+                <span id="progress-text" class="text-xs font-bold text-[#ff6b00]">0 из 9 вебинаров</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-bar" class="progress-fill" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div id="next-webinar-info" class="mt-2 text-[11px] text-gray-500 hidden">
+                <i class="fa-regular fa-clock mr-1" aria-hidden="true"></i>
+                <span id="next-webinar-text">Ближайший вебинар через 2 дня</span>
+            </div>
+        </section>
+
+
+        <!-- ДОСТИЖЕНИЯ -->
+        <section id="achievements-section" class="achievements-section rounded-[16px] p-4 mb-4 shadow-lg" aria-label="Достижения">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-yellow-400"></i>
+                    <span class="text-white font-bold text-sm">Мои достижения</span>
+                </div>
+                <span id="achievements-count" class="text-white/70 text-xs">0 из 6</span>
+            </div>
+            <div id="achievements-list" class="flex flex-wrap gap-2">
+                <!-- Достижения будут добавлены через JS -->
+                <div class="achievement-badge bg-white/10 text-white/50">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                    <span>Первый шаг</span>
+                </div>
+                <div class="achievement-badge bg-white/10 text-white/50">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                    <span>Теоретик</span>
+                </div>
+                <div class="achievement-badge bg-white/10 text-white/50">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                    <span>Практик</span>
+                </div>
+                <div class="achievement-badge bg-white/10 text-white/50">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                    <span>Дизайнер</span>
+                </div>
+                <div class="achievement-badge bg-white/10 text-white/50">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                    <span>Мультимедиа</span>
+                </div>
+                <div class="achievement-badge bg-white/10 text-white/50">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                    <span>Выпускник</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ТАБЫ -->
+        <div class="tabs" role="tablist" aria-label="Вебинары">
+            <button id="tab-upcoming" onclick="switchTab('upcoming')" class="tab active" role="tab" aria-selected="true" aria-controls="content-upcoming">
+                Предстоящие события
+            </button>
+            <button id="tab-past" onclick="switchTab('past')" class="tab" role="tab" aria-selected="false" aria-controls="content-past">
+                Прошедшие события
+            </button>
+        </div>
+
+        <!-- КАРУСЕЛЬ ПРЕДСТОЯЩИХ -->
+        <div id="content-upcoming" class="flex overflow-x-auto gap-3 hide-scrollbar mb-3 pb-2 w-full" role="tabpanel" aria-labelledby="tab-upcoming">
+
+            <!-- Карточка 1 -->
+            <article class="event-card" data-date="2026-01-27T12:00" data-title="Вебинар № 1: Введение в ИИ и нейросети" data-description="История развития ИИ и нейросетей. Кто такой промт-инженер. Современные возможности, риски и угрозы использования LLM." data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">27.01.2026 • 12:00-14:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="https://my.mts-link.ru/j/psbacademy/9615477419" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 1</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">История развития ИИ и нейросетей. Кто такой промт-инженер.<br>Современные возможности, риски и угрозы использования<br>LLM. Основные правила формирования запросов к LLM.</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Жемал Хамидун</div>
+                        <div class="text-[10px] text-gray-400">Спикер по текстовым нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 2 -->
+            <article class="event-card" data-date="2026-01-29T10:00" data-title="Вебинар № 2: Китайские ИИ-сервисы" data-description="Китайские ИИ-сервисы для работы с текстами" data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">29.01.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="https://my.mts-link.ru/j/psbacademy/10026672068" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 2</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Китайские ИИ-сервисы для работы с текстами</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Олег.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Олег Сиротюк" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Олег Сиротюк</div>
+                        <div class="text-[10px] text-gray-400">Спикер по китайским нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 3 -->
+            <article class="event-card" data-date="2026-02-05T12:00" data-title="Вебинар № 3: Чат-боты и ИИ-агенты" data-description="Чат-боты, ИИ-ассистенты, ИИ-агенты." data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.02.2026 • 12:00-14:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="https://my.mts-link.ru/j/psbacademy/10026812261" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 3</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Чат-боты, ИИ-ассистенты, ИИ-агенты.</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Жемал Хамидун</div>
+                        <div class="text-[10px] text-gray-400">Спикер по текстовым нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 4 -->
+            <article class="event-card" data-date="2026-02-12T10:00" data-title="Вебинар № 4: Нейросети в дизайне" data-description="Нейросети в дизайне: создание сайтов, презентаций и фирменного стиля" data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.02.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 4</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в дизайне: создание сайтов,<br>презентаций и фирменного стиля</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Дарина Костина</div>
+                        <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 5 -->
+            <article class="event-card" data-date="2026-02-19T10:00" data-title="Вебинар № 5: Генерация изображений" data-description="Нейросети в дизайне: генерация изображений, обработка фото" data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.02.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 5</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в дизайне: генерация изображений,<br>обработка фото</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Дарина Костина</div>
+                        <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 6 -->
+            <article class="event-card" data-date="2026-02-26T10:00" data-title="Вебинар № 6: Анимация и видео" data-description="Нейросети для анимации изображений, создания видео и цифровых двойников" data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">26.02.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 6</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети для анимации изображений,<br>создания видео и цифровых двойников</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Дарина Костина</div>
+                        <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 7 -->
+            <article class="event-card" data-date="2026-03-05T10:00" data-title="Вебинар № 7: Обработка аудио" data-description="Нейросети в обработке аудио: от транскрибации записей до генерации музыки" data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.03.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 7</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в обработке аудио: от транскрибации записей<br>до генерации музыки</p>
+                <div class="mt-auto flex items-center gap-3">
+                    <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
+                    <div>
+                        <div class="text-xs font-bold">Дарина Костина</div>
+                        <div class="text-[10px] text-gray-400">Спикер по генеративным нейросетям</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Карточка 8 -->
+            <article class="event-card" data-date="2026-03-12T10:00" data-title="Вебинар № 8: ИИ в банковской сфере" data-description="Использование ИИ в банковских продуктах и процессах. Этические и правовые аспекты использования нейронных сетей в банках." data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.03.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 8</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Использование ИИ в банковских продуктах и процессах.<br>Этические и правовые аспекты использования нейронных сетей.</p>
+            </article>
+
+            <!-- Карточка 9 -->
+            <article class="event-card" data-date="2026-03-19T10:00" data-title="Вебинар № 9: Внедрение ИИ в ПСБ" data-description="Внедрение ИИ в Банке ПСБ" data-duration="2">
+                <div class="w-full flex justify-between items-start mb-2">
+                    <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.03.2026 • 10:00-12:00 • МСК</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
+                            <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+                        </button>
+                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                            <i class="fa-solid fa-play" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Вебинар № 9</h3>
+                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Внедрение ИИ в Банке ПСБ</p>
+            </article>
+
+        </div>
+
+        <!-- Индикатор карточек (точки) для предстоящих -->
+        <div id="dots-upcoming" class="dots mb-3" role="tablist" aria-label="Навигация по вебинарам"></div>
+
+        <!-- КАРУСЕЛЬ ПРОШЕДШИХ (скрыта по умолчанию) -->
+        <div id="content-past" class="hidden overflow-x-auto gap-3 hide-scrollbar pb-2 w-full" role="tabpanel" aria-labelledby="tab-past"></div>
+        
+        <!-- Индикатор карточек (точки) для прошедших -->
+        <div id="dots-past" class="hidden dots mb-3"></div>
+
+        <!-- Пустое состояние для прошедших -->
+        <div id="empty-past" class="hidden flex-col items-center justify-center py-8 mb-3">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                <i class="fa-regular fa-calendar-check text-2xl text-gray-400" aria-hidden="true"></i>
+            </div>
+            <p class="text-sm text-gray-500 text-center">Пока нет прошедших вебинаров</p>
+        </div>
+
+        <!-- Пустое состояние для предстоящих -->
+        <div id="empty-upcoming" class="hidden flex-col items-center justify-center py-8 mb-3">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                <i class="fa-regular fa-calendar text-2xl text-gray-400" aria-hidden="true"></i>
+            </div>
+            <p class="text-sm text-gray-500 text-center">Все вебинары завершены</p>
+        </div>
+
+        <!-- ЛИЧНЫЙ КАБИНЕТ -->
+        <section class="lk-banner relative rounded-[16px] overflow-hidden h-44 mb-4 shadow-sm" aria-label="Личный кабинет">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div class="relative z-10 p-4 h-full flex flex-col justify-between">
+                <h2 class="text-white font-bold text-[17px] leading-tight w-3/4 drop-shadow-md">Личный кабинет</h2>
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-[12px] p-2">
+                    <div class="flex gap-2">
+                        <a href="https://psb-academy.ru/account/my-education" target="_blank" rel="noopener" onclick="if(window.Telegram && window.Telegram.WebApp) { Telegram.WebApp.openLink(this.href); return false; }" class="bg-white text-gray-900 text-xs font-bold py-2.5 px-4 rounded-[8px] flex-1 text-center flex items-center justify-center hover:bg-gray-100 transition shadow-sm">
+                            Мое обучение
+                        </a>
+                        <a href="https://psb-academy.ru/account/my-education" target="_blank" rel="noopener" onclick="if(window.Telegram && window.Telegram.WebApp) { Telegram.WebApp.openLink(this.href); return false; }" class="bg-white w-9 h-9 rounded-[8px] flex items-center justify-center text-gray-900 text-xs hover:bg-gray-100 transition shadow-sm" aria-label="Перейти в личный кабинет">
+                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- НАВИГАЦИОННАЯ СЕТКА -->
+        <nav class="grid grid-cols-2 gap-3" aria-label="Разделы приложения">
+
+            <!-- 1. Информация о программе -->
+            <a href="program_info.html" class="category-card menu-card-1 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+                <div class="absolute top-0 left-0 p-3 w-full z-10">
+                    <p class="text-white font-bold text-sm leading-tight">Информация<br>о программе</p>
+                </div>
+                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 2. Программа курса -->
+            <a href="course_program.html" class="category-card menu-card-2 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+                <div class="absolute top-0 left-0 p-3 w-full z-10">
+                    <p class="text-white font-bold text-sm leading-tight">Программа<br>курса</p>
+                </div>
+                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 3. Связаться с куратором -->
+            <a href="https://t.me/seledka3388" target="_blank" rel="noopener" class="category-card menu-card-3 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+                <div class="absolute top-0 left-0 p-3 w-full z-10">
+                    <p class="text-white font-bold text-sm leading-tight">Связаться с<br>куратором</p>
+                </div>
+                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 4. Образовательная платформа -->
+            <a href="platform_info.html" class="category-card menu-card-4 group relative h-32 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+                <div class="absolute top-0 left-0 p-3 w-full z-10">
+                    <p class="text-white font-bold text-sm leading-tight">Образовательная<br>платформа</p>
+                </div>
+                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- 5. FAQ (Широкая) -->
+            <a href="faq.html" class="category-card menu-card-5 col-span-2 group relative h-28 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors z-0"></div>
+                <div class="absolute top-0 left-0 p-4 w-full z-10">
+                    <p class="text-white font-bold text-sm leading-tight">Ответы на<br>частые вопросы</p>
+                </div>
+                <div class="absolute top-2 right-2 z-20 bg-[#FF6600] w-8 h-8 flex items-center justify-center rounded-lg shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white -rotate-45" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </div>
+            </a>
+
+        </nav>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item active" aria-current="page" aria-label="Главная">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+    <script>
+        // ========================================
+        // Главная страница - Инициализация
+        // ========================================
+        
+        const minutesDelay = 120; // Через сколько минут переносить в архив
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const upcomingContainer = document.getElementById('content-upcoming');
+            const pastContainer = document.getElementById('content-past');
+            const dotsUpcoming = document.getElementById('dots-upcoming');
+            const dotsPast = document.getElementById('dots-past');
+            const emptyUpcoming = document.getElementById('empty-upcoming');
+            const emptyPast = document.getElementById('empty-past');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const nextWebinarInfo = document.getElementById('next-webinar-info');
+            const nextWebinarText = document.getElementById('next-webinar-text');
+            const countdownSection = document.getElementById('countdown-section');
+            const countdownTitle = document.getElementById('countdown-title');
+            const cards = document.querySelectorAll('.event-card');
+
+            const now = new Date();
+            // Для тестирования: const now = new Date('2026-01-27T11:00:00');
+
+            let upcomingList = [];
+            let pastList = [];
+            const totalWebinars = cards.length;
+
+            // Сортировка карточек
+            cards.forEach(card => {
+                const dateStr = card.getAttribute('data-date');
+                if (!dateStr) return;
+
+                const startDate = new Date(dateStr);
+                const moveDate = new Date(startDate.getTime() + (minutesDelay * 60000));
+
+                if (now > moveDate) {
+                    pastList.push({ element: card, date: startDate });
+                    card.classList.add('past-event');
+                } else {
+                    upcomingList.push({ element: card, date: startDate });
+                    card.classList.remove('past-event');
+                }
+            });
+
+            // Сортировка
+            upcomingList.sort((a, b) => a.date - b.date);
+            upcomingList.forEach(item => upcomingContainer.appendChild(item.element));
+
+            pastList.sort((a, b) => b.date - a.date);
+            pastList.forEach(item => pastContainer.appendChild(item.element));
+
+            // Прогресс курса
+            const completedCount = pastList.length;
+            const progressPercent = (completedCount / totalWebinars) * 100;
+            progressBar.style.width = progressPercent + '%';
+            progressBar.setAttribute('aria-valuenow', Math.round(progressPercent));
+            progressText.textContent = `${completedCount} из ${totalWebinars} вебинаров`;
+
+            // Ближайший вебинар - текст
+            if (upcomingList.length > 0) {
+                const nextDate = upcomingList[0].date;
+                const diffMs = nextDate - now;
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                let timeText = '';
+                if (diffDays > 0) {
+                    timeText = `Ближайший вебинар через ${diffDays} ${PSBApp.getDaysWord(diffDays)}`;
+                } else if (diffHours > 0) {
+                    timeText = `Ближайший вебинар через ${diffHours} ${PSBApp.getHoursWord(diffHours)}`;
+                } else {
+                    timeText = 'Ближайший вебинар начинается скоро!';
+                }
+                
+                nextWebinarText.textContent = timeText;
+                nextWebinarInfo.classList.remove('hidden');
+                
+                // Таймер обратного отсчёта
+                const webinarTitle = upcomingList[0].element.dataset.title || 'Вебинар';
+                countdownTitle.textContent = `До ${webinarTitle.split(':')[0]}`;
+                countdownSection.classList.remove('hidden');
+                PSBApp.createCountdown(nextDate, 'countdown-container');
+            }
+
+            // Пустые состояния
+            if (upcomingList.length === 0) {
+                upcomingContainer.classList.add('hidden');
+                dotsUpcoming.classList.add('hidden');
+                emptyUpcoming.classList.remove('hidden');
+                emptyUpcoming.classList.add('flex');
+            }
+
+            if (pastList.length === 0) {
+                emptyPast.classList.remove('hidden');
+            }
+
+            // Индикатор точек
+            function createDots(count, dotsContainer) {
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < count; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('role', 'tab');
+                    dot.setAttribute('aria-label', `Вебинар ${i + 1}`);
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function updateDots(container, dotsContainer) {
+                const dots = dotsContainer.querySelectorAll('.dot');
+                if (dots.length === 0) return;
+                
+                const scrollLeft = container.scrollLeft;
+                const cardWidth = container.querySelector('.event-card')?.offsetWidth || 0;
+                const gap = 12;
+                const activeIndex = Math.round(scrollLeft / (cardWidth + gap));
+                
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === activeIndex);
+                    dot.setAttribute('aria-selected', i === activeIndex);
+                });
+            }
+
+            if (upcomingList.length > 0) {
+                createDots(upcomingList.length, dotsUpcoming);
+                upcomingContainer.addEventListener('scroll', () => updateDots(upcomingContainer, dotsUpcoming));
+            }
+
+            if (pastList.length > 0) {
+                createDots(pastList.length, dotsPast);
+                pastContainer.addEventListener('scroll', () => updateDots(pastContainer, dotsPast));
+            }
+
+            console.log(`Загружено: ${upcomingList.length} предстоящих, ${pastList.length} прошедших вебинаров`);
+            
+            // Инициализация профиля пользователя
+            initUserProfile();
+            
+            // Инициализация достижений
+            initAchievements(pastList.length);
+            
+            // Проверка уведомлений
+            if (upcomingList.length > 0) {
+                checkNotificationPermission(upcomingList[0]);
+            }
+        });
+        
+        // ========================================
+        // Профиль пользователя
+        // ========================================
+        function initUserProfile() {
+            const profileSection = document.getElementById('user-profile');
+            const userName = document.getElementById('user-name');
+            const userAvatar = document.getElementById('user-avatar');
+            const userStatus = document.getElementById('user-status');
+            
+            if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+                const user = window.Telegram.WebApp.initDataUnsafe.user;
+                
+                // Показываем профиль
+                profileSection.classList.remove('hidden');
+                
+                // Имя пользователя
+                const displayName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+                userName.textContent = displayName;
+                
+                // Аватар
+                if (user.photo_url) {
+                    userAvatar.innerHTML = `<img src="${user.photo_url}" class="w-full h-full rounded-full object-cover" alt="${displayName}">`;
+                } else {
+                    // Первая буква имени
+                    userAvatar.innerHTML = `<span>${user.first_name.charAt(0).toUpperCase()}</span>`;
+                }
+                
+                // Статус на основе прогресса
+                const completed = PSBApp.progress.getCompleted().length;
+                if (completed === 0) {
+                    userStatus.textContent = 'Новый слушатель';
+                } else if (completed < 3) {
+                    userStatus.textContent = 'Начинающий';
+                } else if (completed < 6) {
+                    userStatus.textContent = 'Продвинутый';
+                } else {
+                    userStatus.textContent = 'Эксперт';
+                }
+            } else {
+                // Показываем профиль даже без Telegram (для браузера)
+                profileSection.classList.remove('hidden');
+            }
+            
+            // Обновляем иконку темы
+            updateThemeIcon();
+        }
+        
+        function updateThemeIcon() {
+            const isDark = document.body.classList.contains('dark-mode');
+            document.querySelectorAll('.theme-icon-light').forEach(el => {
+                el.style.display = isDark ? 'none' : 'block';
+            });
+            document.querySelectorAll('.theme-icon-dark').forEach(el => {
+                el.style.display = isDark ? 'block' : 'none';
+            });
+        }
+        
+        // Переопределяем toggleDarkMode для обновления иконки
+        const originalToggleDarkMode = PSBApp.toggleDarkMode;
+        PSBApp.toggleDarkMode = function() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('psb_darkMode', isDark);
+            PSBApp.haptic.selection();
+            updateThemeIcon();
+        };
+        
+        // ========================================
+        // Достижения
+        // ========================================
+        const achievements = [
+            { id: 'first-step', name: 'Первый шаг', icon: 'fa-shoe-prints', condition: 1, description: 'Посетить первый вебинар' },
+            { id: 'theorist', name: 'Теоретик', icon: 'fa-book', condition: 2, description: 'Изучить теоретический модуль' },
+            { id: 'practitioner', name: 'Практик', icon: 'fa-laptop-code', condition: 3, description: 'Пройти 3 вебинара' },
+            { id: 'designer', name: 'Дизайнер', icon: 'fa-palette', condition: 5, description: 'Освоить графические нейросети' },
+            { id: 'multimedia', name: 'Мультимедиа', icon: 'fa-video', condition: 7, description: 'Изучить видео и аудио нейросети' },
+            { id: 'graduate', name: 'Выпускник', icon: 'fa-graduation-cap', condition: 9, description: 'Завершить все вебинары' }
+        ];
+        
+        function initAchievements(completedCount) {
+            const achievementsList = document.getElementById('achievements-list');
+            const achievementsCount = document.getElementById('achievements-count');
+            
+            let unlockedCount = 0;
+            let html = '';
+            
+            achievements.forEach((achievement, index) => {
+                const isUnlocked = completedCount >= achievement.condition;
+                if (isUnlocked) unlockedCount++;
+                
+                const badgeClass = isUnlocked ? getBadgeClass(index) : 'bg-white/10 text-white/50';
+                const icon = isUnlocked ? achievement.icon : 'fa-lock';
+                
+                html += `
+                    <div class="achievement-badge ${badgeClass}" title="${achievement.description}">
+                        <i class="fa-solid ${icon} text-[10px]"></i>
+                        <span>${achievement.name}</span>
+                    </div>
+                `;
+            });
+            
+            achievementsList.innerHTML = html;
+            achievementsCount.textContent = `${unlockedCount} из ${achievements.length}`;
+            
+            // Сохраняем достижения
+            PSBApp.storage.set('achievements', { unlocked: unlockedCount, total: achievements.length });
+        }
+        
+        function getBadgeClass(index) {
+            if (index < 2) return 'badge-bronze';
+            if (index < 4) return 'badge-silver';
+            if (index < 5) return 'badge-gold';
+            return 'badge-platinum';
+        }
+        
+        // ========================================
+        // Уведомления
+        // ========================================
+        function checkNotificationPermission(nextWebinar) {
+            // Проверяем поддержку уведомлений
+            if (!('Notification' in window)) return;
+            
+            // Если разрешение уже есть - планируем уведомление
+            if (Notification.permission === 'granted') {
+                scheduleNotification(nextWebinar);
+            } else if (Notification.permission !== 'denied') {
+                // Показываем кнопку для запроса разрешения
+                showNotificationPrompt(nextWebinar);
+            }
+        }
+        
+        function showNotificationPrompt(nextWebinar) {
+            // Проверяем, не показывали ли уже
+            if (PSBApp.storage.get('notificationPromptShown')) return;
+            
+            const prompt = document.createElement('div');
+            prompt.className = 'fixed bottom-24 left-4 right-4 max-w-md mx-auto bg-white dark:bg-[#1e2a4a] rounded-2xl p-4 shadow-xl z-50 slide-up';
+            prompt.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-bell text-blue-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-sm text-gray-900 dark:text-white mb-1">Включить напоминания?</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Мы напомним вам о вебинарах за час до начала</p>
+                        <div class="flex gap-2">
+                            <button onclick="requestNotificationPermission()" class="flex-1 bg-[#2D2B84] text-white text-xs font-bold py-2 px-3 rounded-lg">
+                                Включить
+                            </button>
+                            <button onclick="dismissNotificationPrompt()" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold py-2 px-3 rounded-lg">
+                                Позже
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="dismissNotificationPrompt()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            `;
+            prompt.id = 'notification-prompt';
+            document.body.appendChild(prompt);
+        }
+        
+        function requestNotificationPermission() {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    PSBApp.showToast('Уведомления включены!', 'success');
+                    PSBApp.haptic.success();
+                }
+                dismissNotificationPrompt();
+            });
+        }
+        
+        function dismissNotificationPrompt() {
+            const prompt = document.getElementById('notification-prompt');
+            if (prompt) {
+                prompt.classList.add('fade-out');
+                setTimeout(() => prompt.remove(), 300);
+            }
+            PSBApp.storage.set('notificationPromptShown', true);
+        }
+        
+        function scheduleNotification(webinar) {
+            const webinarDate = new Date(webinar.date);
+            const notifyTime = webinarDate.getTime() - (60 * 60 * 1000); // За 1 час
+            const now = Date.now();
+            
+            if (notifyTime > now) {
+                const delay = notifyTime - now;
+                
+                // Ограничиваем setTimeout (макс ~24 дня)
+                if (delay < 2147483647) {
+                    setTimeout(() => {
+                        showWebinarNotification(webinar);
+                    }, delay);
+                    
+                    console.log(`Уведомление запланировано через ${Math.round(delay / 60000)} минут`);
+                }
+            }
+        }
+        
+        function showWebinarNotification(webinar) {
+            if (Notification.permission === 'granted') {
+                const notification = new Notification('ПСБ Академия', {
+                    body: `Вебинар "${webinar.element.dataset.title}" начнётся через 1 час!`,
+                    icon: 'img/1.png',
+                    badge: 'img/1.png',
+                    tag: 'webinar-reminder',
+                    requireInteraction: true
+                });
+                
+                notification.onclick = () => {
+                    window.focus();
+                    notification.close();
+                };
+            }
+        }
+
+        // ========================================
+        // Переключение табов
+        // ========================================
+        const tabUpcoming = document.getElementById('tab-upcoming');
+        const tabPast = document.getElementById('tab-past');
+        const contentUpcoming = document.getElementById('content-upcoming');
+        const contentPast = document.getElementById('content-past');
+        const dotsUpcoming = document.getElementById('dots-upcoming');
+        const dotsPast = document.getElementById('dots-past');
+        const emptyUpcoming = document.getElementById('empty-upcoming');
+        const emptyPast = document.getElementById('empty-past');
+
+        function switchTab(type) {
+            PSBApp.haptic.selection();
+            
+            const hasUpcoming = contentUpcoming.querySelectorAll('.event-card').length > 0;
+            const hasPast = contentPast.querySelectorAll('.event-card').length > 0;
+            
+            if (type === 'upcoming') {
+                tabUpcoming.classList.add('active');
+                tabUpcoming.setAttribute('aria-selected', 'true');
+                tabPast.classList.remove('active');
+                tabPast.setAttribute('aria-selected', 'false');
+                
+                if (hasUpcoming) {
+                    contentUpcoming.classList.remove('hidden');
+                    contentUpcoming.classList.add('flex');
+                    dotsUpcoming.classList.remove('hidden');
+                    dotsUpcoming.classList.add('flex');
+                    emptyUpcoming.classList.add('hidden');
+                } else {
+                    contentUpcoming.classList.add('hidden');
+                    dotsUpcoming.classList.add('hidden');
+                    emptyUpcoming.classList.remove('hidden');
+                    emptyUpcoming.classList.add('flex');
+                }
+                
+                contentPast.classList.add('hidden');
+                contentPast.classList.remove('flex');
+                dotsPast.classList.add('hidden');
+                dotsPast.classList.remove('flex');
+                emptyPast.classList.add('hidden');
+                emptyPast.classList.remove('flex');
+                
+            } else {
+                tabUpcoming.classList.remove('active');
+                tabUpcoming.setAttribute('aria-selected', 'false');
+                tabPast.classList.add('active');
+                tabPast.setAttribute('aria-selected', 'true');
+                
+                contentUpcoming.classList.add('hidden');
+                contentUpcoming.classList.remove('flex');
+                dotsUpcoming.classList.add('hidden');
+                dotsUpcoming.classList.remove('flex');
+                emptyUpcoming.classList.add('hidden');
+                emptyUpcoming.classList.remove('flex');
+                
+                if (hasPast) {
+                    contentPast.classList.remove('hidden');
+                    contentPast.classList.add('flex');
+                    dotsPast.classList.remove('hidden');
+                    dotsPast.classList.add('flex');
+                    emptyPast.classList.add('hidden');
+                } else {
+                    contentPast.classList.add('hidden');
+                    dotsPast.classList.add('hidden');
+                    emptyPast.classList.remove('hidden');
+                    emptyPast.classList.add('flex');
+                }
+            }
+            
+            // Добавляем анимацию контенту
+            const activeContent = type === 'upcoming' ? contentUpcoming : contentPast;
+            activeContent.classList.add('tab-content');
+        }
+        
+        // ========================================
+        // ОНБОРДИНГ
+        // ========================================
+        const onboardingSteps = [
+            {
+                icon: 'fa-hand-wave',
+                title: 'Добро пожаловать!',
+                text: 'Это ваш личный помощник для обучения работе с нейросетями'
+            },
+            {
+                icon: 'fa-calendar-check',
+                title: 'Вебинары',
+                text: 'Смахните карточку влево, чтобы добавить в календарь или поделиться'
+            },
+            {
+                icon: 'fa-trophy',
+                title: 'Достижения',
+                text: 'Проходите вебинары и получайте бейджи за свои успехи'
+            },
+            {
+                icon: 'fa-moon',
+                title: 'Тёмная тема',
+                text: 'Нажмите на шестерёнку в профиле, чтобы сменить тему'
+            }
+        ];
+        
+        let currentOnboardingStep = 0;
+        
+        function showOnboarding() {
+            if (PSBApp.storage.get('onboardingCompleted')) return;
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'onboarding-overlay';
+            overlay.id = 'onboarding';
+            
+            renderOnboardingStep(overlay);
+            document.body.appendChild(overlay);
+        }
+        
+        function renderOnboardingStep(overlay) {
+            const step = onboardingSteps[currentOnboardingStep];
+            
+            overlay.innerHTML = `
+                <div class="onboarding-card">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#2D2B84] to-[#4F46E5] flex items-center justify-center">
+                        <i class="fa-solid ${step.icon} text-3xl text-white"></i>
+                    </div>
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1F2937; margin-bottom: 8px;">${step.title}</h2>
+                    <p style="font-size: 14px; color: #374151; margin-bottom: 24px; line-height: 1.5;">${step.text}</p>
+                    <button onclick="nextOnboardingStep()" class="w-full bg-[#2D2B84] text-white font-bold py-3 px-6 rounded-xl haptic-btn">
+                        ${currentOnboardingStep < onboardingSteps.length - 1 ? 'Далее' : 'Начать'}
+                    </button>
+                    ${currentOnboardingStep > 0 ? `
+                        <button onclick="skipOnboarding()" style="margin-top: 12px; font-size: 13px; color: #6B7280;">
+                            Пропустить
+                        </button>
+                    ` : ''}
+                    <div class="onboarding-dots">
+                        ${onboardingSteps.map((_, i) => `
+                            <div class="onboarding-dot ${i === currentOnboardingStep ? 'active' : ''}"></div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function nextOnboardingStep() {
+            PSBApp.haptic.light();
+            currentOnboardingStep++;
+            
+            if (currentOnboardingStep >= onboardingSteps.length) {
+                skipOnboarding();
+                return;
+            }
+            
+            const overlay = document.getElementById('onboarding');
+            renderOnboardingStep(overlay);
+        }
+        
+        function skipOnboarding() {
+            PSBApp.haptic.success();
+            PSBApp.storage.set('onboardingCompleted', true);
+            
+            const overlay = document.getElementById('onboarding');
+            overlay.classList.add('fade-out');
+            setTimeout(() => overlay.remove(), 300);
+        }
+        
+        
+        // ========================================
+        // БЫСТРЫЕ ДЕЙСТВИЯ (без свайпа)
+        // ========================================
+        function shareWebinar(title) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ПСБ Академия',
+                    text: `Приглашаю на вебинар: ${title}`,
+                    url: window.location.href
+                });
+            } else if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.openTelegramLink(
+                    `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(`Приглашаю на вебинар: ${title}`)}`
+                );
+            }
+            PSBApp.haptic.light();
+        }
+        
+        // ========================================
+        // PWA INSTALL BANNER
+        // ========================================
+        function showPWAInstallBanner() {
+            // Не показываем если уже установлено как PWA
+            if (window.matchMedia('(display-mode: standalone)').matches) return;
+            
+            // Проверяем, не закрывали ли уже баннер
+            const dismissed = PSBApp.storage.get('pwaBannerDismissed');
+            if (dismissed) {
+                const dismissedDate = new Date(dismissed);
+                const daysSinceDismissed = (Date.now() - dismissedDate) / (1000 * 60 * 60 * 24);
+                // Показываем снова через 7 дней
+                if (daysSinceDismissed < 7) return;
+            }
+            
+            // Определяем платформу
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+            
+            let instructions = '';
+            
+            const textColor = isDark ? '#E5E7EB' : '#374151';
+            const iconBg = isDark ? '#374151' : '#F3F4F6';
+            
+            if (isIOS) {
+                instructions = `
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">1</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Нажмите <span class="pwa-step-icon" style="background: ${iconBg}"><i class="fa-solid fa-arrow-up-from-bracket text-[#007AFF] text-xs"></i></span> внизу экрана
+                        </div>
+                    </div>
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">2</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Выберите <b>«На экран "Домой"»</b>
+                        </div>
+                    </div>
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">3</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Нажмите <b>«Добавить»</b>
+                        </div>
+                    </div>
+                `;
+            } else if (isAndroid) {
+                instructions = `
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">1</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Нажмите <span class="pwa-step-icon" style="background: ${iconBg}"><i class="fa-solid fa-ellipsis-vertical text-xs" style="color: ${isDark ? '#D1D5DB' : '#4B5563'}"></i></span> в правом верхнем углу
+                        </div>
+                    </div>
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">2</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Выберите <b>«Установить приложение»</b> или <b>«Добавить на главный экран»</b>
+                        </div>
+                    </div>
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">3</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Подтвердите установку
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Desktop
+                instructions = `
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">1</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Нажмите <span class="pwa-step-icon" style="background: ${iconBg}"><i class="fa-solid fa-plus text-xs" style="color: ${isDark ? '#D1D5DB' : '#4B5563'}"></i></span> в адресной строке браузера
+                        </div>
+                    </div>
+                    <div class="pwa-step">
+                        <div class="pwa-step-num">2</div>
+                        <div class="pwa-step-text" style="color: ${textColor}">
+                            Выберите <b>«Установить»</b>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            const banner = document.createElement('div');
+            banner.className = 'pwa-banner';
+            banner.id = 'pwa-banner';
+            banner.innerHTML = `
+                <button class="pwa-banner-close" onclick="dismissPWABanner()">
+                    <i class="fa-solid fa-times text-sm" style="color: ${isDark ? '#9CA3AF' : '#9CA3AF'}"></i>
+                </button>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2D2B84] to-[#4F46E5] flex items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-mobile-screen text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-[15px]" style="color: ${isDark ? '#FFFFFF' : '#1F2937'}">Установите приложение</h3>
+                        <p class="text-xs" style="color: ${isDark ? '#D1D5DB' : '#6B7280'}">Быстрый доступ с главного экрана</p>
+                    </div>
+                </div>
+                <div class="rounded-xl p-3 mb-4" style="background: ${isDark ? '#0f0f1a' : '#F9FAFB'}">
+                    ${instructions}
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="dismissPWABanner()" class="flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm" style="background: ${isDark ? '#374151' : '#F3F4F6'}; color: ${isDark ? '#D1D5DB' : '#374151'}">
+                        Позже
+                    </button>
+                    <button onclick="dismissPWABanner(true)" class="flex-1 py-2.5 px-4 rounded-xl bg-[#2D2B84] text-white font-semibold text-sm">
+                        Понятно!
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(banner);
+        }
+        
+        function dismissPWABanner(understood = false) {
+            const banner = document.getElementById('pwa-banner');
+            if (banner) {
+                banner.style.animation = 'fadeOut 0.3s ease-out forwards';
+                setTimeout(() => banner.remove(), 300);
+            }
+            
+            PSBApp.storage.set('pwaBannerDismissed', Date.now());
+            PSBApp.haptic.light();
+            
+            if (understood) {
+                PSBApp.showToast('Отлично! Следуйте инструкции', 'success');
+            }
+        }
+        
+        // ========================================
+        // ОФЛАЙН-РЕЖИМ
+        // ========================================
+        function initOfflineMode() {
+            // Создаём баннер офлайн
+            const banner = document.createElement('div');
+            banner.className = 'offline-banner';
+            banner.id = 'offline-banner';
+            banner.innerHTML = '<i class="fa-solid fa-wifi-slash mr-2"></i>Нет подключения к интернету';
+            document.body.prepend(banner);
+            
+            // Слушаем изменения соединения
+            window.addEventListener('online', () => {
+                banner.classList.remove('show');
+                PSBApp.showToast('Соединение восстановлено', 'success');
+            });
+            
+            window.addEventListener('offline', () => {
+                banner.classList.add('show');
+                PSBApp.haptic.warning();
+            });
+            
+            // Проверяем текущее состояние
+            if (!navigator.onLine) {
+                banner.classList.add('show');
+            }
+            
+            // Кэшируем данные вебинаров
+            cacheWebinarData();
+        }
+        
+        function cacheWebinarData() {
+            const cards = document.querySelectorAll('.event-card');
+            const webinars = [];
+            
+            cards.forEach(card => {
+                webinars.push({
+                    title: card.dataset.title || card.querySelector('h3')?.textContent,
+                    date: card.dataset.date,
+                    speaker: card.querySelector('p')?.textContent
+                });
+            });
+            
+            PSBApp.storage.set('cachedWebinars', webinars);
+        }
+        
+        // ========================================
+        // ВИБРООТКЛИК
+        // ========================================
+        function initHapticButtons() {
+            // Добавляем виброотклик ко всем кнопкам
+            document.querySelectorAll('button, a, .event-card, .category-card, .tab').forEach(el => {
+                el.addEventListener('touchstart', () => {
+                    PSBApp.haptic.light();
+                }, { passive: true });
+            });
+            
+            // Усиленный отклик для важных кнопок
+            document.querySelectorAll('.btn-primary, [class*="bg-"][class*="text-white"]').forEach(el => {
+                el.addEventListener('click', () => {
+                    PSBApp.haptic.medium();
+                });
+            });
+        }
+        
+        // ========================================
+        // ОТСЛЕЖИВАНИЕ СОБЫТИЙ
+        // ========================================
+        function initEventTracking() {
+            // Клики на карточки вебинаров
+            document.querySelectorAll('.event-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Не отслеживаем клики на кнопки внутри карточки
+                    if (e.target.closest('button') || e.target.closest('a')) return;
+                    
+                    const title = card.dataset.title || card.querySelector('h3')?.textContent || 'Вебинар';
+                    PSBApp.analytics.trackAction('Клик на вебинар', title);
+                });
+            });
+            
+            // Клики на кнопки календаря
+            document.querySelectorAll('.calendar-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const card = btn.closest('.event-card');
+                    const title = card?.dataset.title || 'Вебинар';
+                    PSBApp.analytics.trackAction('Добавил в календарь', title);
+                });
+            });
+            
+            // Клики на кнопки "Перейти к вебинару"
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const card = btn.closest('.event-card');
+                    const title = card?.dataset.title || 'Вебинар';
+                    PSBApp.analytics.trackAction('Перешёл к вебинару', title);
+                });
+            });
+            
+            // Клики на категории меню
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const title = card.querySelector('span')?.textContent || 'Категория';
+                    PSBApp.analytics.trackAction('Открыл категорию', title);
+                });
+            });
+            
+            // Клик на "Мое обучение"
+            const lkButton = document.querySelector('.lk-banner a');
+            if (lkButton) {
+                lkButton.addEventListener('click', () => {
+                    PSBApp.analytics.trackAction('Клик Мое обучение');
+                });
+            }
+            
+            // Переключение темы
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const isDark = document.body.classList.contains('dark-mode');
+                    PSBApp.analytics.trackAction('Переключил тему', isDark ? 'Светлая' : 'Тёмная');
+                });
+            }
+            
+            // Переключение табов
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.textContent.trim();
+                    PSBApp.analytics.trackAction('Переключил таб', tabName);
+                });
+            });
+        }
+        
+        // ========================================
+        // ИНИЦИАЛИЗАЦИЯ ВСЕХ МОДУЛЕЙ
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Инициализация офлайн режима
+            initOfflineMode();
+            
+            // Инициализация виброотклика
+            initHapticButtons();
+            
+            // Инициализация отслеживания событий
+            initEventTracking();
+            
+            // Показываем онбординг для новых пользователей
+            setTimeout(showOnboarding, 1000);
+            
+            // Показываем баннер установки PWA (после онбординга)
+            setTimeout(showPWAInstallBanner, 3000);
+        });
+    </script>
+</body>
+</html>

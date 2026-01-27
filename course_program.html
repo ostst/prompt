@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Программа курса «Промт-инженер: работа с нейросетями» — расписание модулей и вебинаров">
+    <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    <title>Программа курса | ПСБ Академия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .webinar-card {
+            border-left: 4px solid #FF8C00;
+        }
+        .module-card {
+            border-left: 4px solid #2D2B84;
+        }
+        .deadline-card {
+            border-left: 4px solid #3B82F6;
+        }
+        .final-card {
+            border-left: 4px solid #7C3AED;
+        }
+    </style>
+</head>
+<body class="text-[#1F2937]">
+
+    <!-- ШАПКА -->
+    <div class="page-header">
+        <div class="header-bg" style="background-image: url('img/Hero.png');"></div>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="nav-top">
+                <a href="index.html" class="btn-back" aria-label="Назад на главную">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+                <span class="badge">Образовательная платформа</span>
+            </div>
+            <div>
+                <h1 class="text-[19px] font-bold leading-snug text-white mb-4 drop-shadow-md">
+                    Программа повышения квалификации<br>
+                    <span class="text-white/90">«Промт-инженер: работа с нейросетями»</span>
+                </h1>
+                <div class="flex items-start gap-3 text-white bg-white/15 backdrop-blur-md p-3.5 rounded-xl border border-white/10">
+                    <i class="fa-regular fa-calendar text-white/80 mt-0.5" aria-hidden="true"></i>
+                    <span class="font-medium text-[13px] leading-tight text-white/90">
+                        Период обучения:<br>
+                        <span class="text-white font-bold">с 27 января 2026 по 31 марта 2026 г.</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- СПИСОК МОДУЛЕЙ -->
+    <main class="max-w-md mx-auto px-4 space-y-3 fade-in" role="main">
+
+        <!-- ВЕБИНАР № 1 -->
+        <article class="card webinar-card">
+            <button onclick="PSBApp.toggleAccordion(1)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-1">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-orange-100 text-[#FF8C00] flex items-center justify-center text-lg flex-shrink-0">
+                        <i class="fa-solid fa-video" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Вебинар № 1</h2>
+                        <p class="text-xs text-[#FF8C00] font-bold mt-1">27.01.2026 • 12:00-14:00 МСК</p>
+                    </div>
+                </div>
+                <i id="icon-1" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-1" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <ul class="space-y-1 text-[12px]">
+                        <li>• История развития ИИ и нейросетей. Кто такой промт-инженер.</li>
+                        <li>• Современные возможности, риски и угрозы использования LLM.</li>
+                        <li>• Основные правила формирования запросов к LLM.</li>
+                    </ul>
+                    <a href="https://my.mts-link.ru/j/psbacademy/9615477419" target="_blank" rel="noopener" class="inline-block mt-3 text-[11px] text-blue-600 underline">Ссылка для подключения</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- МОДУЛЬ 1 -->
+        <article class="card module-card">
+            <button onclick="PSBApp.toggleAccordion(2)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-2">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-[#2D2B84] flex items-center justify-center font-bold text-lg flex-shrink-0">1</div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Введение в ИИ и нейросети</h2>
+                        <p class="text-xs text-gray-500 mt-1">Знакомство с профессией промт-инженера</p>
+                    </div>
+                </div>
+                <i id="icon-2" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-2" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <ul class="space-y-1 text-[12px]">
+                        <li>• Основы искусственного интеллекта и нейросети</li>
+                        <li>• История создания нейросетей и основные принципы их работы</li>
+                        <li>• Промт-инженер: функции и задачи</li>
+                        <li>• Защита персональных данных и авторского права при работе с нейросетями</li>
+                        <li>• Выбор проекта для итоговой работы</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- МОДУЛЬ 2 -->
+        <article class="card module-card">
+            <button onclick="PSBApp.toggleAccordion(3)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-3">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-[#2D2B84] flex items-center justify-center font-bold text-lg flex-shrink-0">2</div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Нейросети для генерации текстов</h2>
+                    </div>
+                </div>
+                <i id="icon-3" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-3" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <ul class="space-y-1 text-[12px]">
+                        <li>• Большие лингвистические модели (LLM)</li>
+                        <li>• Типы решаемых задач с помощью LLM</li>
+                        <li>• Промт-инжиниринг</li>
+                        <li>• Обзор нейросетей для генерации текстов</li>
+                        <li>• ИИ-агенты</li>
+                        <li>• Чат-системы для решения бизнес-задач</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- ВЕБИНАР № 2 -->
+        <article class="card webinar-card">
+            <button onclick="PSBApp.toggleAccordion(4)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-orange-100 text-[#FF8C00] flex items-center justify-center text-lg flex-shrink-0">
+                        <i class="fa-solid fa-video" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Вебинар № 2</h2>
+                        <p class="text-xs text-[#FF8C00] font-bold mt-1">29.01.2026 • 10:00-12:00 МСК</p>
+                    </div>
+                </div>
+                <i id="icon-4" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-4" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <p class="text-[12px]">Китайские ИИ-сервисы для работы с текстами</p>
+                    <a href="https://my.mts-link.ru/j/psbacademy/10026672068" target="_blank" rel="noopener" class="inline-block mt-3 text-[11px] text-blue-600 underline">Ссылка для подключения</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- ВЕБИНАР № 3 -->
+        <article class="card webinar-card">
+            <button onclick="PSBApp.toggleAccordion(5)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-5">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-orange-100 text-[#FF8C00] flex items-center justify-center text-lg flex-shrink-0">
+                        <i class="fa-solid fa-video" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Вебинар № 3</h2>
+                        <p class="text-xs text-[#FF8C00] font-bold mt-1">05.02.2026 • 12:00-14:00 МСК</p>
+                    </div>
+                </div>
+                <i id="icon-5" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-5" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <p class="text-[12px]">Чат-боты, ИИ-ассистенты, ИИ-агенты.</p>
+                    <a href="https://my.mts-link.ru/j/psbacademy/10026812261" target="_blank" rel="noopener" class="inline-block mt-3 text-[11px] text-blue-600 underline">Ссылка для подключения</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- СДАЧА ПРАКТИЧЕСКОГО ЗАДАНИЯ № 1 -->
+        <article class="card deadline-card">
+            <button onclick="PSBApp.toggleAccordion(6)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-lg flex-shrink-0">
+                        <i class="fa-solid fa-file-pen" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Сдача практического задания № 1</h2>
+                        <p class="text-xs text-gray-500 mt-1">Дедлайн: до 09.02.2026</p>
+                    </div>
+                </div>
+                <i id="icon-6" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-6" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    Практическое задание по модулям 1-2.
+                </div>
+            </div>
+        </article>
+
+        <!-- МОДУЛЬ 3 -->
+        <article class="card module-card">
+            <button onclick="PSBApp.toggleAccordion(7)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-7">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-[#2D2B84] flex items-center justify-center font-bold text-lg flex-shrink-0">3</div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Графические нейросети</h2>
+                    </div>
+                </div>
+                <i id="icon-7" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-7" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <ul class="space-y-1 text-[12px]">
+                        <li>• Графические ИИ: что это, какие задачи решают</li>
+                        <li>• Обзор нейросетей для генерации изображений</li>
+                        <li>• Нейросети для дизайна</li>
+                        <li>• Генерация изображений при помощи нейросетей</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- МОДУЛЬ 4 -->
+        <article class="card module-card">
+            <button onclick="PSBApp.toggleAccordion(8)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-[#2D2B84] flex items-center justify-center font-bold text-lg flex-shrink-0">4</div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Нейросети для работы с видео и аудио</h2>
+                    </div>
+                </div>
+                <i id="icon-8" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-8" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <ul class="space-y-1 text-[12px]">
+                        <li>• Технологии генерации видео</li>
+                        <li>• Цифровые аватары и двойники</li>
+                        <li>• Нейросети для музыки, озвучки и обработки аудио</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- МОДУЛЬ 5 -->
+        <article class="card module-card">
+            <button onclick="PSBApp.toggleAccordion(9)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-9">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-50 text-[#2D2B84] flex items-center justify-center font-bold text-lg flex-shrink-0">5</div>
+                    <div>
+                        <h2 class="font-bold text-sm text-gray-900 leading-tight">Нейросети в банковском секторе</h2>
+                    </div>
+                </div>
+                <i id="icon-9" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-9" class="accordion-content bg-gray-50 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <ul class="space-y-1 text-[12px]">
+                        <li>• Конкретные кейсы применения ИИ в бизнесе и финансах</li>
+                        <li>• Работа с данными</li>
+                        <li>• Этические и правовые аспекты</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- ИТОГОВАЯ АТТЕСТАЦИЯ -->
+        <article class="card final-card border border-purple-200">
+            <button onclick="PSBApp.toggleAccordion(10)" class="w-full p-4 flex items-center justify-between text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-10">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 text-[#7C3AED] flex items-center justify-center text-lg flex-shrink-0">
+                        <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-[#7C3AED] leading-tight">Итоговая аттестация</h2>
+                        <p class="text-xs text-gray-500 mt-1">до 31.03.2026</p>
+                    </div>
+                </div>
+                <i id="icon-10" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+            <div id="content-10" class="accordion-content bg-purple-50/30 px-4">
+                <div class="pb-4 pt-2 text-sm text-gray-600">
+                    <p class="mb-1 font-semibold text-[#7C3AED]">Итоговая аттестация: в формате практического задания.</p>
+                    <p>31.03.2026 — официальная дата окончания обучения.<br>Далее — выдача удостоверений о повышении квалификации слушателям.</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- КНОПКА СКАЧАТЬ -->
+        <a href="Программа.pptx" download class="w-full mt-4 mb-4 btn btn-primary gap-2 shadow-lg">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            <span>Скачать программу</span>
+        </a>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item active" aria-current="page" aria-label="Программа">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

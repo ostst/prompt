@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2D2B84">
+    
+    <title>Статистика | ПСБ Академия</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .dark-mode .stat-card {
+            background: #1e2a4a;
+        }
+        
+        .stat-big {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .dark-mode .stat-big {
+            background: linear-gradient(135deg, #818CF8, #A5B4FC);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dark-mode .history-item {
+            background: #1e2a4a;
+        }
+        
+        .history-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .chart-bar {
+            background: linear-gradient(180deg, #2D2B84, #4F46E5);
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+            transition: height 0.5s ease;
+        }
+        
+        .dark-mode .chart-bar {
+            background: linear-gradient(180deg, #818CF8, #4F46E5);
+        }
+        
+        .week-label {
+            font-size: 10px;
+            color: #9CA3AF;
+        }
+    </style>
+</head>
+<body class="pb-24">
+    <script src="js/app.js"></script>
+    
+    <main class="max-w-md mx-auto px-4 pt-4">
+        <!-- Заголовок -->
+        <header class="flex items-center justify-between mb-6">
+            <a href="index.html" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-gray-600"></i>
+            </a>
+            <h1 class="text-lg font-bold text-gray-900">Моя статистика</h1>
+            <button onclick="clearStats()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                <i class="fa-solid fa-trash text-gray-400 text-sm"></i>
+            </button>
+        </header>
+        
+        <!-- Главные метрики -->
+        <section class="grid grid-cols-2 gap-4 mb-6">
+            <div class="stat-card text-center">
+                <div class="stat-big" id="total-visits">0</div>
+                <p class="text-sm text-gray-500 mt-1">посещений</p>
+            </div>
+            <div class="stat-card text-center">
+                <div class="stat-big" id="total-time">0</div>
+                <p class="text-sm text-gray-500 mt-1">минут</p>
+            </div>
+        </section>
+        
+        <!-- Streak -->
+        <section class="stat-card mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 mb-1">Серия посещений</p>
+                    <p class="text-3xl font-bold text-gray-900" id="streak-days">0</p>
+                    <p class="text-xs text-gray-400" id="streak-label">дней подряд</p>
+                </div>
+                <div class="relative">
+                    <svg class="progress-ring" width="80" height="80">
+                        <circle class="text-gray-200" stroke="currentColor" stroke-width="8" fill="transparent" r="32" cx="40" cy="40"/>
+                        <circle id="streak-progress" class="progress-ring-circle text-[#2D2B84]" stroke="currentColor" stroke-width="8" fill="transparent" r="32" cx="40" cy="40" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fa-solid fa-fire text-2xl text-orange-500"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- График за неделю -->
+        <section class="stat-card mb-6">
+            <h3 class="font-bold text-gray-900 mb-4">Активность за неделю</h3>
+            <div class="flex items-end justify-between h-32 gap-2" id="week-chart">
+                <!-- Заполняется через JS -->
+            </div>
+            <div class="flex justify-between mt-2" id="week-labels">
+                <!-- Заполняется через JS -->
+            </div>
+        </section>
+        
+        <!-- Посещённые разделы -->
+        <section class="stat-card mb-6">
+            <h3 class="font-bold text-gray-900 mb-4">Посещённые разделы</h3>
+            <div id="sections-stats">
+                <!-- Заполняется через JS -->
+            </div>
+        </section>
+        
+        <!-- История посещений -->
+        <section class="mb-6">
+            <h3 class="font-bold text-gray-900 mb-4">История посещений</h3>
+            <div id="visit-history">
+                <!-- Заполняется через JS -->
+            </div>
+            <p id="no-history" class="text-center text-gray-400 text-sm py-8 hidden">
+                История пуста
+            </p>
+        </section>
+        
+        <!-- Экспорт данных -->
+        <section class="stat-card mb-6">
+            <h3 class="font-bold text-gray-900 mb-4">
+                <i class="fa-solid fa-file-export mr-2 text-green-600"></i>
+                Экспорт данных
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="exportToExcel()" class="flex items-center justify-center gap-2 bg-green-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-green-700 active:scale-95 transition">
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span>Excel</span>
+                </button>
+                <button onclick="exportToJSON()" class="flex items-center justify-center gap-2 bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-700 active:scale-95 transition">
+                    <i class="fa-solid fa-file-code"></i>
+                    <span>JSON</span>
+                </button>
+            </div>
+            <button onclick="sendReportToTelegram()" class="w-full mt-3 flex items-center justify-center gap-2 bg-[#2D2B84] text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 active:scale-95 transition">
+                <i class="fa-brands fa-telegram"></i>
+                <span>Отправить отчёт в Telegram</span>
+            </button>
+        </section>
+        
+        <!-- Отслеживаемые события -->
+        <section class="stat-card mb-6">
+            <h3 class="font-bold text-gray-900 mb-4">
+                <i class="fa-solid fa-chart-pie mr-2 text-purple-600"></i>
+                События
+            </h3>
+            <div id="events-stats">
+                <!-- Заполняется через JS -->
+            </div>
+            <p id="no-events" class="text-center text-gray-400 text-sm py-4 hidden">
+                Нет данных о событиях
+            </p>
+        </section>
+    </main>
+    
+    <!-- Нижнее меню -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основное меню">
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="materials.html" class="nav-item">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item">
+            <i class="fa-solid fa-spell-check" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+    
+    <script>
+        // Названия разделов
+        const sectionNames = {
+            'index.html': { name: 'Главная', icon: 'fa-house', color: 'bg-blue-100 text-blue-600' },
+            'program_info.html': { name: 'О программе', icon: 'fa-info-circle', color: 'bg-purple-100 text-purple-600' },
+            'course_program.html': { name: 'Программа курса', icon: 'fa-list', color: 'bg-green-100 text-green-600' },
+            'platform_info.html': { name: 'Платформа', icon: 'fa-desktop', color: 'bg-orange-100 text-orange-600' },
+            'materials.html': { name: 'Материалы', icon: 'fa-book', color: 'bg-indigo-100 text-indigo-600' },
+            'glossary.html': { name: 'Глоссарий', icon: 'fa-spell-check', color: 'bg-teal-100 text-teal-600' },
+            'faq.html': { name: 'FAQ', icon: 'fa-circle-question', color: 'bg-pink-100 text-pink-600' },
+            'stats.html': { name: 'Статистика', icon: 'fa-chart-line', color: 'bg-cyan-100 text-cyan-600' }
+        };
+        
+        // Дни недели
+        const weekDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        
+        // Загрузка статистики
+        function loadStats() {
+            const stats = PSBApp.storage.get('userStats') || {
+                streak: 0,
+                totalVisits: 0,
+                todayTime: 0
+            };
+            
+            const history = PSBApp.storage.get('visitHistory') || [];
+            const sectionVisits = PSBApp.storage.get('sectionVisits') || {};
+            
+            // Основные метрики
+            document.getElementById('total-visits').textContent = stats.totalVisits || 0;
+            document.getElementById('total-time').textContent = calculateTotalTime(history);
+            document.getElementById('streak-days').textContent = stats.streak || 0;
+            
+            // Прогресс streak (макс 30 дней)
+            const streakProgress = Math.min((stats.streak || 0) / 30, 1);
+            const circle = document.getElementById('streak-progress');
+            const circumference = 201;
+            circle.style.strokeDashoffset = circumference - (streakProgress * circumference);
+            
+            // График за неделю
+            renderWeekChart(history);
+            
+            // Посещённые разделы
+            renderSectionsStats(sectionVisits);
+            
+            // История
+            renderHistory(history);
+        }
+        
+        function calculateTotalTime(history) {
+            let total = 0;
+            history.forEach(item => {
+                total += item.duration || 0;
+            });
+            return Math.round(total);
+        }
+        
+        function renderWeekChart(history) {
+            const chart = document.getElementById('week-chart');
+            const labels = document.getElementById('week-labels');
+            
+            // Получаем данные за последние 7 дней
+            const weekData = [];
+            const today = new Date();
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toDateString();
+                
+                const dayVisits = history.filter(h => {
+                    const hDate = new Date(h.timestamp).toDateString();
+                    return hDate === dateStr;
+                }).length;
+                
+                weekData.push({
+                    day: weekDays[date.getDay()],
+                    visits: dayVisits,
+                    isToday: i === 0
+                });
+            }
+            
+            const maxVisits = Math.max(...weekData.map(d => d.visits), 1);
+            
+            chart.innerHTML = weekData.map(d => {
+                const height = (d.visits / maxVisits) * 100;
+                return `
+                    <div class="flex-1 flex flex-col items-center justify-end">
+                        <span class="text-xs font-bold text-gray-700 mb-1">${d.visits}</span>
+                        <div class="chart-bar w-full ${d.isToday ? 'opacity-100' : 'opacity-70'}" style="height: ${Math.max(height, 4)}%"></div>
+                    </div>
+                `;
+            }).join('');
+            
+            labels.innerHTML = weekData.map(d => `
+                <span class="week-label flex-1 text-center ${d.isToday ? 'font-bold text-[#2D2B84]' : ''}">${d.day}</span>
+            `).join('');
+        }
+        
+        function renderSectionsStats(sectionVisits) {
+            const container = document.getElementById('sections-stats');
+            const entries = Object.entries(sectionVisits).sort((a, b) => b[1] - a[1]);
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-400 text-sm py-4">Нет данных</p>';
+                return;
+            }
+            
+            const maxVisits = Math.max(...entries.map(e => e[1]));
+            
+            container.innerHTML = entries.map(([page, count]) => {
+                const section = sectionNames[page] || { name: page, icon: 'fa-file', color: 'bg-gray-100 text-gray-600' };
+                const width = (count / maxVisits) * 100;
+                
+                return `
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="history-icon ${section.color}">
+                            <i class="fa-solid ${section.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium text-gray-800">${section.name}</span>
+                                <span class="text-xs text-gray-500">${count} раз</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-[#2D2B84] to-[#4F46E5] rounded-full" style="width: ${width}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderHistory(history) {
+            const container = document.getElementById('visit-history');
+            const noHistory = document.getElementById('no-history');
+            
+            if (history.length === 0) {
+                container.classList.add('hidden');
+                noHistory.classList.remove('hidden');
+                return;
+            }
+            
+            // Показываем последние 20 записей
+            const recentHistory = history.slice(-20).reverse();
+            
+            container.innerHTML = recentHistory.map(item => {
+                const section = sectionNames[item.page] || { name: item.page, icon: 'fa-file', color: 'bg-gray-100 text-gray-600' };
+                const date = new Date(item.timestamp);
+                const timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = formatDateShort(date);
+                
+                return `
+                    <div class="history-item">
+                        <div class="history-icon ${section.color}">
+                            <i class="fa-solid ${section.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">${section.name}</p>
+                            <p class="text-xs text-gray-400">${item.duration ? item.duration + ' мин' : 'Быстрый визит'}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">${timeStr}</p>
+                            <p class="text-xs text-gray-400">${dateStr}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function formatDateShort(date) {
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (date.toDateString() === today.toDateString()) {
+                return 'Сегодня';
+            } else if (date.toDateString() === yesterday.toDateString()) {
+                return 'Вчера';
+            } else {
+                return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+            }
+        }
+        
+        function clearStats() {
+            if (confirm('Очистить всю статистику?')) {
+                PSBApp.storage.set('userStats', null);
+                PSBApp.storage.set('visitHistory', null);
+                PSBApp.storage.set('sectionVisits', null);
+                PSBApp.haptic.success();
+                PSBApp.showToast('Статистика очищена', 'success');
+                loadStats();
+            }
+        }
+        
+        // Темная тема для заголовка
+        function applyDarkModeStyles() {
+            if (document.body.classList.contains('dark-mode')) {
+                document.querySelectorAll('.text-gray-900').forEach(el => {
+                    el.style.color = '#F3F4F6';
+                });
+                document.querySelectorAll('.text-gray-800').forEach(el => {
+                    el.style.color = '#E5E7EB';
+                });
+                document.querySelectorAll('.bg-gray-100').forEach(el => {
+                    el.style.background = '#374151';
+                });
+                document.querySelectorAll('.bg-gray-200').forEach(el => {
+                    el.style.background = '#374151';
+                });
+            }
+        }
+        
+        // ========================================
+        // Экспорт в Excel (CSV)
+        // ========================================
+        function exportToExcel() {
+            const history = PSBApp.storage.get('visitHistory') || [];
+            const events = PSBApp.storage.get('userEvents') || [];
+            const stats = PSBApp.storage.get('userStats') || {};
+            
+            // Создаём CSV для посещений
+            let csv = '\uFEFF'; // BOM для корректного отображения кириллицы
+            csv += 'Тип;Страница/Событие;Дата;Время;Длительность (мин)\n';
+            
+            // Добавляем посещения
+            history.forEach(item => {
+                const date = new Date(item.timestamp);
+                const section = sectionNames[item.page] || { name: item.page };
+                csv += `Посещение;${section.name};${date.toLocaleDateString('ru-RU')};${date.toLocaleTimeString('ru-RU')};${item.duration || 0}\n`;
+            });
+            
+            // Добавляем события
+            events.forEach(item => {
+                const date = new Date(item.timestamp);
+                csv += `Событие;${item.action};${date.toLocaleDateString('ru-RU')};${date.toLocaleTimeString('ru-RU')};-\n`;
+            });
+            
+            // Скачиваем файл
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `psb_stats_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            
+            PSBApp.haptic.success();
+            PSBApp.showToast('Файл скачан!', 'success');
+        }
+        
+        // ========================================
+        // Экспорт в JSON
+        // ========================================
+        function exportToJSON() {
+            const data = {
+                exportDate: new Date().toISOString(),
+                stats: PSBApp.storage.get('userStats') || {},
+                history: PSBApp.storage.get('visitHistory') || [],
+                events: PSBApp.storage.get('userEvents') || [],
+                sections: PSBApp.storage.get('sectionVisits') || {}
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `psb_stats_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            PSBApp.haptic.success();
+            PSBApp.showToast('JSON скачан!', 'success');
+        }
+        
+        // ========================================
+        // Отправка отчёта в Telegram
+        // ========================================
+        async function sendReportToTelegram() {
+            const stats = PSBApp.storage.get('userStats') || {};
+            const history = PSBApp.storage.get('visitHistory') || [];
+            const events = PSBApp.storage.get('userEvents') || [];
+            const sections = PSBApp.storage.get('sectionVisits') || {};
+            
+            // Топ страницы
+            const topPages = Object.entries(sections)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([page, count]) => {
+                    const name = sectionNames[page]?.name || page;
+                    return `  • ${name}: ${count}`;
+                }).join('\n');
+            
+            // Топ события
+            const eventCounts = {};
+            events.forEach(e => {
+                eventCounts[e.action] = (eventCounts[e.action] || 0) + 1;
+            });
+            const topEvents = Object.entries(eventCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([action, count]) => `  • ${action}: ${count}`)
+                .join('\n');
+            
+            const user = PSBApp.analytics.getUserInfo();
+            
+            const message = `📈 <b>Полный отчёт</b>\n\n` +
+                `👤 <b>Пользователь:</b> ${user.name}\n` +
+                `🆔 ID: <code>${user.id}</code>\n\n` +
+                `📊 <b>Статистика:</b>\n` +
+                `  • Посещений: ${stats.totalVisits || 0}\n` +
+                `  • Серия дней: ${stats.streak || 0}\n` +
+                `  • Всего минут: ${calculateTotalTime(history)}\n\n` +
+                `📄 <b>Топ страницы:</b>\n${topPages || '  Нет данных'}\n\n` +
+                `⚡ <b>Топ события:</b>\n${topEvents || '  Нет данных'}\n\n` +
+                `🕐 ${new Date().toLocaleString('ru-RU')}`;
+            
+            await PSBApp.analytics.sendToTelegram(message);
+            
+            PSBApp.haptic.success();
+            PSBApp.showToast('Отчёт отправлен!', 'success');
+        }
+        
+        // ========================================
+        // Отображение событий
+        // ========================================
+        function renderEventsStats() {
+            const events = PSBApp.storage.get('userEvents') || [];
+            const container = document.getElementById('events-stats');
+            const noEvents = document.getElementById('no-events');
+            
+            if (events.length === 0) {
+                container.classList.add('hidden');
+                noEvents.classList.remove('hidden');
+                return;
+            }
+            
+            // Группируем по типу
+            const eventCounts = {};
+            events.forEach(e => {
+                eventCounts[e.action] = (eventCounts[e.action] || 0) + 1;
+            });
+            
+            const maxCount = Math.max(...Object.values(eventCounts));
+            
+            container.innerHTML = Object.entries(eventCounts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([action, count]) => {
+                    const width = (count / maxCount) * 100;
+                    const icon = getEventIcon(action);
+                    
+                    return `
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                                <i class="fa-solid ${icon} text-purple-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium text-gray-800">${action}</span>
+                                    <span class="text-xs text-gray-500">${count}</span>
+                                </div>
+                                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style="width: ${width}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+        }
+        
+        function getEventIcon(action) {
+            const icons = {
+                'Клик на вебинар': 'fa-video',
+                'Открыл категорию': 'fa-folder-open',
+                'Клик Мое обучение': 'fa-graduation-cap',
+                'Переключил тему': 'fa-moon',
+                'Добавил в календарь': 'fa-calendar-plus',
+                'Поделился': 'fa-share'
+            };
+            return icons[action] || 'fa-bolt';
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            renderEventsStats();
+            applyDarkModeStyles();
+            
+            // Наблюдаем за изменением темы
+            const observer = new MutationObserver(applyDarkModeStyles);
+            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        });
+    </script>
+</body>
+</html>

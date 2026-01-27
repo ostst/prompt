@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Ответы на часто задаваемые вопросы по программе «Промт-инженер: работа с нейросетями»">
+    <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/1.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/1.png">
+    <title>FAQ | ПСБ Академия</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Маркеры списка */
+        .custom-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 13px;
+            color: #4B5563;
+        }
+        .custom-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: #ED6B30;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="text-[#1F2937]">
+
+    <!-- ШАПКА -->
+    <div class="page-header">
+        <div class="header-bg" style="background-image: url('img/Hero.png');"></div>
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <div class="nav-top">
+                <a href="index.html" class="btn-back" aria-label="Назад на главную">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+                <span class="badge">Инфо</span>
+            </div>
+            <div>
+                <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
+                    Часто задаваемые<br>вопросы
+                </h1>
+                <p class="text-white/80 text-sm">
+                    Все, что нужно знать об обучении и сертификатах
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОНТЕНТ -->
+    <main class="max-w-md mx-auto px-4 space-y-3 fade-in" role="main">
+
+        <!-- Поиск -->
+        <div class="search-container">
+            <i class="fa-solid fa-search search-icon" aria-hidden="true"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="Поиск по вопросам..." aria-label="Поиск по FAQ">
+        </div>
+
+        <!-- БЛОК 1: Условия получения удостоверения -->
+        <article class="faq-item card">
+            <button onclick="PSBApp.toggleAccordion(1)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="true" aria-controls="content-1">
+                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-graduation-cap text-[#7C3AED] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-[15px] text-gray-900 leading-snug">Условия получения удостоверения</h2>
+                </div>
+                <i id="icon-1" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon open" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-1" class="accordion-content open bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-600 leading-relaxed mb-3">
+                    Для получения удостоверения о повышении квалификации необходимо <b>обязательно выполнить итоговую аттестацию</b> в срок до дня окончания программы.
+                </p>
+                <div class="bg-purple-50 rounded-xl p-3 border border-purple-100">
+                    <p class="text-[12px] text-purple-900 leading-relaxed">
+                        Доступ к прохождению итоговой аттестации откроется <b>за неделю</b> до окончания программы.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <!-- БЛОК 2: Как забрать удостоверение -->
+        <article class="faq-item card">
+            <button onclick="PSBApp.toggleAccordion(2)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-2">
+                <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-file-contract text-[#0D9488] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-[15px] text-gray-900 leading-snug">Как забрать удостоверение?</h2>
+                </div>
+                <i id="icon-2" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-2" class="accordion-content bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-600 leading-relaxed mb-3">
+                    Для получения удостоверения о повышении квалификации необходимо заполнить опрос в личном кабинете на платформе академии.
+                </p>
+                <div class="bg-teal-50 rounded-xl p-3 border border-teal-100">
+                    <p class="text-[12px] text-teal-900 font-bold mb-2">Способ получения:</p>
+                    <p class="text-[12px] text-teal-900">Забираете лично в офисе Академии ПСБ</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- БЛОК 3: Наши контакты -->
+        <article class="faq-item card">
+            <button onclick="PSBApp.toggleAccordion(3)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-3">
+                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-envelope text-[#2563EB] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-[15px] text-gray-900 leading-snug">Наши контакты</h2>
+                </div>
+                <i id="icon-3" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-3" class="accordion-content bg-white px-5 pb-6">
+                <div class="text-[13px] text-gray-600 leading-relaxed">
+                    <a href="mailto:CDME@psb-academy.ru" class="text-[#2563EB] font-bold underline">CDME@psb-academy.ru</a>
+                    <span> – почта Центра развития обучения по управлению данными, вы можете задавать вопросы организационного и технического характера.</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- БЛОК 4: Сроки проверки -->
+        <article class="faq-item card">
+            <button onclick="PSBApp.toggleAccordion(4)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-4">
+                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-regular fa-clock text-[#EA580C] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-[15px] text-gray-900 leading-snug">Сколько времени проверяется курс?</h2>
+                </div>
+                <i id="icon-4" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-4" class="accordion-content bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-600 leading-relaxed">
+                    В течение <b>3 рабочих дней</b> с момента сдачи ваше задание проверит преподаватель.
+                </p>
+            </div>
+        </article>
+
+        <!-- БЛОК 5: Программа обучения -->
+        <article class="faq-item card">
+            <button onclick="PSBApp.toggleAccordion(5)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-5">
+                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-list-check text-[#059669] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-[15px] text-gray-900 leading-snug">Программа обучения</h2>
+                </div>
+                <i id="icon-5" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-5" class="accordion-content bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-600 leading-relaxed mb-4">
+                    Курс состоит из теоретических модулей и практических заданий. Мы подготовили подробный файл, где расписаны все темы уроков, домашние задания и сроки сдачи.
+                </p>
+                <a href="course_program.html" class="block w-full text-center bg-[#059669] hover:bg-[#047857] text-white text-[13px] font-bold py-3 px-4 rounded-xl transition shadow-md">
+                    Смотреть полную программу
+                    <i class="fa-solid fa-arrow-right ml-2 text-[11px]" aria-hidden="true"></i>
+                </a>
+            </div>
+        </article>
+
+        <!-- БЛОК 6: Технические проблемы -->
+        <article class="faq-item card">
+            <button onclick="PSBApp.toggleAccordion(6)" class="w-full p-5 flex items-center gap-4 text-left active:bg-gray-50 transition" aria-expanded="false" aria-controls="content-6">
+                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-bug text-[#DC2626] text-lg" aria-hidden="true"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-[15px] text-gray-900 leading-snug">Видео не загружается, что делать?</h2>
+                </div>
+                <i id="icon-6" class="fa-solid fa-chevron-down text-gray-400 text-xs rotate-icon" aria-hidden="true"></i>
+            </button>
+
+            <div id="content-6" class="accordion-content bg-white px-5 pb-6">
+                <p class="text-[13px] text-gray-600 leading-relaxed mb-2">
+                    В большинстве случаев проблема связана с нестабильным интернетом или блокировщиками рекламы.
+                </p>
+                <ul class="custom-list">
+                    <li>Отключите VPN, если он включен.</li>
+                    <li>Попробуйте открыть урок в браузере Google Chrome.</li>
+                    <li>Очистите кэш браузера.</li>
+                </ul>
+                <div class="mt-3 text-[12px] text-gray-400">
+                    Если не помогло — напишите нам в чат поддержки.
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item active" aria-current="page" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Поиск по FAQ
+            PSBApp.initSearch('search-input', '.faq-item', ['textContent']);
+        });
+    </script>
+</body>
+</html>
