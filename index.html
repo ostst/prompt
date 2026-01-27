@@ -1184,24 +1184,6 @@
         </div>
     </a>
 
-            <!-- 6. Чат студентов -->
-            <a href="chat.html" id="chat-link" class="col-span-2 group relative h-20 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg" style="background: linear-gradient(135deg, #2D2B84 0%, #4F46E5 100%);">
-                <div class="absolute inset-0 flex items-center justify-between px-5">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                            <i class="fa-solid fa-comments text-white text-xl"></i>
-</div>
-                        <div>
-                            <p class="text-white font-bold text-[15px]">Чат студентов</p>
-                            <p class="text-white/70 text-xs">Общайтесь с однокурсниками</p>
-                        </div>
-                    </div>
-                    <div class="bg-white/20 w-10 h-10 flex items-center justify-center rounded-xl">
-                        <i class="fa-solid fa-arrow-right text-white"></i>
-                    </div>
-                </div>
-            </a>
-
         </nav>
 
     </main>
@@ -2063,19 +2045,14 @@
                 text: 'Это ваш личный помощник для обучения работе с нейросетями'
             },
             {
-                icon: 'fa-calendar-check',
-                title: 'Вебинары',
-                text: 'Смахните карточку влево, чтобы добавить в календарь или поделиться'
-            },
-            {
                 icon: 'fa-trophy',
                 title: 'Достижения',
-                text: 'Проходите вебинары и получайте бейджи за свои успехи'
+                text: 'Отмечайте просмотренные вебинары кнопкой "Отметить просмотренным" и получайте бейджи за свои успехи. Чем больше вебинаров вы посмотрите, тем больше достижений откроется!'
             },
             {
                 icon: 'fa-moon',
                 title: 'Тёмная тема',
-                text: 'Нажмите на шестерёнку в профиле, чтобы сменить тему'
+                text: 'Нажмите на иконку солнца/луны в профиле, чтобы сменить тему'
             }
         ];
         
@@ -2661,20 +2638,6 @@
             
             // Показываем баннер установки PWA (после онбординга)
             setTimeout(showPWAInstallBanner, 3000);
-            
-            // Настраиваем ссылку чата
-            const chatLink = document.getElementById('chat-link');
-            if (chatLink) {
-                const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
-                if (inTelegram) {
-                    // В Telegram - открываем группу
-                    chatLink.href = 'https://t.me/c/3345532243';
-                    chatLink.target = '_blank';
-                } else {
-                    // В браузере - открываем встроенный чат
-                    chatLink.href = 'chat.html';
-                }
-            }
             
             // Показываем попап подтверждения просмотра (после всех других попапов)
             setTimeout(() => {
