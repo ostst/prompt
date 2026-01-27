@@ -1184,6 +1184,24 @@
         </div>
     </a>
 
+            <!-- 6. Приложение (только для Telegram Web App) -->
+            <a href="https://ostst.github.io/prompt/" target="_blank" id="app-link-telegram" class="col-span-2 group relative h-20 rounded-[16px] overflow-hidden active:scale-95 transition hover:shadow-lg hidden" style="background: linear-gradient(135deg, #2D2B84 0%, #4F46E5 100%);">
+                <div class="absolute inset-0 flex items-center justify-between px-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                            <i class="fa-solid fa-mobile-screen-button text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-bold text-[15px]">Установить приложение</p>
+                            <p class="text-white/70 text-xs">Открыть в браузере для PWA</p>
+                        </div>
+                    </div>
+                    <div class="bg-white/20 w-10 h-10 flex items-center justify-center rounded-xl">
+                        <i class="fa-solid fa-arrow-right text-white"></i>
+                    </div>
+                </div>
+            </a>
+
         </nav>
 
     </main>
@@ -1206,13 +1224,9 @@
             <i class="fa-solid fa-book" aria-hidden="true"></i>
             <span>Глоссарий</span>
         </a>
-        <a href="faq.html" class="nav-item" aria-label="FAQ" id="nav-faq">
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
             <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
             <span>FAQ</span>
-        </a>
-        <a href="https://ostst.github.io/prompt/" target="_blank" class="nav-item" aria-label="Приложение" id="nav-app" style="display: none;">
-            <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i>
-            <span>Приложение</span>
         </a>
     </nav>
 
@@ -2462,13 +2476,15 @@
         // ========================================
         function showRegistrationForm() {
             // Показываем только если:
-            // 1. Не в Telegram
+            // 1. Не в Telegram WebApp (там данные уже есть)
             // 2. Пользователь не зарегистрирован и не пропустил
             const inTelegram = window.Telegram?.WebApp?.initDataUnsafe?.user;
             const userProfile = PSBApp.storage.get('userProfile');
+            const telegramAuth = PSBApp.storage.get('telegramAuth');
             const skippedRegistration = PSBApp.storage.get('skippedRegistration');
             
-            if (inTelegram || userProfile || skippedRegistration) {
+            // Если уже авторизован через Telegram или есть профиль - не показываем
+            if (inTelegram || userProfile || telegramAuth || skippedRegistration) {
                 return;
             }
             
@@ -2486,6 +2502,20 @@
                         Заполните профиль для отслеживания прогресса
                     </p>
                     
+                    <!-- Вариант 1: Авторизация через Telegram -->
+                    <button onclick="loginWithTelegramFromReg()" class="w-full py-3.5 px-4 rounded-xl font-bold text-[15px] mb-4 hover:opacity-90 active:scale-[0.98] transition flex items-center justify-center gap-2" style="background: linear-gradient(135deg, #0088cc, #00a0dc); color: white;">
+                        <i class="fa-brands fa-telegram"></i>
+                        Войти через Telegram
+                    </button>
+                    
+                    <!-- Разделитель -->
+                    <div class="flex items-center gap-3 mb-4">
+                        <div style="flex: 1; height: 1px; background: ${isDark ? '#374151' : '#E5E7EB'}"></div>
+                        <span style="font-size: 12px; color: ${isDark ? '#9CA3AF' : '#6B7280'}">или</span>
+                        <div style="flex: 1; height: 1px; background: ${isDark ? '#374151' : '#E5E7EB'}"></div>
+                    </div>
+                    
+                    <!-- Вариант 2: Заполнить вручную -->
                     <div class="avatar-upload" onclick="document.getElementById('avatar-input').click()">
                         <i class="fa-solid fa-user text-white text-3xl" id="avatar-placeholder"></i>
                         <img id="avatar-preview" style="display: none;">
@@ -2511,6 +2541,83 @@
             
             document.body.appendChild(overlay);
         }
+        
+        function loginWithTelegramFromReg() {
+            // Создаём контейнер для виджета
+            let widgetContainer = document.getElementById('telegram-widget-reg');
+            if (!widgetContainer) {
+                widgetContainer = document.createElement('div');
+                widgetContainer.id = 'telegram-widget-reg';
+                widgetContainer.style.cssText = 'margin: 16px 0; text-align: center;';
+                
+                const card = document.querySelector('.registration-card');
+                const button = card.querySelector('button[onclick="loginWithTelegramFromReg()"]');
+                
+                // Вставляем виджет после кнопки
+                const divider = button.nextElementSibling;
+                card.insertBefore(widgetContainer, divider);
+                
+                // Создаём скрипт виджета
+                const script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://telegram.org/js/telegram-widget.js?22';
+                script.setAttribute('data-telegram-login', 'APSB_AI_Prompter_bot');
+                script.setAttribute('data-size', 'large');
+                script.setAttribute('data-onauth', 'onTelegramAuthFromReg(user)');
+                script.setAttribute('data-request-access', 'write');
+                script.setAttribute('data-userpic', 'true');
+                script.setAttribute('data-radius', '12');
+                
+                widgetContainer.appendChild(script);
+                
+                // Скрываем кнопку
+                button.style.display = 'none';
+                
+                PSBApp.showToast('Нажмите на кнопку ниже для авторизации', 'info');
+            }
+        }
+        
+        // Обработка авторизации из формы регистрации
+        window.onTelegramAuthFromReg = function(user) {
+            console.log('Telegram auth from registration:', user);
+            
+            // Сохраняем данные пользователя
+            const telegramAuth = {
+                id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name || '',
+                username: user.username || '',
+                photo_url: user.photo_url || '',
+                auth_date: user.auth_date,
+                hash: user.hash
+            };
+            
+            PSBApp.storage.set('telegramAuth', telegramAuth);
+            
+            // Автоматически включаем Telegram уведомления
+            const tgSettings = {
+                webinarReminders: true,
+                newMaterials: true,
+                progressReminders: true
+            };
+            PSBApp.storage.set('telegramSettings', tgSettings);
+            
+            // Обновляем профиль
+            updateProfileDisplay({
+                firstName: telegramAuth.first_name,
+                lastName: telegramAuth.last_name,
+                avatar: telegramAuth.photo_url
+            });
+            
+            // Закрываем форму регистрации
+            closeRegistrationForm();
+            
+            PSBApp.showToast('Авторизация успешна!', 'success');
+            PSBApp.haptic.success();
+            
+            // Отправляем в аналитику
+            PSBApp.analytics.trackAction('Авторизация через Telegram (регистрация)', user.username || user.id);
+        };
         
         function previewAvatar(input) {
             if (input.files && input.files[0]) {
@@ -2608,6 +2715,18 @@
             const inTelegram = window.Telegram?.WebApp?.initDataUnsafe?.user;
             if (inTelegram) return; // В Telegram профиль загружается из API
             
+            // Проверяем Telegram авторизацию
+            const telegramAuth = PSBApp.storage.get('telegramAuth');
+            if (telegramAuth) {
+                updateProfileDisplay({
+                    firstName: telegramAuth.first_name,
+                    lastName: telegramAuth.last_name,
+                    avatar: telegramAuth.photo_url
+                });
+                return;
+            }
+            
+            // Проверяем локальный профиль
             const profile = PSBApp.storage.get('userProfile');
             if (profile) {
                 updateProfileDisplay(profile);
@@ -2643,15 +2762,12 @@
             // Показываем баннер установки PWA (после онбординга)
             setTimeout(showPWAInstallBanner, 3000);
             
-            // Настраиваем нижнюю навигацию для Telegram Web App
+            // Показываем кнопку "Приложение" под FAQ для Telegram Web App
             const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
-            const navFaq = document.getElementById('nav-faq');
-            const navApp = document.getElementById('nav-app');
+            const appLinkTelegram = document.getElementById('app-link-telegram');
             
-            if (inTelegram && navFaq && navApp) {
-                // В Telegram - показываем кнопку "Приложение" вместо FAQ
-                navFaq.style.display = 'none';
-                navApp.style.display = 'flex';
+            if (inTelegram && appLinkTelegram) {
+                appLinkTelegram.classList.remove('hidden');
             }
             
             // Показываем попап подтверждения просмотра (после всех других попапов)

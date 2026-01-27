@@ -300,6 +300,19 @@
             color: #F3F4F6;
         }
         
+        /* Header back button */
+        header a {
+            background: linear-gradient(135deg, #1e2a4a, #2D2B84) !important;
+        }
+        
+        .dark-mode header a {
+            background: linear-gradient(135deg, #2D2B84, #4F46E5) !important;
+        }
+        
+        header a i {
+            color: white !important;
+        }
+        
         /* Telegram Login Widget */
         .telegram-login-container {
             margin: 16px 0;
@@ -309,6 +322,21 @@
         .telegram-login-container iframe {
             border-radius: 12px;
             overflow: hidden;
+        }
+        
+        /* Logout Button */
+        #logout-btn {
+            background: linear-gradient(135deg, #2D2B84, #4F46E5) !important;
+            color: white !important;
+            border: none;
+        }
+        
+        #logout-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .dark-mode #logout-btn {
+            background: linear-gradient(135deg, #4F46E5, #6366F1) !important;
         }
     </style>
 </head>
@@ -473,10 +501,10 @@
         <section class="settings-section">
             <div class="settings-title">О приложении</div>
             
-            <div class="setting-item" style="cursor: pointer;" onclick="window.open('https://t.me/psbacademy_support', '_blank')">
+            <div class="setting-item" style="cursor: pointer;" onclick="window.open('https://t.me/nik_hou', '_blank')">
                 <div>
                     <div class="setting-label">Поддержка</div>
-                    <div class="setting-desc">Связаться с нами</div>
+                    <div class="setting-desc">@nik_hou</div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-gray-400"></i>
             </div>
@@ -572,8 +600,15 @@
             if (telegramAuth) {
                 name.textContent = `${telegramAuth.first_name}${telegramAuth.last_name ? ' ' + telegramAuth.last_name : ''}`;
                 email.textContent = telegramAuth.username ? `@${telegramAuth.username}` : 'Telegram пользователь';
-                avatar.innerHTML = `<span>${telegramAuth.first_name.charAt(0)}</span>`;
+                if (telegramAuth.photo_url) {
+                    avatar.innerHTML = `<img src="${telegramAuth.photo_url}" alt="Аватар">`;
+                } else {
+                    avatar.innerHTML = `<span>${telegramAuth.first_name.charAt(0)}</span>`;
+                }
                 logoutBtn.style.display = 'block';
+                
+                // Скрываем секцию авторизации если авторизован
+                document.getElementById('telegram-auth-section').style.display = 'none';
             }
         }
         
@@ -590,6 +625,23 @@
                 
                 // Показываем секцию Telegram уведомлений
                 document.getElementById('telegram-notifications-section').style.display = 'block';
+                document.getElementById('telegram-notifications-section').style.opacity = '1';
+                
+                // Если в Telegram WebApp - автоматически включаем уведомления
+                if (tgUser) {
+                    const tgSettings = PSBApp.storage.get('telegramSettings') || {};
+                    if (!tgSettings.webinarReminders) {
+                        tgSettings.webinarReminders = true;
+                        tgSettings.newMaterials = true;
+                        tgSettings.progressReminders = true;
+                        PSBApp.storage.set('telegramSettings', tgSettings);
+                        
+                        // Обновляем UI
+                        document.getElementById('tg-webinar-reminders').checked = true;
+                        document.getElementById('tg-new-materials').checked = true;
+                        document.getElementById('tg-progress-reminders').checked = true;
+                    }
+                }
             } else {
                 document.getElementById('telegram-not-connected').classList.remove('hidden');
                 document.getElementById('telegram-connected').classList.add('hidden');
@@ -652,9 +704,25 @@
             
             PSBApp.storage.set('telegramAuth', telegramAuth);
             
+            // Автоматически включаем Telegram уведомления
+            const tgSettings = {
+                webinarReminders: true,
+                newMaterials: true,
+                progressReminders: true
+            };
+            PSBApp.storage.set('telegramSettings', tgSettings);
+            
+            // Обновляем UI
+            document.getElementById('tg-webinar-reminders').checked = true;
+            document.getElementById('tg-new-materials').checked = true;
+            document.getElementById('tg-progress-reminders').checked = true;
+            
             // Обновляем профиль
             loadUserProfile();
             checkTelegramAuth();
+            
+            // Скрываем секцию авторизации
+            document.getElementById('telegram-auth-section').style.display = 'none';
             
             // Показываем успешное сообщение
             PSBApp.showToast('Авторизация успешна!', 'success');
