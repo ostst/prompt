@@ -376,6 +376,111 @@
             transform: scale(0.98);
         }
         
+        /* Кнопка отметки просмотра */
+        .watched-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .watched-btn.not-watched {
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: white;
+        }
+        
+        .watched-btn.not-watched:hover {
+            opacity: 0.9;
+        }
+        
+        .watched-btn.is-watched {
+            background: #10B981;
+            color: white;
+        }
+        
+        .watched-btn.is-watched i {
+            color: white;
+        }
+        
+        .dark-mode .watched-btn.not-watched {
+            background: linear-gradient(135deg, #4F46E5, #6366F1);
+        }
+        
+        /* Попап подтверждения просмотра */
+        .confirm-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .confirm-popup {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: scaleIn 0.3s ease-out;
+        }
+        
+        .dark-mode .confirm-popup {
+            background: #1e2a4a;
+        }
+        
+        .webinar-check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .webinar-check-item:hover {
+            background: #F3F4F6;
+        }
+        
+        .dark-mode .webinar-check-item:hover {
+            background: #374151;
+        }
+        
+        .webinar-check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: #10B981;
+            cursor: pointer;
+        }
+        
+        .webinar-check-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .webinar-check-date {
+            font-size: 11px;
+            color: #9CA3AF;
+            margin-top: 2px;
+        }
+        
         /* Кнопки с эффектом нажатия */
         .haptic-btn {
             transition: transform 0.1s ease;
@@ -646,10 +751,15 @@
                         <p id="user-status" class="text-xs text-white/70">Слушатель курса</p>
                     </div>
                 </div>
-                <button onclick="PSBApp.toggleDarkMode()" class="theme-toggle w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 active:scale-95 transition" aria-label="Переключить тему">
-                    <i class="fa-solid fa-sun theme-icon-light"></i>
-                    <i class="fa-solid fa-moon theme-icon-dark hidden"></i>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="PSBApp.toggleDarkMode()" class="theme-toggle w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 active:scale-95 transition" aria-label="Переключить тему">
+                        <i class="fa-solid fa-sun theme-icon-light"></i>
+                        <i class="fa-solid fa-moon theme-icon-dark hidden"></i>
+                    </button>
+                    <a href="settings.html" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 active:scale-95 transition" aria-label="Настройки">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -1142,12 +1252,11 @@
             pastList.sort((a, b) => b.date - a.date);
             pastList.forEach(item => pastContainer.appendChild(item.element));
 
-            // Прогресс курса
-            const completedCount = pastList.length;
-            const progressPercent = (completedCount / totalWebinars) * 100;
-            progressBar.style.width = progressPercent + '%';
-            progressBar.setAttribute('aria-valuenow', Math.round(progressPercent));
-            progressText.textContent = `${completedCount} из ${totalWebinars} вебинаров`;
+            // Прогресс курса (будет обновлён после initAchievements на основе отмеченных вебинаров)
+            // Начальное значение - 0, будет пересчитано
+            progressBar.style.width = '0%';
+            progressBar.setAttribute('aria-valuenow', 0);
+            progressText.textContent = `0 из ${totalWebinars} вебинаров`;
 
             // Ближайший вебинар - текст
             if (upcomingList.length > 0) {
@@ -1306,37 +1415,324 @@
         };
         
         // ========================================
+        // Система отметки просмотренных вебинаров
+        // ========================================
+        function getWatchedWebinars() {
+            return PSBApp.storage.get('watchedWebinars') || [];
+        }
+        
+        function saveWatchedWebinar(webinarId) {
+            const watched = getWatchedWebinars();
+            if (!watched.includes(webinarId)) {
+                watched.push(webinarId);
+                PSBApp.storage.set('watchedWebinars', watched);
+            }
+            return watched.length;
+        }
+        
+        function removeWatchedWebinar(webinarId) {
+            let watched = getWatchedWebinars();
+            watched = watched.filter(id => id !== webinarId);
+            PSBApp.storage.set('watchedWebinars', watched);
+            return watched.length;
+        }
+        
+        function isWebinarWatched(webinarId) {
+            return getWatchedWebinars().includes(webinarId);
+        }
+        
+        function toggleWatched(button, webinarId) {
+            const wasWatched = isWebinarWatched(webinarId);
+            let watchedCount;
+            
+            if (wasWatched) {
+                watchedCount = removeWatchedWebinar(webinarId);
+                button.className = 'watched-btn not-watched';
+                button.innerHTML = '<i class="fa-solid fa-check"></i> Отметить просмотренным';
+                PSBApp.haptic.light();
+            } else {
+                watchedCount = saveWatchedWebinar(webinarId);
+                button.className = 'watched-btn is-watched';
+                button.innerHTML = '<i class="fa-solid fa-check-double"></i> Просмотрено';
+                PSBApp.haptic.success();
+                PSBApp.showToast('Вебинар отмечен как просмотренный!', 'success');
+                PSBApp.analytics.trackAction('Просмотр вебинара', webinarId);
+            }
+            
+            // Обновляем достижения и прогресс
+            updateAchievements(watchedCount);
+            updateProgressBar(watchedCount);
+        }
+        
+        function addWatchedButtons() {
+            // Добавляем кнопки для ВСЕХ вебинаров
+            const allCards = document.querySelectorAll('.event-card');
+            
+            allCards.forEach(card => {
+                const title = card.dataset.title;
+                if (!title) return;
+                
+                // Создаем уникальный ID из названия
+                const webinarId = title.replace(/[^a-zA-Z0-9а-яА-Я]/g, '-').toLowerCase();
+                card.dataset.webinarId = webinarId;
+                
+                // Проверяем, есть ли уже кнопка
+                if (card.querySelector('.watched-btn')) return;
+                
+                const isWatched = isWebinarWatched(webinarId);
+                
+                const btn = document.createElement('button');
+                btn.className = isWatched ? 'watched-btn is-watched' : 'watched-btn not-watched';
+                btn.innerHTML = isWatched 
+                    ? '<i class="fa-solid fa-check-double"></i> Просмотрено'
+                    : '<i class="fa-solid fa-check"></i> Отметить просмотренным';
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleWatched(btn, webinarId);
+                };
+                
+                card.appendChild(btn);
+                
+                // Добавляем автоматическую отметку при клике на "Перейти к вебинару"
+                const playBtn = card.querySelector('.action-btn');
+                if (playBtn && !playBtn.dataset.watchHandler) {
+                    playBtn.dataset.watchHandler = 'true';
+                    playBtn.addEventListener('click', (e) => {
+                        // Отмечаем вебинар как просмотренный
+                        if (!isWebinarWatched(webinarId)) {
+                            const watchedCount = saveWatchedWebinar(webinarId);
+                            
+                            // Обновляем кнопку
+                            btn.className = 'watched-btn is-watched';
+                            btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Просмотрено';
+                            
+                            // Обновляем достижения
+                            updateAchievements(watchedCount);
+                            
+                            // Уведомление
+                            PSBApp.showToast('Вебинар отмечен как просмотренный!', 'success');
+                            PSBApp.analytics.trackAction('Переход на вебинар', webinarId);
+                        }
+                    });
+                }
+            });
+        }
+        
+        function updateProgressBar(watchedCount) {
+            const totalWebinars = document.querySelectorAll('.event-card').length;
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            if (progressBar && progressText) {
+                const percentage = Math.round((watchedCount / totalWebinars) * 100);
+                progressBar.style.width = `${percentage}%`;
+                progressBar.setAttribute('aria-valuenow', percentage);
+                progressText.textContent = `${watchedCount} из ${totalWebinars} вебинаров`;
+            }
+        }
+        
+        // ========================================
+        // Попап подтверждения просмотра при входе
+        // ========================================
+        function getUnconfirmedWebinars() {
+            const now = new Date();
+            const allCards = document.querySelectorAll('.event-card');
+            const unconfirmed = [];
+            
+            allCards.forEach(card => {
+                const dateStr = card.dataset.date;
+                const title = card.dataset.title;
+                if (!dateStr || !title) return;
+                
+                const webinarDate = new Date(dateStr);
+                // Проверяем: вебинар прошёл И не отмечен как просмотренный
+                if (webinarDate < now) {
+                    const webinarId = title.replace(/[^a-zA-Z0-9а-яА-Я]/g, '-').toLowerCase();
+                    if (!isWebinarWatched(webinarId)) {
+                        // Форматируем дату
+                        const formattedDate = webinarDate.toLocaleDateString('ru-RU', {
+                            day: 'numeric',
+                            month: 'long'
+                        });
+                        unconfirmed.push({
+                            id: webinarId,
+                            title: title,
+                            date: formattedDate
+                        });
+                    }
+                }
+            });
+            
+            return unconfirmed;
+        }
+        
+        function showConfirmPopup() {
+            const unconfirmed = getUnconfirmedWebinars();
+            
+            // Если нет неподтверждённых вебинаров - не показываем
+            if (unconfirmed.length === 0) return;
+            
+            // Проверяем, показывали ли уже сегодня
+            const lastShown = PSBApp.storage.get('confirmPopupLastShown');
+            if (lastShown) {
+                const lastDate = new Date(lastShown).toDateString();
+                const today = new Date().toDateString();
+                if (lastDate === today) return; // Уже показывали сегодня
+            }
+            
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'confirm-popup-overlay';
+            overlay.id = 'confirm-popup-overlay';
+            
+            let itemsHtml = '';
+            unconfirmed.forEach(webinar => {
+                itemsHtml += `
+                    <label class="webinar-check-item">
+                        <input type="checkbox" value="${webinar.id}" id="check-${webinar.id}">
+                        <div>
+                            <div style="color: ${isDark ? '#F3F4F6' : '#1F2937'}; font-weight: 500;">${webinar.title.split(':')[0]}</div>
+                            <div class="webinar-check-date">${webinar.date}</div>
+                        </div>
+                    </label>
+                `;
+            });
+            
+            overlay.innerHTML = `
+                <div class="confirm-popup">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#2D2B84] to-[#4F46E5] flex items-center justify-center">
+                            <i class="fa-solid fa-clipboard-check text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 17px; font-weight: 700; color: ${isDark ? '#FFFFFF' : '#1F2937'}">
+                                Подтвердите просмотр
+                            </h3>
+                            <p style="font-size: 12px; color: ${isDark ? '#9CA3AF' : '#6B7280'}">
+                                Отметьте вебинары, которые посмотрели
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        ${itemsHtml}
+                    </div>
+                    
+                    <button onclick="confirmWatchedWebinars()" class="w-full py-3 px-4 rounded-xl bg-[#10B981] text-white font-bold text-sm hover:opacity-90 active:scale-[0.98] transition">
+                        <i class="fa-solid fa-check mr-2"></i>
+                        Подтвердить
+                    </button>
+                    
+                    <button onclick="skipConfirmPopup()" class="w-full py-2.5 px-4 mt-2 text-sm font-medium" style="color: ${isDark ? '#9CA3AF' : '#6B7280'}">
+                        Пропустить
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            PSBApp.storage.set('confirmPopupLastShown', Date.now());
+        }
+        
+        function confirmWatchedWebinars() {
+            const checkboxes = document.querySelectorAll('#confirm-popup-overlay input[type="checkbox"]:checked');
+            let confirmedCount = 0;
+            
+            checkboxes.forEach(cb => {
+                saveWatchedWebinar(cb.value);
+                confirmedCount++;
+                
+                // Обновляем кнопку на карточке
+                const card = document.querySelector(`[data-webinar-id="${cb.value}"]`);
+                if (card) {
+                    const btn = card.querySelector('.watched-btn');
+                    if (btn) {
+                        btn.className = 'watched-btn is-watched';
+                        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Просмотрено';
+                    }
+                }
+            });
+            
+            closeConfirmPopup();
+            
+            if (confirmedCount > 0) {
+                const watchedCount = getWatchedWebinars().length;
+                updateAchievements(watchedCount);
+                PSBApp.showToast(`Отмечено: ${confirmedCount} ${getWebinarWord(confirmedCount)}`, 'success');
+                PSBApp.haptic.success();
+            }
+        }
+        
+        function getWebinarWord(count) {
+            if (count === 1) return 'вебинар';
+            if (count >= 2 && count <= 4) return 'вебинара';
+            return 'вебинаров';
+        }
+        
+        function skipConfirmPopup() {
+            closeConfirmPopup();
+            PSBApp.haptic.light();
+        }
+        
+        function closeConfirmPopup() {
+            const overlay = document.getElementById('confirm-popup-overlay');
+            if (overlay) {
+                overlay.style.animation = 'fadeOut 0.3s ease-out forwards';
+                setTimeout(() => overlay.remove(), 300);
+            }
+        }
+        
+        // ========================================
         // Достижения
         // ========================================
         const achievements = [
-            { id: 'first-step', name: 'Первый шаг', icon: 'fa-shoe-prints', condition: 1, description: 'Посетить первый вебинар' },
-            { id: 'theorist', name: 'Теоретик', icon: 'fa-book', condition: 2, description: 'Изучить теоретический модуль' },
-            { id: 'practitioner', name: 'Практик', icon: 'fa-laptop-code', condition: 3, description: 'Пройти 3 вебинара' },
-            { id: 'designer', name: 'Дизайнер', icon: 'fa-palette', condition: 5, description: 'Освоить графические нейросети' },
-            { id: 'multimedia', name: 'Мультимедиа', icon: 'fa-video', condition: 7, description: 'Изучить видео и аудио нейросети' },
-            { id: 'graduate', name: 'Выпускник', icon: 'fa-graduation-cap', condition: 9, description: 'Завершить все вебинары' }
+            { id: 'first-step', name: 'Первый шаг', icon: 'fa-shoe-prints', condition: 1, description: 'Просмотреть первый вебинар' },
+            { id: 'theorist', name: 'Теоретик', icon: 'fa-book', condition: 2, description: 'Просмотреть 2 вебинара' },
+            { id: 'practitioner', name: 'Практик', icon: 'fa-laptop-code', condition: 3, description: 'Просмотреть 3 вебинара' },
+            { id: 'designer', name: 'Дизайнер', icon: 'fa-palette', condition: 5, description: 'Просмотреть 5 вебинаров' },
+            { id: 'multimedia', name: 'Мультимедиа', icon: 'fa-video', condition: 7, description: 'Просмотреть 7 вебинаров' },
+            { id: 'graduate', name: 'Выпускник', icon: 'fa-graduation-cap', condition: 9, description: 'Просмотреть все вебинары' }
         ];
         
         function initAchievements(completedCount) {
+            // Используем количество отмеченных вебинаров
+            const watchedCount = getWatchedWebinars().length;
+            updateAchievements(watchedCount);
+            
+            // Добавляем кнопки отметки просмотра
+            addWatchedButtons();
+        }
+        
+        function updateAchievements(watchedCount) {
             const achievementsList = document.getElementById('achievements-list');
             const achievementsCount = document.getElementById('achievements-count');
             
             let unlockedCount = 0;
             let html = '';
+            const previousUnlocked = PSBApp.storage.get('achievementsUnlocked') || 0;
             
             achievements.forEach((achievement, index) => {
-                const isUnlocked = completedCount >= achievement.condition;
+                const isUnlocked = watchedCount >= achievement.condition;
                 if (isUnlocked) unlockedCount++;
                 
                 const badgeClass = isUnlocked ? getBadgeClass(index) : 'bg-white/10 text-white/50';
                 const icon = isUnlocked ? achievement.icon : 'fa-lock';
+                const isNew = isUnlocked && watchedCount === achievement.condition && unlockedCount > previousUnlocked;
                 
                 html += `
-                    <div class="achievement-badge ${badgeClass}" title="${achievement.description}">
+                    <div class="achievement-badge ${badgeClass} ${isNew ? 'just-unlocked' : ''}" title="${achievement.description}">
                         <i class="fa-solid ${icon} text-[10px]"></i>
                         <span>${achievement.name}</span>
                     </div>
                 `;
+                
+                // Показываем уведомление о новом достижении
+                if (isNew) {
+                    setTimeout(() => {
+                        PSBApp.showToast(`🏆 Новое достижение: ${achievement.name}!`, 'success');
+                        PSBApp.haptic.success();
+                    }, 300);
+                }
             });
             
             achievementsList.innerHTML = html;
@@ -1344,6 +1740,10 @@
             
             // Сохраняем достижения
             PSBApp.storage.set('achievements', { unlocked: unlockedCount, total: achievements.length });
+            PSBApp.storage.set('achievementsUnlocked', unlockedCount);
+            
+            // Обновляем прогресс-бар
+            updateProgressBar(watchedCount);
         }
         
         function getBadgeClass(index) {
@@ -2140,6 +2540,16 @@
             
             // Показываем баннер установки PWA (после онбординга)
             setTimeout(showPWAInstallBanner, 3000);
+            
+            // Показываем попап подтверждения просмотра (после всех других попапов)
+            setTimeout(() => {
+                // Не показываем если есть другие попапы
+                if (!document.getElementById('registration-overlay') && 
+                    !document.getElementById('onboarding-overlay') &&
+                    !document.getElementById('pwa-banner')) {
+                    showConfirmPopup();
+                }
+            }, 4000);
         });
     </script>
 </body>

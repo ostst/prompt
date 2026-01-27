@@ -586,8 +586,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // ========================================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registered'))
+        // Регистрируем относительно текущего пути
+        const swPath = './sw.js';
+        navigator.serviceWorker.register(swPath, { scope: './' })
+            .then(reg => console.log('Service Worker registered:', reg.scope))
             .catch(err => console.log('Service Worker registration failed:', err));
     });
 }
