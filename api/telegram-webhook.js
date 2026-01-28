@@ -16,14 +16,14 @@ module.exports = async (req, res) => {
     try {
         const update = req.body;
         
-        console.log('Received update:', JSON.stringify(update));
+        // Received update
         
         // Обработка команды /start
         if (update.message?.text?.startsWith('/start')) {
             const chatId = update.message.chat.id;
             const user = update.message.from;
             
-            console.log('Processing /start from:', chatId, user.first_name);
+            // Processing /start
             
             // Отправляем приветственное сообщение
             await sendMessage(chatId, 
@@ -86,7 +86,7 @@ module.exports = async (req, res) => {
         return res.status(200).json({ ok: true });
         
     } catch (error) {
-        console.error('Webhook error:', error);
+        // Webhook error
         return res.status(200).json({ ok: true });
     }
 };
@@ -105,10 +105,10 @@ async function sendMessage(chatId, text) {
         });
         
         const result = await response.json();
-        console.log('Send message result:', result);
+        // Send message result
         return result;
     } catch (error) {
-        console.error('Send message error:', error);
+        // Send message error
         throw error;
     }
 }

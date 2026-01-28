@@ -303,7 +303,7 @@
         </article>
 
         <!-- КНОПКА СКАЧАТЬ -->
-        <a href="Программа.pptx" download class="w-full mt-4 mb-4 btn btn-primary gap-2 shadow-lg">
+        <a href="./Программа.pptx" download="Программа_повышения_квалификации.pptx" class="w-full mt-4 mb-4 btn btn-primary gap-2 shadow-lg" onclick="downloadProgram(event);">
             <i class="fa-solid fa-download" aria-hidden="true"></i>
             <span>Скачать программу</span>
         </a>
@@ -335,5 +335,29 @@
     </nav>
 
     <script src="js/app.js"></script>
+    <script>
+        function downloadProgram(event) {
+            event.preventDefault();
+            
+            try {
+                // Пробуем стандартное скачивание
+                const link = document.createElement('a');
+                link.href = './Программа.pptx';
+                link.download = 'Программа_повышения_квалификации.pptx';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Виброотклик
+                if (window.PSBApp?.haptic) {
+                    PSBApp.haptic.success();
+                }
+            } catch (error) {
+                // Ошибка скачивания
+                // Альтернативный способ - открыть в новой вкладке
+                window.open('./Программа.pptx', '_blank');
+            }
+        }
+    </script>
 </body>
 </html>

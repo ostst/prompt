@@ -33,22 +33,24 @@ const STATIC_ASSETS = [
 
 // Установка Service Worker
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing Service Worker...');
+    // Installing Service Worker
     
     event.waitUntil(
         caches.open(STATIC_CACHE)
             .then(cache => {
-                console.log('[SW] Caching static assets');
+                // Caching static assets
                 return cache.addAll(STATIC_ASSETS);
             })
             .then(() => self.skipWaiting())
-            .catch(err => console.log('[SW] Cache error:', err))
+            .catch(err => {
+                // Cache error
+            })
     );
 });
 
 // Активация Service Worker
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activating Service Worker...');
+    // Activating Service Worker
     
     event.waitUntil(
         caches.keys()
@@ -57,7 +59,7 @@ self.addEventListener('activate', (event) => {
                     keys
                         .filter(key => key !== STATIC_CACHE && key !== DYNAMIC_CACHE)
                         .map(key => {
-                            console.log('[SW] Removing old cache:', key);
+                            // Removing old cache
                             return caches.delete(key);
                         })
                 );
@@ -140,7 +142,7 @@ async function cacheFirst(request) {
         
         return networkResponse;
     } catch (error) {
-        console.log('[SW] Fetch failed:', error);
+        // Fetch failed
         return new Response('Offline', { status: 503 });
     }
 }
@@ -164,7 +166,7 @@ async function staleWhileRevalidate(request) {
 
 // Push уведомления
 self.addEventListener('push', (event) => {
-    console.log('[SW] Push received');
+    // Push received
     
     let data = {
         title: 'ПСБ Академия',
@@ -196,7 +198,7 @@ self.addEventListener('push', (event) => {
 
 // Клик по уведомлению
 self.addEventListener('notificationclick', (event) => {
-    console.log('[SW] Notification click');
+    // Notification click
     
     event.notification.close();
     
@@ -221,7 +223,7 @@ self.addEventListener('notificationclick', (event) => {
 
 // Background Sync для отложенных действий
 self.addEventListener('sync', (event) => {
-    console.log('[SW] Background sync:', event.tag);
+    // Background sync
     
     if (event.tag === 'sync-progress') {
         event.waitUntil(syncProgress());
@@ -230,7 +232,7 @@ self.addEventListener('sync', (event) => {
 
 async function syncProgress() {
     // Здесь можно синхронизировать прогресс с сервером
-    console.log('[SW] Syncing progress...');
+    // Syncing progress
 }
 
-console.log('[SW] Service Worker loaded');
+// Service Worker loaded

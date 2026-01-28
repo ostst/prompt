@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
         });
         
     } catch (error) {
-        console.error('Send notification error:', error);
+        // Send notification error
         return res.status(500).json({ error: error.message });
     }
 };

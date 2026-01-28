@@ -28,6 +28,16 @@
     
     <title>Промпт-инженер | ПСБ Академия</title>
     
+    <!-- Preconnect для ускорения загрузки CDN -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://telegram.org" crossorigin>
+    <link rel="dns-prefetch" href="https://telegram.org">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.onesignal.com" crossorigin>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
@@ -350,13 +360,14 @@
            МИКРОАНИМАЦИИ
            ======================================== */
         .tab-content {
-            animation: fadeSlideIn 0.3s ease-out;
+            animation: fadeSlideIn 0.15s ease-out;
+            will-change: opacity, transform;
         }
         
         @keyframes fadeSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(5px);
             }
             to {
                 opacity: 1;
@@ -1233,6 +1244,26 @@
     <script src="js/app.js"></script>
     <script>
         // ========================================
+        // Утилиты безопасности
+        // ========================================
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function setSafeHTML(element, html) {
+            if (!element) return;
+            element.textContent = '';
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            while (temp.firstChild) {
+                element.appendChild(temp.firstChild);
+            }
+        }
+        
+        // ========================================
         // Главная страница - Инициализация
         // ========================================
         
@@ -1355,17 +1386,34 @@
                 });
             }
 
+            // Функция debounce для оптимизации производительности
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
             if (upcomingList.length > 0) {
                 createDots(upcomingList.length, dotsUpcoming);
-                upcomingContainer.addEventListener('scroll', () => updateDots(upcomingContainer, dotsUpcoming));
+                upcomingContainer.addEventListener('scroll', debounce(() => updateDots(upcomingContainer, dotsUpcoming), 100));
             }
 
             if (pastList.length > 0) {
                 createDots(pastList.length, dotsPast);
-                pastContainer.addEventListener('scroll', () => updateDots(pastContainer, dotsPast));
+                pastContainer.addEventListener('scroll', debounce(() => updateDots(pastContainer, dotsPast), 100));
             }
 
-            console.log(`Загружено: ${upcomingList.length} предстоящих, ${pastList.length} прошедших вебинаров`);
+            // Загружено вебинаров
+            
+            // Обновляем кэш для быстрого переключения табов
+            hasUpcomingCached = upcomingList.length > 0;
+            hasPastCached = pastList.length > 0;
             
             // Инициализация профиля пользователя
             initUserProfile();
@@ -1400,10 +1448,15 @@
                 
                 // Аватар
                 if (user.photo_url) {
-                    userAvatar.innerHTML = `<img src="${user.photo_url}" class="w-full h-full rounded-full object-cover" alt="${displayName}">`;
+                    const img = document.createElement('img');
+                    img.src = user.photo_url || '';
+                    img.className = 'w-full h-full rounded-full object-cover';
+                    img.alt = escapeHtml(displayName);
+                    userAvatar.textContent = '';
+                    userAvatar.appendChild(img);
                 } else {
                     // Первая буква имени
-                    userAvatar.innerHTML = `<span>${user.first_name.charAt(0).toUpperCase()}</span>`;
+                    userAvatar.textContent = user.first_name.charAt(0).toUpperCase();
                 }
                 
                 // Статус на основе прогресса
@@ -1955,7 +2008,7 @@
                         showWebinarNotification(webinar);
                     }, delay);
                     
-                    console.log(`Уведомление запланировано через ${Math.round(delay / 60000)} минут`);
+                    // Уведомление запланировано
                 }
             }
         }
@@ -1978,7 +2031,7 @@
         }
 
         // ========================================
-        // Переключение табов
+        // Переключение табов (оптимизированная версия)
         // ========================================
         const tabUpcoming = document.getElementById('tab-upcoming');
         const tabPast = document.getElementById('tab-past');
@@ -1988,69 +2041,68 @@
         const dotsPast = document.getElementById('dots-past');
         const emptyUpcoming = document.getElementById('empty-upcoming');
         const emptyPast = document.getElementById('empty-past');
-
+        
+        // Кэшируем состояние для производительности
+        let hasUpcomingCached = null;
+        let hasPastCached = null;
+        
         function switchTab(type) {
             PSBApp.haptic.selection();
             
-            const hasUpcoming = contentUpcoming.querySelectorAll('.event-card').length > 0;
-            const hasPast = contentPast.querySelectorAll('.event-card').length > 0;
+            // Кэшируем проверки только один раз
+            if (hasUpcomingCached === null) {
+                hasUpcomingCached = contentUpcoming.querySelectorAll('.event-card').length > 0;
+            }
+            if (hasPastCached === null) {
+                hasPastCached = contentPast.querySelectorAll('.event-card').length > 0;
+            }
             
             if (type === 'upcoming') {
+                // Обновляем табы
                 tabUpcoming.classList.add('active');
                 tabUpcoming.setAttribute('aria-selected', 'true');
                 tabPast.classList.remove('active');
                 tabPast.setAttribute('aria-selected', 'false');
                 
-                if (hasUpcoming) {
-                    contentUpcoming.classList.remove('hidden'); 
-                    contentUpcoming.classList.add('flex');
-                    dotsUpcoming.classList.remove('hidden');
-                    dotsUpcoming.classList.add('flex');
-                    emptyUpcoming.classList.add('hidden');
+                // Скрываем прошлый контент мгновенно
+                contentPast.style.display = 'none';
+                dotsPast.style.display = 'none';
+                emptyPast.style.display = 'none';
+                
+                // Показываем новый контент
+                if (hasUpcomingCached) {
+                    contentUpcoming.style.display = 'flex';
+                    dotsUpcoming.style.display = 'flex';
+                    emptyUpcoming.style.display = 'none';
                 } else {
-                    contentUpcoming.classList.add('hidden');
-                    dotsUpcoming.classList.add('hidden');
-                    emptyUpcoming.classList.remove('hidden');
-                    emptyUpcoming.classList.add('flex');
+                    contentUpcoming.style.display = 'none';
+                    dotsUpcoming.style.display = 'none';
+                    emptyUpcoming.style.display = 'flex';
                 }
                 
-                contentPast.classList.add('hidden'); 
-                contentPast.classList.remove('flex');
-                dotsPast.classList.add('hidden');
-                dotsPast.classList.remove('flex');
-                emptyPast.classList.add('hidden');
-                emptyPast.classList.remove('flex');
-                
             } else {
+                // Обновляем табы
                 tabUpcoming.classList.remove('active');
                 tabUpcoming.setAttribute('aria-selected', 'false');
                 tabPast.classList.add('active');
                 tabPast.setAttribute('aria-selected', 'true');
                 
-                contentUpcoming.classList.add('hidden'); 
-                contentUpcoming.classList.remove('flex');
-                dotsUpcoming.classList.add('hidden');
-                dotsUpcoming.classList.remove('flex');
-                emptyUpcoming.classList.add('hidden');
-                emptyUpcoming.classList.remove('flex');
+                // Скрываем прошлый контент мгновенно
+                contentUpcoming.style.display = 'none';
+                dotsUpcoming.style.display = 'none';
+                emptyUpcoming.style.display = 'none';
                 
-                if (hasPast) {
-                    contentPast.classList.remove('hidden'); 
-                    contentPast.classList.add('flex');
-                    dotsPast.classList.remove('hidden');
-                    dotsPast.classList.add('flex');
-                    emptyPast.classList.add('hidden');
+                // Показываем новый контент
+                if (hasPastCached) {
+                    contentPast.style.display = 'flex';
+                    dotsPast.style.display = 'flex';
+                    emptyPast.style.display = 'none';
                 } else {
-                    contentPast.classList.add('hidden');
-                    dotsPast.classList.add('hidden');
-                    emptyPast.classList.remove('hidden');
-                    emptyPast.classList.add('flex');
+                    contentPast.style.display = 'none';
+                    dotsPast.style.display = 'none';
+                    emptyPast.style.display = 'flex';
                 }
             }
-            
-            // Добавляем анимацию контенту
-            const activeContent = type === 'upcoming' ? contentUpcoming : contentPast;
-            activeContent.classList.add('tab-content');
         }
         
         // ========================================
@@ -2579,7 +2631,7 @@
         
         // Обработка авторизации из формы регистрации
         window.onTelegramAuthFromReg = function(user) {
-            console.log('Telegram auth from registration:', user);
+            // Telegram auth from registration
             
             // Сохраняем данные пользователя
             const telegramAuth = {
@@ -2691,9 +2743,14 @@
             }
             
             if (userAvatar && profile?.avatar) {
-                userAvatar.innerHTML = `<img src="${profile.avatar}" class="w-full h-full rounded-full object-cover" alt="Аватар">`;
+                const img = document.createElement('img');
+                img.src = profile.avatar || '';
+                img.className = 'w-full h-full rounded-full object-cover';
+                img.alt = 'Аватар';
+                userAvatar.textContent = '';
+                userAvatar.appendChild(img);
             } else if (userAvatar && profile?.firstName) {
-                userAvatar.innerHTML = `<span>${profile.firstName.charAt(0).toUpperCase()}</span>`;
+                userAvatar.textContent = profile.firstName.charAt(0).toUpperCase();
             }
             
             if (userStatus) {
@@ -2749,19 +2806,6 @@
             // Загружаем профиль для браузера
             loadBrowserProfile();
             
-            // Показываем форму регистрации (для браузера)
-            setTimeout(showRegistrationForm, 500);
-            
-            // Показываем онбординг для новых пользователей (после регистрации)
-            setTimeout(() => {
-                if (!document.getElementById('registration-overlay')) {
-                    showOnboarding();
-                }
-            }, 1000);
-            
-            // Показываем баннер установки PWA (после онбординга)
-            setTimeout(showPWAInstallBanner, 3000);
-            
             // Показываем кнопку "Приложение" под FAQ для Telegram Web App
             const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
             const appLinkTelegram = document.getElementById('app-link-telegram');
@@ -2770,15 +2814,31 @@
                 appLinkTelegram.classList.remove('hidden');
             }
             
-            // Показываем попап подтверждения просмотра (после всех других попапов)
-            setTimeout(() => {
-                // Не показываем если есть другие попапы
-                if (!document.getElementById('registration-overlay') && 
-                    !document.getElementById('onboarding-overlay') &&
-                    !document.getElementById('pwa-banner')) {
-                    showConfirmPopup();
-                }
-            }, 4000);
+            // Оптимизированная последовательность показа попапов
+            requestAnimationFrame(() => {
+                // Показываем форму регистрации (для браузера)
+                setTimeout(showRegistrationForm, 300);
+                
+                // Показываем онбординг для новых пользователей (после регистрации)
+                setTimeout(() => {
+                    if (!document.getElementById('registration-overlay')) {
+                        showOnboarding();
+                    }
+                }, 800);
+                
+                // Показываем баннер установки PWA (после онбординга)
+                setTimeout(showPWAInstallBanner, 2000);
+                
+                // Показываем попап подтверждения просмотра (после всех других попапов)
+                setTimeout(() => {
+                    // Не показываем если есть другие попапы
+                    if (!document.getElementById('registration-overlay') && 
+                        !document.getElementById('onboarding-overlay') &&
+                        !document.getElementById('pwa-banner')) {
+                        showConfirmPopup();
+                    }
+                }, 3000);
+            });
         });
     </script>
 </body>

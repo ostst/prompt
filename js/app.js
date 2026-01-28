@@ -3,13 +3,50 @@
    ======================================== */
 
 // ========================================
+// Утилиты безопасности и оптимизации
+// ========================================
+const DEBUG = false; // Установить в true для отладки
+
+// Безопасное логирование (только в режиме отладки)
+const safeLog = (...args) => {
+    if (DEBUG) {
+        console.log(...args);
+    }
+};
+
+const safeError = (...args) => {
+    if (DEBUG) {
+        console.error(...args);
+    }
+};
+
+// Санитизация HTML для защиты от XSS
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Безопасная установка innerHTML
+function setSafeHTML(element, html) {
+    if (!element) return;
+    element.textContent = ''; // Очищаем
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    while (temp.firstChild) {
+        element.appendChild(temp.firstChild);
+    }
+}
+
+// ========================================
 // Инициализация Telegram WebApp
 // ========================================
 const tg = window.Telegram?.WebApp;
 
 function initTelegramApp() {
     if (!tg) {
-        console.log('Telegram WebApp не обнаружен, работаем в браузере');
+        safeLog('Telegram WebApp не обнаружен, работаем в браузере');
         return;
     }
     
@@ -112,7 +149,7 @@ const storage = {
             localStorage.setItem(`psb_${key}`, JSON.stringify(value));
             return true;
         } catch (e) {
-            console.error('LocalStorage set error:', e);
+            safeError('LocalStorage set error:', e);
             return false;
         }
     },
@@ -122,7 +159,7 @@ const storage = {
             const item = localStorage.getItem(`psb_${key}`);
             return item ? JSON.parse(item) : defaultValue;
         } catch (e) {
-            console.error('LocalStorage get error:', e);
+            safeError('LocalStorage get error:', e);
             return defaultValue;
         }
     },
@@ -132,7 +169,7 @@ const storage = {
             localStorage.removeItem(`psb_${key}`);
             return true;
         } catch (e) {
-            console.error('LocalStorage remove error:', e);
+            safeError('LocalStorage remove error:', e);
             return false;
         }
     }
@@ -578,7 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mainContent.classList.add('fade-in');
     }
     
-    console.log('ПСБ Академия App initialized');
+    safeLog('ПСБ Академия App initialized');
 });
 
 // ========================================
@@ -589,8 +626,8 @@ if ('serviceWorker' in navigator) {
         // Регистрируем относительно текущего пути
         const swPath = './sw.js';
         navigator.serviceWorker.register(swPath, { scope: './' })
-            .then(reg => console.log('Service Worker registered:', reg.scope))
-            .catch(err => console.log('Service Worker registration failed:', err));
+            .then(reg => safeLog('Service Worker registered:', reg.scope))
+            .catch(err => safeError('Service Worker registration failed:', err));
     });
 }
 
@@ -615,7 +652,7 @@ const analytics = {
                 })
             });
         } catch (e) {
-            console.log('Analytics error:', e);
+            safeError('Analytics error:', e);
         }
     },
     
@@ -786,6 +823,8 @@ window.PSBApp = {
     progress,
     showToast,
     toggleAccordion,
+    escapeHtml,
+    setSafeHTML,
     createCountdown,
     addToCalendar,
     showSkeleton,
