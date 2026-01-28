@@ -1494,7 +1494,8 @@
         PSBApp.toggleDarkMode = function() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('psb_darkMode', isDark);
+            // Сохраняем как строку для консистентности
+            localStorage.setItem('psb_darkMode', isDark.toString());
             PSBApp.haptic.selection();
             updateThemeIcon();
         };

@@ -538,11 +538,15 @@
             checkTelegramAuth();
             checkPushPermission();
             
-            // Применяем тёмную тему
-            if (localStorage.getItem('psb_darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('dark-mode-toggle').checked = true;
-            }
+            // Устанавливаем состояние чекбокса темы после инициализации темы из app.js
+            // Используем небольшую задержку, чтобы initDarkMode() из app.js успел выполниться
+            setTimeout(() => {
+                const isDark = document.body.classList.contains('dark-mode');
+                const toggle = document.getElementById('dark-mode-toggle');
+                if (toggle) {
+                    toggle.checked = isDark;
+                }
+            }, 10);
         });
         
         function initSettings() {
@@ -782,8 +786,17 @@
         
         function toggleDarkMode(enabled) {
             document.body.classList.toggle('dark-mode', enabled);
-            localStorage.setItem('psb_darkMode', enabled);
+            // Сохраняем как строку для консистентности
+            localStorage.setItem('psb_darkMode', enabled.toString());
             PSBApp.haptic.selection();
+            
+            // Обновляем иконки темы
+            document.querySelectorAll('.theme-icon-light').forEach(el => {
+                el.style.display = enabled ? 'none' : 'block';
+            });
+            document.querySelectorAll('.theme-icon-dark').forEach(el => {
+                el.style.display = enabled ? 'block' : 'none';
+            });
         }
         
         function saveSetting(key, value) {

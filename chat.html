@@ -422,11 +422,7 @@
         
         // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
-            // Применяем тёмную тему
-            if (localStorage.getItem('psb_darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-            }
-            
+            // Тема применяется автоматически через initDarkMode() из app.js
             // Проверяем авторизацию
             checkAuth();
         });

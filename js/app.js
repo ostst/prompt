@@ -53,14 +53,30 @@ function initTelegramApp() {
     // Раскрываем на весь экран
     tg.expand();
     
-    // Устанавливаем тему
-    if (tg.colorScheme === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
-    
-    // Слушаем изменение темы
+    // Слушаем изменение темы Telegram
+    // Важно: применяем только если пользователь не установил свою настройку вручную
     tg.onEvent('themeChanged', () => {
-        document.body.classList.toggle('dark-mode', tg.colorScheme === 'dark');
+        // Проверяем, есть ли сохранённая настройка пользователя
+        const savedMode = localStorage.getItem('psb_darkMode');
+        const userHasCustomTheme = savedMode !== null;
+        
+        // Если пользователь не устанавливал тему вручную, синхронизируем с Telegram
+        if (!userHasCustomTheme) {
+            const shouldBeDark = tg.colorScheme === 'dark';
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            if (shouldBeDark !== isDark) {
+                document.body.classList.toggle('dark-mode', shouldBeDark);
+                
+                // Обновляем иконки темы
+                document.querySelectorAll('.theme-icon-light').forEach(el => {
+                    el.style.display = shouldBeDark ? 'none' : 'block';
+                });
+                document.querySelectorAll('.theme-icon-dark').forEach(el => {
+                    el.style.display = shouldBeDark ? 'block' : 'none';
+                });
+            }
+        }
     });
     
     // Настраиваем кнопку "Назад" в Telegram
@@ -106,7 +122,8 @@ const haptic = {
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const isDark = document.body.classList.contains('dark-mode');
-    localStorage.setItem('psb_darkMode', isDark);
+    // Сохраняем настройку пользователя (строка 'true' или 'false')
+    localStorage.setItem('psb_darkMode', isDark.toString());
     haptic.selection();
     
     // Обновляем иконки темы
@@ -119,15 +136,24 @@ function toggleDarkMode() {
 }
 
 function initDarkMode() {
-    // Проверяем сохранённую настройку
+    // Проверяем сохранённую настройку пользователя
     const savedMode = localStorage.getItem('psb_darkMode');
     
     if (savedMode !== null) {
-        document.body.classList.toggle('dark-mode', savedMode === 'true');
-    } else if (tg?.colorScheme === 'dark') {
-        document.body.classList.add('dark-mode');
-    } else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark-mode');
+        // Пользователь установил тему вручную - используем её
+        const shouldBeDark = savedMode === 'true';
+        document.body.classList.toggle('dark-mode', shouldBeDark);
+    } else {
+        // Пользователь не устанавливал тему - синхронизируем с Telegram или системой
+        let shouldBeDark = false;
+        
+        if (tg?.colorScheme === 'dark') {
+            shouldBeDark = true;
+        } else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+            shouldBeDark = true;
+        }
+        
+        document.body.classList.toggle('dark-mode', shouldBeDark);
     }
     
     // Обновляем иконки темы после инициализации
