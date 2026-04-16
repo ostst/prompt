@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Программа повышения квалификации «Промпт-инженер: работа с нейросетями» — обучение работе с ИИ и нейросетями от ПСБ Академии">
+    <meta name="description" content="Программа повышения квалификации «Промт-инженер: работа с нейросетями» — обучение работе с ИИ и нейросетями от ПСБ Академии">
     <meta name="theme-color" content="#2D2B84">
     <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,14 +43,7 @@
     
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "d496aabd-b8cf-4d18-946b-8228b23392f7",
-        });
-      });
-    </script>
+    <script src="js/onesignal-init.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     
@@ -94,6 +87,10 @@
         
         .dark-mode .event-card p {
             color: #B8C4D9 !important;
+        }
+        
+        .dark-mode .event-card p.webinar-desc-accent {
+            color: #93c5fd !important;
         }
         
         .dark-mode .event-card .date-label {
@@ -795,11 +792,12 @@
 
     <div class="relative z-10 p-5">
         <h1 class="text-[22px] font-bold leading-tight text-white mb-2 drop-shadow-md">
-            Программа повышения квалификации «Промпт-инженер: работа с нейросетями»
+            Программа повышения квалификации Промт-инженер:<br>
+            <span class="whitespace-nowrap">работа с нейросетями</span>
         </h1>
         <div class="flex items-center gap-2 text-white/80">
-                    <i class="fa-regular fa-calendar text-xs" aria-hidden="true"></i>
-            <p class="text-xs font-medium">27.01.2026 – 31.03.2026</p>
+            <i class="fa-regular fa-calendar text-xs" aria-hidden="true"></i>
+            <p class="text-xs font-medium">Даты: 23.03.2026 – 26.05.2026</p>
         </div>
     </div>
         </header>
@@ -881,44 +879,44 @@
         <div id="content-upcoming" class="flex overflow-x-auto gap-3 hide-scrollbar mb-3 pb-2 w-full" role="tabpanel" aria-labelledby="tab-upcoming">
 
     <!-- Карточка 1 -->
-            <article class="event-card" data-date="2026-01-27T12:00" data-title="Вебинар № 1: Введение в ИИ и нейросети" data-description="История развития ИИ и нейросетей. Кто такой промпт-инженер. Современные возможности, риски и угрозы использования LLM." data-duration="2">
+            <article class="event-card" data-date="2026-03-23T12:00" data-title="Вебинар № 1: ИИ, промт-инженер и LLM" data-description="История развития ИИ и нейросетей. Кто такой промт-инженер. Современные возможности, риски и угрозы использования LLM. Основные правила формирования запросов к LLM." data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">27.01.2026 • 12:00-14:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">23.03.2026 • 12:00-14:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="https://t.me/c/3345532243/6/114" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
+                        <a href="https://my.mts-link.ru/160107207/15287244611/record-new/14429976038/record-file/1817184535" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 1</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">История развития ИИ и нейросетей. Кто такой промпт-инженер.<br>Современные возможности, риски и угрозы использования<br>LLM. Основные правила формирования запросов к LLM.</p>
+                <p class="event-card-desc webinar-desc-accent text-[11px] text-[#2563eb] leading-snug mb-4">История развития ИИ и нейросетей. Кто такой промт-инженер.<br>Современные возможности, риски и угрозы использования LLM.<br>Основные правила формирования запросов к LLM.</p>
         <div class="mt-auto flex items-center gap-3">
-                    <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
+                    <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал" loading="lazy">
             <div>
-                <div class="text-xs font-bold">Жемал Хамидун</div>
+                <div class="text-xs font-bold">Жемал</div>
                         <div class="text-[10px] text-gray-400">Спикер по текстовым нейросетям</div>
             </div>
         </div>
             </article>
 
     <!-- Карточка 2 -->
-            <article class="event-card" data-date="2026-01-29T10:00" data-title="Вебинар № 2: Китайские ИИ-сервисы" data-description="Китайские ИИ-сервисы для работы с текстами" data-duration="2">
+            <article class="event-card" data-date="2026-03-25T10:00" data-title="Вебинар № 2: Китайские ИИ-сервисы" data-description="Китайские ИИ-сервисы для работы с текстами" data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">29.01.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">25.03.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="https://t.me/c/3345532243/6/128" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15289746667/record-new/14430767428" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 2</h3>
-        <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Китайские ИИ-сервисы для работы с текстами</p>
+        <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Китайские ИИ-сервисы для работы с текстами</p>
         <div class="mt-auto flex items-center gap-3">
                     <img src="img/Олег.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Олег Сиротюк" loading="lazy">
             <div>
@@ -929,44 +927,44 @@
             </article>
 
     <!-- Карточка 3 -->
-            <article class="event-card" data-date="2026-02-05T12:00" data-title="Вебинар № 3: Чат-боты и ИИ-агенты" data-description="Чат-боты, ИИ-ассистенты, ИИ-агенты." data-duration="2">
+            <article class="event-card" data-date="2026-04-02T12:00" data-title="Вебинар № 3: Чат-боты и ИИ-агенты" data-description="Чат-боты, ИИ-ассистенты, ИИ-агенты." data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.02.2026 • 12:00-14:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">02.04.2026 • 12:00-14:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="https://t.me/c/3345532243/6/157" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15290378871/record-new/14431571128" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 3</h3>
-        <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Чат-боты, ИИ-ассистенты, ИИ-агенты.</p>
+        <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Чат-боты, ИИ-ассистенты, ИИ-агенты.</p>
         <div class="mt-auto flex items-center gap-3">
-                    <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал Хамидун" loading="lazy">
+                    <img src="img/Жемал.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Жемал" loading="lazy">
             <div>
-                <div class="text-xs font-bold">Жемал Хамидун</div>
+                <div class="text-xs font-bold">Жемал</div>
                         <div class="text-[10px] text-gray-400">Спикер по текстовым нейросетям</div>
             </div>
         </div>
             </article>
 
     <!-- Карточка 4 -->
-            <article class="event-card" data-date="2026-02-12T10:00" data-title="Вебинар № 4: Нейросети в дизайне" data-description="Нейросети в дизайне: создание сайтов, презентаций и фирменного стиля" data-duration="2">
+            <article class="event-card" data-date="2026-04-09T10:00" data-title="Вебинар № 4: Нейросети в дизайне" data-description="Нейросети в дизайне: создание сайтов, презентаций и фирменного стиля" data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.02.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">09.04.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15292645927/record-new/14433418890" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 4</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в дизайне: создание сайтов,<br>презентаций и фирменного стиля</p>
+                <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Нейросети в дизайне: создание сайтов, презентаций и фирменного стиля</p>
         <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
             <div>
@@ -977,20 +975,20 @@
             </article>
 
     <!-- Карточка 5 -->
-            <article class="event-card" data-date="2026-02-19T10:00" data-title="Вебинар № 5: Генерация изображений" data-description="Нейросети в дизайне: генерация изображений, обработка фото" data-duration="2">
+            <article class="event-card" data-date="2026-04-16T10:00" data-title="Вебинар № 5: Генерация изображений" data-description="Нейросети в дизайне: генерация изображений, обработка фото" data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.02.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">16.04.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                        <a href="https://disk.yandex.ru/i/0M3cr6StM6hZaQ" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 5</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в дизайне: генерация изображений,<br>обработка фото</p>
+                <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Нейросети в дизайне: генерация изображений, обработка фото</p>
         <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
             <div>
@@ -1001,20 +999,20 @@
             </article>
 
     <!-- Карточка 6 -->
-            <article class="event-card" data-date="2026-02-26T10:00" data-title="Вебинар № 6: Анимация и видео" data-description="Нейросети для анимации изображений, создания видео и цифровых двойников" data-duration="2">
+            <article class="event-card" data-date="2026-04-23T10:00" data-title="Вебинар № 6: Анимация и видео" data-description="Нейросети для анимации изображений, создания видео и цифровых двойников" data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">26.02.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">23.04.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15294478061" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 6</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети для анимации изображений,<br>создания видео и цифровых двойников</p>
+                <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Нейросети для анимации изображений,<br>создания видео и цифровых двойников</p>
         <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
             <div>
@@ -1025,20 +1023,20 @@
             </article>
 
     <!-- Карточка 7 -->
-            <article class="event-card" data-date="2026-03-05T10:00" data-title="Вебинар № 7: Обработка аудио" data-description="Нейросети в обработке аудио: от транскрибации записей до генерации музыки" data-duration="2">
+            <article class="event-card" data-date="2026-04-30T10:00" data-title="Вебинар № 7: Обработка аудио" data-description="Нейросети в обработке аудио: от транскрибации записей до генерации музыки" data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">05.03.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">30.04.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15294752364" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 7</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Нейросети в обработке аудио: от транскрибации записей<br>до генерации музыки</p>
+                <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Нейросети в обработке аудио:<br>от транскрибации записей до генерации музыки</p>
         <div class="mt-auto flex items-center gap-3">
                     <img src="img/Дарина.jpg" class="speaker-img w-10 h-10 rounded-[8px] object-cover bg-gray-200" alt="Дарина Костина" loading="lazy">
             <div>
@@ -1049,37 +1047,51 @@
             </article>
 
     <!-- Карточка 8 -->
-            <article class="event-card" data-date="2026-03-12T10:00" data-title="Вебинар № 8: ИИ в банковской сфере" data-description="Использование ИИ в банковских продуктах и процессах. Этические и правовые аспекты использования нейронных сетей в банках." data-duration="2">
+            <article class="event-card" data-date="2026-05-07T10:00" data-title="Вебинар № 8: ИИ в банковской сфере" data-description="ИИ в банковских продуктах и процессах. Этика и право: нейросети в банках. Практика в банковском секторе." data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">12.03.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">07.05.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15296551422" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 8</h3>
-                <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Использование ИИ в банковских продуктах и процессах.<br>Этические и правовые аспекты использования нейронных сетей.</p>
+                <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">ИИ в банковских продуктах и процессах.<br>Этика и право: нейросети в банках.<br>Практика в банковском секторе.</p>
+        <div class="mt-auto flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[8px] bg-gray-200 flex items-center justify-center flex-shrink-0" aria-hidden="true"><i class="fa-solid fa-user text-gray-400 text-sm"></i></div>
+            <div>
+                <div class="text-xs font-bold">Без спикера пока</div>
+                        <div class="text-[10px] text-gray-400">Спикер будет объявлен позже</div>
+            </div>
+        </div>
             </article>
 
     <!-- Карточка 9 -->
-            <article class="event-card" data-date="2026-03-19T10:00" data-title="Вебинар № 9: Внедрение ИИ в ПСБ" data-description="Внедрение ИИ в Банке ПСБ" data-duration="2">
+            <article class="event-card" data-date="2026-05-14T10:00" data-title="Вебинар № 9: Внедрение ИИ в ПСБ" data-description="Внедрение ИИ в Банке ПСБ" data-duration="2">
         <div class="w-full flex justify-between items-start mb-2">
-            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">19.03.2026 • 10:00-12:00 • МСК</span>
+            <span class="date-label text-[10px] text-gray-400 font-medium mt-1">14.05.2026 • 10:00-12:00 • МСК</span>
             <div class="flex gap-1.5">
                         <button onclick="PSBApp.addToCalendar(this.closest('.event-card').dataset.title, this.closest('.event-card').dataset.date, this.closest('.event-card').dataset.duration, this.closest('.event-card').dataset.description)" class="calendar-btn bg-[#2D2B84] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] shadow-sm hover:bg-[#4338ca] active:scale-90 transition" aria-label="Добавить в календарь">
                             <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
                 </button>
-                        <a href="#" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Перейти к вебинару">
+                        <a href="https://my.mts-link.ru/j/psbacademy/15308196734" target="_blank" rel="noopener" class="action-btn bg-[#ff6b00] text-white w-7 h-7 rounded flex items-center justify-center text-[10px] active:scale-90 transition-transform shadow-sm" aria-label="Запись вебинара">
                             <i class="fa-solid fa-play" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
         <h3 class="font-bold text-lg mb-2">Вебинар № 9</h3>
-        <p class="text-[11px] text-gray-500 leading-snug mb-4 line-clamp-3">Внедрение ИИ в Банке ПСБ</p>
+        <p class="event-card-desc text-[11px] text-gray-500 leading-snug mb-4">Внедрение ИИ в Банке ПСБ</p>
+        <div class="mt-auto flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[8px] bg-gray-200 flex items-center justify-center flex-shrink-0" aria-hidden="true"><i class="fa-solid fa-user text-gray-400 text-sm"></i></div>
+            <div>
+                <div class="text-xs font-bold">Пока без спикера</div>
+                        <div class="text-[10px] text-gray-400">Спикер будет объявлен позже</div>
+            </div>
+        </div>
             </article>
 
 </div>
@@ -1231,6 +1243,10 @@
             <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
             <span>Материалы</span>
         </a>
+        <a href="chat.html" class="nav-item" aria-label="Чат">
+            <i class="fa-solid fa-comments" aria-hidden="true"></i>
+            <span>Чат</span>
+        </a>
         <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
             <i class="fa-solid fa-book" aria-hidden="true"></i>
             <span>Глоссарий</span>
@@ -1242,6 +1258,21 @@
     </nav>
 
     <script src="js/app.js"></script>
+
+    <div id="webinar-player-overlay" class="webinar-player-overlay hidden fixed inset-0 z-[10050] flex flex-col bg-[#0a0a12] text-white" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="webinar-player-title">
+        <div class="webinar-player-header flex shrink-0 items-center justify-between gap-3 border-b border-white/10 px-3 py-2 safe-area-top">
+            <h2 id="webinar-player-title" class="text-sm font-semibold truncate pr-2">Запись вебинара</h2>
+            <button type="button" class="webinar-player-close flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/10 text-lg leading-none hover:bg-white/20" aria-label="Закрыть">&times;</button>
+        </div>
+        <div class="webinar-player-frame-wrap relative min-h-0 flex-1">
+            <iframe id="webinar-player-iframe" class="absolute inset-0 h-full w-full border-0" title="Запись вебинара" sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-modals" allow="fullscreen; autoplay; encrypted-media; picture-in-picture"></iframe>
+        </div>
+        <div class="webinar-player-footer shrink-0 border-t border-white/10 px-3 py-2 safe-area-bottom">
+            <p class="mb-2 text-center text-[11px] text-white/60">Если плеер не загрузился (часть сайтов запрещает встраивание), откройте запись в браузере.</p>
+            <a id="webinar-player-external" href="#" target="_blank" rel="noopener noreferrer" class="flex w-full items-center justify-center rounded-xl bg-[#ff6b00] py-2.5 text-sm font-semibold text-white active:scale-[0.98]">Открыть в браузере</a>
+        </div>
+    </div>
+
     <script>
         // ========================================
         // Утилиты безопасности
@@ -1866,7 +1897,7 @@
             { id: 'practitioner', name: 'Практик', icon: 'fa-laptop-code', condition: 3, description: 'Просмотреть 3 вебинара' },
             { id: 'designer', name: 'Дизайнер', icon: 'fa-palette', condition: 5, description: 'Просмотреть 5 вебинаров' },
             { id: 'multimedia', name: 'Мультимедиа', icon: 'fa-video', condition: 7, description: 'Просмотреть 7 вебинаров' },
-            { id: 'graduate', name: 'Выпускник', icon: 'fa-graduation-cap', condition: 9, description: 'Просмотреть все вебинары' }
+            { id: 'graduate', name: 'Выпускник', icon: 'fa-graduation-cap', condition: 9, description: 'Просмотреть все вебинары курса' }
         ];
         
         function initAchievements(completedCount) {

@@ -12,75 +12,121 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
+    <link rel="preconnect" href="https://cdn.onesignal.com" crossorigin>
+    <!-- OneSignal Push (как на остальных страницах PWA) -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="js/onesignal-init.js" defer></script>
+    
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
     <style>
-        body {
+        body.chat-body {
             margin: 0;
-            padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background: #F2F2F2;
         }
         
-        .chat-container {
+        body.chat-body .chat-layout {
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+        
+        .dark-mode.chat-body,
+        body.chat-body.dark-mode {
+            background: #0f0f1a;
+        }
+        
+        .chat-layout {
             flex: 1;
             display: flex;
             flex-direction: column;
-            max-width: 100%;
-            margin: 0 auto;
+            min-height: 0;
             width: 100%;
             background: #F2F2F2;
         }
         
-        .dark-mode .chat-container {
+        .dark-mode .chat-layout {
             background: #0f0f1a;
         }
         
         .chat-header {
+            flex-shrink: 0;
             background: linear-gradient(135deg, #1e2a4a, #2D2B84);
             color: white;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px max(12px, env(safe-area-inset-left)) 14px max(12px, env(safe-area-inset-right));
+            padding-top: max(12px, env(safe-area-inset-top));
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
+        .chat-header-inner {
+            max-width: 28rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
         .chat-header-back {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.18);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        
+        .chat-header-back:hover {
+            background: rgba(255,255,255,0.28);
         }
         
         .chat-header-info {
             flex: 1;
+            min-width: 0;
         }
         
         .chat-header-title {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 17px;
+            letter-spacing: -0.02em;
         }
         
         .chat-header-subtitle {
             font-size: 12px;
-            opacity: 0.8;
+            opacity: 0.88;
+            margin-top: 2px;
+        }
+        
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            max-width: 28rem;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 max(12px, env(safe-area-inset-left)) 0 max(12px, env(safe-area-inset-right));
         }
         
         .chat-messages {
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
-            padding: 16px;
+            padding: 12px 0 16px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -97,10 +143,40 @@
             background: white;
             align-self: flex-start;
             border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+        
+        .message-incoming.message-teacher-msg {
+            box-shadow: inset 3px 0 0 0 #F59E0B;
         }
         
         .dark-mode .message-incoming {
             background: #1e2a4a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        }
+        
+        .role-badge {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(245, 158, 11, 0.25);
+            color: #D97706;
+            vertical-align: middle;
+        }
+        
+        .dark-mode .role-badge {
+            color: #FBBF24;
+            background: rgba(245, 158, 11, 0.2);
+        }
+        
+        .message-outgoing .role-badge {
+            background: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.95);
         }
         
         .message-outgoing {
@@ -108,6 +184,7 @@
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
         }
         
         .message-author {
@@ -125,11 +202,15 @@
             color: rgba(255,255,255,0.8);
         }
         
+        /* Текст и эмодзи — системные цветные глифы (как в Telegram / на телефоне), не шрифт Inter */
         .message-text {
             font-size: 14px;
             line-height: 1.4;
             color: #1F2937;
             word-wrap: break-word;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple Color Emoji",
+                "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji, sans-serif;
+            font-variant-emoji: emoji;
         }
         
         .dark-mode .message-text {
@@ -151,46 +232,190 @@
             color: rgba(255,255,255,0.7);
         }
         
+        .message-media {
+            margin-bottom: 6px;
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        
+        .message-image {
+            display: block;
+            width: 100%;
+            max-width: 260px;
+            max-height: 280px;
+            height: auto;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+        
+        .message-file-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4F46E5;
+            text-decoration: none;
+            word-break: break-all;
+            margin-bottom: 4px;
+        }
+        
+        .message-file-link:hover {
+            text-decoration: underline;
+        }
+        
+        .dark-mode .message-file-link {
+            color: #A5B4FC;
+        }
+        
+        .message-outgoing .message-file-link {
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
         .chat-input-container {
-            padding: 12px 16px;
-            background: white;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 30;
+            padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+            margin: 0;
+            background: #F0F2F5;
             border-top: 1px solid #E5E7EB;
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-            position: sticky;
-            bottom: 0;
         }
         
         .dark-mode .chat-input-container {
+            background: #151825;
+            border-color: #2d3548;
+        }
+        
+        .chat-emoji-panel {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 12px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+            border: 1px solid #E5E7EB;
+            z-index: 100;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .dark-mode .chat-emoji-panel {
             background: #1e2a4a;
             border-color: #374151;
         }
         
-        .chat-input {
-            flex: 1;
-            border: 2px solid #E5E7EB;
-            border-radius: 24px;
-            padding: 12px 18px;
-            font-size: 15px;
-            outline: none;
-            resize: none;
-            max-height: 120px;
-            font-family: inherit;
+        .chat-emoji-panel[hidden] {
+            display: none !important;
         }
         
-        .chat-input:focus {
-            border-color: #2D2B84;
+        .chat-emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+        }
+        
+        .chat-emoji-btn {
+            font-size: 24px;
+            line-height: 1.2;
+            padding: 8px 4px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.12s;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple Color Emoji",
+                "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji, sans-serif;
+            font-variant-emoji: emoji;
+        }
+        
+        .chat-emoji-btn:hover,
+        .chat-emoji-btn:active {
+            background: rgba(99, 102, 241, 0.15);
+        }
+        
+        .chat-input-tools {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            width: 100%;
+        }
+        
+        .chat-tool-btn {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border: none;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.12);
+            color: #4F46E5;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, transform 0.1s;
+        }
+        
+        .dark-mode .chat-tool-btn {
+            background: rgba(129, 140, 248, 0.15);
+            color: #A5B4FC;
+        }
+        
+        .chat-tool-btn:active {
+            transform: scale(0.94);
+        }
+        
+        .chat-tool-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .chat-input-wrap {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: flex-end;
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 22px;
+            padding: 4px 4px 4px 14px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        
+        .dark-mode .chat-input-wrap {
+            background: #0f0f1a;
+            border-color: #374151;
+        }
+        
+        .chat-input-wrap:focus-within {
+            border-color: #6366F1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        
+        .chat-input {
+            flex: 1;
+            width: 100%;
+            min-height: 42px;
+            max-height: 120px;
+            border: none;
+            background: transparent;
+            padding: 8px 8px 8px 0;
+            font-size: 15px;
+            line-height: 1.35;
+            outline: none;
+            resize: none;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple Color Emoji",
+                "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji, sans-serif;
+            font-variant-emoji: emoji;
         }
         
         .dark-mode .chat-input {
-            background: #0f0f1a;
-            border-color: #374151;
             color: #F3F4F6;
-        }
-        
-        .dark-mode .chat-input:focus {
-            border-color: #818CF8;
         }
         
         .chat-send-btn {
@@ -228,83 +453,214 @@
             padding: 8px 0;
         }
         
-        .auth-required {
+        .chat-auth-screen {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 16px 0 20px;
+        }
+        
+        .chat-auth-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            padding: 24px 20px 22px;
+            box-shadow: 0 4px 24px rgba(45, 43, 132, 0.08);
             text-align: center;
         }
         
-        .auth-icon {
-            width: 80px;
-            height: 80px;
+        .dark-mode .chat-auth-card {
+            background: #1e2a4a;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        }
+        
+        .chat-auth-icon-wrap {
+            margin-bottom: 18px;
+        }
+        
+        .chat-auth-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            background: linear-gradient(145deg, #2D2B84 0%, #4F46E5 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
         }
         
-        .auth-icon i {
-            font-size: 36px;
+        .chat-auth-icon i {
+            font-size: 32px;
             color: white;
         }
         
-        .auth-title {
-            font-size: 20px;
+        .chat-auth-heading {
+            font-size: 1.25rem;
             font-weight: 700;
-            color: #1F2937;
-            margin-bottom: 8px;
+            color: #111827;
+            margin: 0 0 10px;
+            line-height: 1.25;
         }
         
-        .dark-mode .auth-title {
-            color: #F3F4F6;
+        .dark-mode .chat-auth-heading {
+            color: #F9FAFB;
         }
         
-        .auth-text {
+        .chat-auth-lead {
             font-size: 14px;
+            line-height: 1.45;
             color: #6B7280;
-            margin-bottom: 24px;
-            max-width: 280px;
+            margin: 0 0 22px;
+            max-width: 32rem;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .dark-mode .auth-text {
+        .dark-mode .chat-auth-lead {
             color: #9CA3AF;
         }
         
-        .telegram-auth-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #0088cc, #00a0dc);
-            color: white;
-            font-weight: 600;
-            font-size: 15px;
-            padding: 14px 28px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
+        .chat-auth-block {
+            text-align: left;
+            margin-bottom: 0;
         }
         
-        .telegram-open-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #2D2B84, #4F46E5);
-            color: white;
+        .chat-auth-label {
+            display: block;
+            font-size: 12px;
             font-weight: 600;
-            font-size: 15px;
-            padding: 14px 28px;
-            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #6B7280;
+            margin-bottom: 8px;
+        }
+        
+        .dark-mode .chat-auth-label {
+            color: #9CA3AF;
+        }
+        
+        .chat-auth-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 16px;
+            font-size: 16px;
+            border-radius: 14px;
+            border: 2px solid #E5E7EB;
+            background: #F9FAFB;
+            font-family: inherit;
+            margin-bottom: 12px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        
+        .chat-auth-input:focus {
+            outline: none;
+            border-color: #6366F1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: #fff;
+        }
+        
+        .dark-mode .chat-auth-input {
+            background: #111827;
+            border-color: #374151;
+            color: #F3F4F6;
+        }
+        
+        .dark-mode .chat-auth-input:focus {
+            border-color: #818CF8;
+            background: #0f172a;
+        }
+        
+        .chat-auth-primary {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
             border: none;
+            border-radius: 14px;
             cursor: pointer;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: #fff;
+            transition: transform 0.1s, opacity 0.15s;
+        }
+        
+        .chat-auth-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .chat-auth-or {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 22px 0 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9CA3AF;
+        }
+        
+        .chat-auth-or::before,
+        .chat-auth-or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #E5E7EB;
+        }
+        
+        .dark-mode .chat-auth-or::before,
+        .dark-mode .chat-auth-or::after {
+            background: #374151;
+        }
+        
+        .chat-auth-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .chat-auth-actions a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
             text-decoration: none;
-            margin-top: 12px;
+            transition: transform 0.1s, opacity 0.15s;
+        }
+        
+        .chat-auth-actions a:active {
+            transform: scale(0.98);
+        }
+        
+        .chat-auth-link-secondary {
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: #fff;
+        }
+        
+        .chat-auth-link-telegram {
+            background: linear-gradient(135deg, #0088cc, #00a0dc);
+            color: #fff;
+        }
+        
+        .chat-auth-link-outline {
+            background: transparent;
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            color: #4F46E5;
+        }
+        
+        .dark-mode .chat-auth-link-outline {
+            border-color: rgba(129, 140, 248, 0.55);
+            color: #A5B4FC;
         }
         
         .empty-chat {
@@ -315,13 +671,50 @@
             justify-content: center;
             color: #9CA3AF;
             text-align: center;
-            padding: 40px;
+            padding: 32px 20px 48px;
+        }
+        
+        .empty-chat-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .dark-mode .empty-chat-icon-wrap {
+            background: rgba(129, 140, 248, 0.12);
         }
         
         .empty-chat i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
+            font-size: 32px;
+            opacity: 0.65;
+            color: #6366F1;
+        }
+        
+        .dark-mode .empty-chat i {
+            color: #818CF8;
+        }
+        
+        .empty-chat-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4B5563;
+            margin-bottom: 6px;
+        }
+        
+        .dark-mode .empty-chat-title {
+            color: #D1D5DB;
+        }
+        
+        .empty-chat-hint {
+            font-size: 13px;
+            color: #9CA3AF;
+            line-height: 1.4;
+            max-width: 240px;
         }
         
         .online-count {
@@ -336,73 +729,189 @@
             border-radius: 50%;
             background: #10B981;
         }
+        
+        .chat-typing {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 2px 10px;
+            font-size: 13px;
+            line-height: 1.35;
+            color: #6B7280;
+        }
+        
+        .dark-mode .chat-typing {
+            color: #9CA3AF;
+        }
+        
+        .chat-typing[hidden] {
+            display: none !important;
+        }
+        
+        .chat-typing-ico {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4F46E5;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        
+        .dark-mode .chat-typing-ico {
+            background: rgba(129, 140, 248, 0.18);
+            color: #A5B4FC;
+        }
+        
+        .chat-typing-label {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .chat-typing-ico i {
+            animation: chat-typing-pulse 1.1s ease-in-out infinite;
+        }
+        
+        @keyframes chat-typing-pulse {
+            0%, 100% { opacity: 0.75; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
     </style>
 </head>
-<body class="bg-[#F2F2F2]">
-    <div class="chat-container">
-        <!-- Header -->
-        <div class="chat-header">
-            <a href="index.html" class="chat-header-back">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <div class="chat-header-info">
-                <div class="chat-header-title">Чат студентов</div>
-                <div class="chat-header-subtitle online-count">
-                    <span class="online-dot"></span>
-                    <span id="online-count">Загрузка...</span>
+<body class="chat-body">
+    <div class="chat-layout">
+        <header class="chat-header">
+            <div class="chat-header-inner">
+                <a href="index.html" class="chat-header-back" aria-label="Назад">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <div class="chat-header-info">
+                    <div class="chat-header-title">Чат курса</div>
+                    <div class="chat-header-subtitle online-count">
+                        <span class="online-dot" aria-hidden="true"></span>
+                        <span id="online-count">Студенты и преподаватель</span>
+                    </div>
                 </div>
             </div>
-            <a href="https://t.me/c/3345532243" target="_blank" class="chat-header-back" title="Открыть в Telegram" id="telegram-link" style="display: none;">
-                <i class="fa-brands fa-telegram"></i>
-            </a>
-        </div>
+        </header>
         
-        <!-- Auth Required (показывается если не авторизован) -->
-        <div class="auth-required" id="auth-required" style="display: none;">
-            <div class="auth-icon">
-                <i class="fa-solid fa-comments"></i>
+        <main class="chat-main">
+        <!-- Вход в чат -->
+        <div class="chat-auth-screen" id="auth-required" style="display: none;">
+            <div class="chat-auth-card">
+                <div class="chat-auth-icon-wrap">
+                    <div class="chat-auth-icon">
+                        <i class="fa-solid fa-comments" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <h1 class="chat-auth-heading" id="auth-title-text">Войти в чат</h1>
+                <p class="chat-auth-lead" id="auth-desc-text">
+                    Общайтесь с однокурсниками и преподавателем: введите имя ниже или воспользуйтесь профилем / Telegram.
+                </p>
+                <div class="chat-auth-block" id="guest-chat-box">
+                    <label class="chat-auth-label" for="guest-chat-name">Как к вам обращаться?</label>
+                    <input type="text" id="guest-chat-name" class="chat-auth-input" maxlength="80" placeholder="Имя или ник" autocomplete="nickname">
+                    <button type="button" class="chat-auth-primary" id="guest-chat-join">Войти в чат</button>
+                </div>
+                <div class="chat-auth-or" role="separator"><span>или</span></div>
+                <div class="chat-auth-actions">
+                    <a href="settings.html" class="chat-auth-link-secondary">
+                        <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                        <span>Настройки профиля</span>
+                    </a>
+                    <a href="https://t.me/APSB_AI_Prompter_bot?start=auth" class="chat-auth-link-telegram">
+                        <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+                        <span>Войти через Telegram</span>
+                    </a>
+                    <a href="https://t.me/c/3345532243" target="_blank" rel="noopener noreferrer" class="chat-auth-link-outline">
+                        <i class="fa-brands fa-telegram" aria-hidden="true"></i>
+                        <span>Группа курса в Telegram</span>
+                    </a>
+                </div>
             </div>
-            <div class="auth-title">Чат студентов</div>
-            <div class="auth-text">
-                Авторизуйтесь через Telegram, чтобы участвовать в обсуждениях с другими студентами
-            </div>
-            <a href="https://t.me/APSB_AI_Prompter_bot?start=auth" class="telegram-auth-btn">
-                <i class="fa-brands fa-telegram"></i>
-                Войти через Telegram
-            </a>
-            <a href="https://t.me/c/3345532243" target="_blank" class="telegram-open-btn">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                Открыть чат в Telegram
-            </a>
         </div>
         
         <!-- Messages -->
         <div class="chat-messages" id="chat-messages" style="display: none;">
             <div class="empty-chat" id="empty-chat">
-                <i class="fa-regular fa-comments"></i>
-                <div>Сообщений пока нет</div>
-                <div style="font-size: 13px; margin-top: 4px;">Будьте первым!</div>
+                <div class="empty-chat-icon-wrap">
+                    <i class="fa-regular fa-comments" aria-hidden="true"></i>
+                </div>
+                <div class="empty-chat-title">Пока нет сообщений</div>
+                <div class="empty-chat-hint">Напишите текст, отправьте фото или файл — обсуждение открыто для всех участников курса.</div>
             </div>
         </div>
         
-        <!-- Input -->
+        <!-- Поле ввода: вложения, эмодзи, текст, отправка -->
         <div class="chat-input-container" id="chat-input-container" style="display: none;">
-            <textarea 
-                class="chat-input" 
-                id="message-input" 
-                placeholder="Написать сообщение..." 
-                rows="1"
-                maxlength="1000"
-            ></textarea>
-            <button class="chat-send-btn" id="send-btn" onclick="sendMessage()">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
+            <div class="chat-typing" id="chat-typing" hidden role="status" aria-live="polite">
+                <span class="chat-typing-ico" aria-hidden="true">
+                    <i class="fa-solid fa-user-pen"></i>
+                </span>
+                <span class="chat-typing-label" id="chat-typing-label"></span>
+            </div>
+            <div class="chat-emoji-panel" id="emoji-panel" hidden>
+                <div class="chat-emoji-grid" id="emoji-grid" role="list"></div>
+            </div>
+            <div class="chat-input-tools">
+                <input type="file" id="chat-file-input" class="visually-hidden" accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1">
+                <button type="button" class="chat-tool-btn" id="btn-attach" title="Прикрепить файл" aria-label="Прикрепить файл">
+                    <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="chat-tool-btn" id="btn-emoji" title="Эмодзи" aria-label="Эмодзи">
+                    <i class="fa-regular fa-face-smile" aria-hidden="true"></i>
+                </button>
+                <div class="chat-input-wrap">
+                    <textarea 
+                        class="chat-input" 
+                        id="message-input" 
+                        placeholder="Сообщение..." 
+                        rows="1"
+                        maxlength="2000"
+                        autocomplete="off"
+                    ></textarea>
+                </div>
+                <button type="button" class="chat-send-btn" id="send-btn" title="Отправить" aria-label="Отправить">
+                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
+        </main>
     </div>
+    
+    <nav class="bottom-nav" role="navigation" aria-label="Основная навигация">
+        <a href="index.html" class="nav-item" aria-label="Главная">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Главная</span>
+        </a>
+        <a href="course_program.html" class="nav-item" aria-label="Программа">
+            <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+            <span>Программа</span>
+        </a>
+        <a href="materials.html" class="nav-item" aria-label="Материалы">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            <span>Материалы</span>
+        </a>
+        <a href="chat.html" class="nav-item active" aria-current="page" aria-label="Чат">
+            <i class="fa-solid fa-comments" aria-hidden="true"></i>
+            <span>Чат</span>
+        </a>
+        <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <span>Глоссарий</span>
+        </a>
+        <a href="faq.html" class="nav-item" aria-label="FAQ">
+            <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+            <span>FAQ</span>
+        </a>
+    </nav>
     
     <script src="js/app.js"></script>
     <script>
-        // Firebase конфигурация
         const firebaseConfig = {
             apiKey: "AIzaSyDhUac_lBghIEQ8Sj15iCsWu7GVZcCOA3Y",
             authDomain: "psb-academy-chat.firebaseapp.com",
@@ -413,110 +922,455 @@
             appId: "1:701758501216:web:6311fcc657b0d350626e05"
         };
         
-        // Telegram группа
-        const TELEGRAM_GROUP_LINK = 'https://t.me/c/3345532243';
+        /** Числовые Telegram user id преподавателей (можно узнать у @userinfobot). Их сообщения помечаются в чате. */
+        const TEACHER_TELEGRAM_IDS = new Set([
+            // 123456789,
+        ]);
+        
+        const CHAT_EMOJIS = [
+            '😀', '😃', '😄', '😁', '😅', '😂', '🙂', '😉', '😊', '😍', '🤔', '👍', '👎', '👏', '🙏',
+            '🔥', '❤️', '💛', '✨', '🎉', '💡', '📌', '✅', '❌', '📎', '☕', '📚', '💼', '🎯', '⚠️', '🇷🇺'
+        ];
         
         let currentUser = null;
         let messagesRef = null;
+        let typingRef = null;
+        let typingHeartbeatId = null;
+        let typingDebounceTimer = null;
         let isFirebaseConfigured = false;
+        let firebaseAppStarted = false;
+        let chatListenersReady = false;
+        const seenMessageKeys = new Set();
         
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            // Тема применяется автоматически через initDarkMode() из app.js
-            // Проверяем авторизацию
-            checkAuth();
-        });
+        function safeTypingPath(userId) {
+            return String(userId).replace(/[.#$\[\]/]/g, '_');
+        }
         
-        function checkAuth() {
-            // Проверяем Telegram WebApp
-            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
-            
-            if (tgUser) {
-                // В Telegram - перенаправляем в группу
-                currentUser = {
-                    id: tgUser.id,
-                    name: `${tgUser.first_name}${tgUser.last_name ? ' ' + tgUser.last_name : ''}`,
-                    username: tgUser.username
-                };
-                
-                // В Telegram Mini App показываем кнопку перехода в группу
-                document.getElementById('auth-required').style.display = 'flex';
-                document.querySelector('.auth-title').textContent = 'Перейти в чат';
-                document.querySelector('.auth-text').textContent = 'Чат студентов находится в Telegram группе';
-                document.querySelector('.telegram-auth-btn').style.display = 'none';
-                document.querySelector('.telegram-open-btn').innerHTML = '<i class="fa-brands fa-telegram"></i> Открыть чат в Telegram';
-                return;
-            }
-            
-            // Проверяем локальный профиль или Telegram авторизацию
-            const profile = PSBApp.storage.get('userProfile');
-            const telegramAuth = PSBApp.storage.get('telegramAuth');
-            
-            if (profile || telegramAuth) {
-                currentUser = {
-                    id: telegramAuth?.id || profile?.odId || Date.now(),
-                    name: telegramAuth ? 
-                        `${telegramAuth.first_name}${telegramAuth.last_name ? ' ' + telegramAuth.last_name : ''}` :
-                        `${profile.firstName}${profile.lastName ? ' ' + profile.lastName : ''}`,
-                    username: telegramAuth?.username || null
-                };
-                
-                initChat();
-            } else {
-                // Не авторизован - показываем форму
-                document.getElementById('auth-required').style.display = 'flex';
+        function pulseTypingState() {
+            if (!typingRef || !currentUser || !isFirebaseConfigured) return;
+            typingRef.child(safeTypingPath(currentUser.id)).set({
+                userName: currentUser.name || 'Участник',
+                ts: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+        
+        function stopTypingHeartbeat() {
+            if (typingHeartbeatId) {
+                clearInterval(typingHeartbeatId);
+                typingHeartbeatId = null;
             }
         }
         
+        function clearMyTypingState() {
+            stopTypingHeartbeat();
+            if (typingDebounceTimer) {
+                clearTimeout(typingDebounceTimer);
+                typingDebounceTimer = null;
+            }
+            if (!typingRef || !currentUser) return;
+            typingRef.child(safeTypingPath(currentUser.id)).remove();
+        }
+        
+        function startTypingHeartbeat() {
+            stopTypingHeartbeat();
+            typingHeartbeatId = setInterval(() => {
+                const ta = document.getElementById('message-input');
+                if (!ta || !String(ta.value).trim()) {
+                    clearMyTypingState();
+                    return;
+                }
+                pulseTypingState();
+            }, 2200);
+        }
+        
+        function onComposerTypingInput() {
+            const ta = document.getElementById('message-input');
+            if (!ta || !typingRef || !currentUser || !isFirebaseConfigured) return;
+            const v = String(ta.value).trim();
+            if (!v) {
+                clearMyTypingState();
+                return;
+            }
+            if (typingDebounceTimer) clearTimeout(typingDebounceTimer);
+            typingDebounceTimer = setTimeout(() => {
+                typingDebounceTimer = null;
+                pulseTypingState();
+                startTypingHeartbeat();
+            }, 350);
+        }
+        
+        function renderTypingBar(names) {
+            const bar = document.getElementById('chat-typing');
+            const label = document.getElementById('chat-typing-label');
+            if (!bar || !label) return;
+            if (!names.length) {
+                bar.hidden = true;
+                label.textContent = '';
+                return;
+            }
+            bar.hidden = false;
+            let s;
+            if (names.length === 1) {
+                s = names[0] + ' печатает…';
+            } else if (names.length === 2) {
+                s = names[0] + ' и ' + names[1] + ' печатают…';
+            } else {
+                s = names[0] + ', ' + names[1] + ' и ещё ' + (names.length - 2) + ' печатают…';
+            }
+            label.textContent = s;
+        }
+        
+        function bindTypingListener() {
+            if (!typingRef) return;
+            typingRef.on('value', (snap) => {
+                const val = snap.val();
+                const uid = currentUser && currentUser.id;
+                const myKey = uid != null ? safeTypingPath(uid) : null;
+                const names = [];
+                const now = Date.now();
+                if (val && typeof val === 'object') {
+                    Object.keys(val).forEach((k) => {
+                        if (k === myKey) return;
+                        const row = val[k];
+                        if (!row) return;
+                        const ts = typeof row.ts === 'number' ? row.ts : now;
+                        if (now - ts > 10000) return;
+                        const n = (row.userName && String(row.userName).trim()) || 'Участник';
+                        names.push(n);
+                    });
+                }
+                renderTypingBar(names);
+            });
+        }
+        
+        function ensureStableChatId() {
+            let id = PSBApp.storage.get('chatStableUserId');
+            if (!id) {
+                id = (typeof crypto !== 'undefined' && crypto.randomUUID)
+                    ? ('local_' + crypto.randomUUID())
+                    : ('local_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2));
+                PSBApp.storage.set('chatStableUserId', id);
+            }
+            return id;
+        }
+        
+        function isTeacherTelegramId(numericId) {
+            return TEACHER_TELEGRAM_IDS.has(Number(numericId));
+        }
+        
+        function buildChatUser() {
+            const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+            if (tgUser) {
+                const idNum = tgUser.id;
+                const isTeacher = isTeacherTelegramId(idNum);
+                return {
+                    id: 'tg_' + idNum,
+                    name: `${tgUser.first_name}${tgUser.last_name ? ' ' + tgUser.last_name : ''}`.trim(),
+                    role: isTeacher ? 'teacher' : 'student',
+                    username: tgUser.username || null
+                };
+            }
+            const ta = PSBApp.storage.get('telegramAuth');
+            if (ta && ta.id) {
+                const isTeacher = isTeacherTelegramId(ta.id);
+                return {
+                    id: 'tg_' + ta.id,
+                    name: `${ta.first_name}${ta.last_name ? ' ' + ta.last_name : ''}`.trim(),
+                    role: isTeacher ? 'teacher' : 'student',
+                    username: ta.username || null
+                };
+            }
+            const profile = PSBApp.storage.get('userProfile');
+            if (profile && profile.firstName) {
+                return {
+                    id: ensureStableChatId(),
+                    name: `${profile.firstName}${profile.lastName ? ' ' + profile.lastName : ''}`.trim(),
+                    role: 'student',
+                    username: null
+                };
+            }
+            const guestName = PSBApp.storage.get('guestChatDisplayName');
+            if (guestName && String(guestName).trim()) {
+                return {
+                    id: ensureStableChatId(),
+                    name: String(guestName).trim(),
+                    role: 'student',
+                    username: null
+                };
+            }
+            return null;
+        }
+        
+        function isMessageFromTeacher(msg) {
+            if (msg.role === 'teacher') return true;
+            if (msg.userId != null && String(msg.userId).startsWith('tg_')) {
+                const nid = parseInt(String(msg.userId).replace(/^tg_/, ''), 10);
+                if (!isNaN(nid)) return isTeacherTelegramId(nid);
+            }
+            return false;
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('guest-chat-join')?.addEventListener('click', onGuestJoin);
+            document.getElementById('guest-chat-name')?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') onGuestJoin();
+            });
+            const gn = document.getElementById('guest-chat-name');
+            if (gn) gn.value = PSBApp.storage.get('guestChatDisplayName') || '';
+            document.addEventListener('click', (e) => {
+                const panel = document.getElementById('emoji-panel');
+                const btnEmoji = document.getElementById('btn-emoji');
+                if (!panel || panel.hidden || !btnEmoji) return;
+                if (btnEmoji.contains(e.target) || panel.contains(e.target)) return;
+                panel.hidden = true;
+            });
+            checkAuth();
+        });
+        
+        function onGuestJoin() {
+            const inp = document.getElementById('guest-chat-name');
+            const v = inp && inp.value.trim();
+            if (!v) {
+                PSBApp.showToast('Введите имя', 'error');
+                return;
+            }
+            PSBApp.storage.set('guestChatDisplayName', v);
+            ensureStableChatId();
+            checkAuth();
+        }
+        
+        function checkAuth() {
+            currentUser = buildChatUser();
+            if (currentUser) {
+                initChat();
+                return;
+            }
+            document.getElementById('auth-required').style.display = 'flex';
+            const box = document.getElementById('guest-chat-box');
+            if (box) box.style.display = 'block';
+        }
+        
         function initChat() {
-            // Проверяем конфигурацию Firebase
             if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
-                // Firebase не настроен - показываем сообщение
                 document.getElementById('auth-required').style.display = 'flex';
-                document.querySelector('.auth-title').textContent = 'Чат в Telegram';
-                document.querySelector('.auth-text').textContent = 'Присоединяйтесь к обсуждению в нашей Telegram группе';
-                document.querySelector('.telegram-auth-btn').style.display = 'none';
+                const box = document.getElementById('guest-chat-box');
+                if (box) box.style.display = 'none';
+                const t = document.getElementById('auth-title-text');
+                const d = document.getElementById('auth-desc-text');
+                if (t) t.textContent = 'Чат в Telegram';
+                if (d) d.textContent = 'Настройте Firebase или откройте группу курса в Telegram.';
                 return;
             }
             
             isFirebaseConfigured = true;
             
-            // Инициализируем Firebase
-            firebase.initializeApp(firebaseConfig);
-            messagesRef = firebase.database().ref('messages');
+            if (!firebaseAppStarted) {
+                firebase.initializeApp(firebaseConfig);
+                firebaseAppStarted = true;
+            }
+            if (!messagesRef) {
+                messagesRef = firebase.database().ref('messages');
+            }
+            if (!typingRef) {
+                typingRef = firebase.database().ref('typing');
+            }
+            if (currentUser && typingRef) {
+                typingRef.child(safeTypingPath(currentUser.id)).onDisconnect().remove();
+            }
             
-            // Показываем чат
             document.getElementById('auth-required').style.display = 'none';
             document.getElementById('chat-messages').style.display = 'flex';
             document.getElementById('chat-input-container').style.display = 'flex';
-            document.getElementById('telegram-link').style.display = 'flex';
             
-            // Загружаем сообщения
-            loadMessages();
-            
-            // Автоматически расширяем textarea
-            const input = document.getElementById('message-input');
-            input.addEventListener('input', autoResize);
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
+            if (!chatListenersReady) {
+                chatListenersReady = true;
+                loadMessages();
+                bindTypingListener();
+                const input = document.getElementById('message-input');
+                input.addEventListener('input', function onComposerInput() {
+                    autoResize.call(this);
+                    onComposerTypingInput();
+                });
+                input.addEventListener('blur', () => clearMyTypingState());
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+                initChatComposer();
+            }
+        }
+        
+        function initChatComposer() {
+            const grid = document.getElementById('emoji-grid');
+            if (grid && !grid.dataset.ready) {
+                grid.dataset.ready = '1';
+                CHAT_EMOJIS.forEach((em) => {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'chat-emoji-btn';
+                    b.setAttribute('aria-label', 'Вставить эмодзи');
+                    b.textContent = em;
+                    b.addEventListener('click', () => {
+                        insertAtCursor(document.getElementById('message-input'), em);
+                        const panel = document.getElementById('emoji-panel');
+                        if (panel) panel.hidden = true;
+                        PSBApp.haptic.light();
+                    });
+                    grid.appendChild(b);
+                });
+            }
+            document.getElementById('btn-emoji')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const panel = document.getElementById('emoji-panel');
+                if (panel) panel.hidden = !panel.hidden;
             });
+            document.getElementById('btn-attach')?.addEventListener('click', () => {
+                document.getElementById('chat-file-input')?.click();
+            });
+            document.getElementById('chat-file-input')?.addEventListener('change', onChatFileSelected);
+            document.getElementById('send-btn')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                sendMessage();
+            });
+        }
+        
+        function insertAtCursor(textarea, text) {
+            if (!textarea) return;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const v = textarea.value;
+            textarea.value = v.slice(0, start) + text + v.slice(end);
+            const pos = start + text.length;
+            textarea.selectionStart = textarea.selectionEnd = pos;
+            textarea.focus();
+            autoResize.call(textarea);
+        }
+        
+        function uploadChatFile(file) {
+            const storage = firebase.storage();
+            const safeId = String(currentUser.id).replace(/[/#[\].$]/g, '_');
+            const safeName = (file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 120);
+            const path = `chat_uploads/${safeId}/${Date.now()}_${safeName}`;
+            const ref = storage.ref(path);
+            return ref.put(file).then((snap) => snap.ref.getDownloadURL());
+        }
+        
+        function compressImageToDataUrl(file, maxSize, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > maxSize || h > maxSize) {
+                            if (w > h) {
+                                h = Math.round((h * maxSize) / w);
+                                w = maxSize;
+                            } else {
+                                w = Math.round((w * maxSize) / h);
+                                h = maxSize;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w;
+                        canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        try {
+                            resolve(canvas.toDataURL('image/jpeg', quality));
+                        } catch {
+                            resolve(ev.target.result);
+                        }
+                    };
+                    img.onerror = () => reject(new Error('img'));
+                    img.src = ev.target.result;
+                };
+                reader.onerror = () => reject(new Error('read'));
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        async function onChatFileSelected(e) {
+            const file = e.target.files && e.target.files[0];
+            e.target.value = '';
+            if (!file || !currentUser || !messagesRef) return;
             
-            // Обновляем счётчик онлайн
-            updateOnlineCount();
+            clearMyTypingState();
+            
+            const maxBytes = 12 * 1024 * 1024;
+            if (file.size > maxBytes) {
+                PSBApp.showToast('Файл больше 12 МБ', 'error');
+                return;
+            }
+            
+            const sendBtn = document.getElementById('send-btn');
+            const attachBtn = document.getElementById('btn-attach');
+            if (sendBtn) sendBtn.disabled = true;
+            if (attachBtn) attachBtn.disabled = true;
+            
+            try {
+                const ta = document.getElementById('message-input');
+                const caption = (ta && ta.value.trim()) || '';
+                const base = {
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    timestamp: Date.now(),
+                    role: currentUser.role || 'student',
+                    text: caption
+                };
+                
+                const isImage = file.type.startsWith('image/');
+                
+                try {
+                    const url = await uploadChatFile(file);
+                    if (isImage) {
+                        base.msgType = 'image';
+                        base.imageUrl = url;
+                    } else {
+                        base.msgType = 'file';
+                        base.fileUrl = url;
+                        base.fileName = file.name || 'Файл';
+                    }
+                } catch (uploadErr) {
+                    if (isImage) {
+                        const dataUrl = await compressImageToDataUrl(file, 1400, 0.82);
+                        if (dataUrl.length > 480000) {
+                            PSBApp.showToast('Фото слишком большое. Включите Firebase Storage или выберите файл меньше.', 'error');
+                            return;
+                        }
+                        base.msgType = 'image';
+                        base.imageData = dataUrl;
+                    } else {
+                        PSBApp.showToast('Загрузка файла недоступна. Включите Firebase Storage для вложений.', 'error');
+                        return;
+                    }
+                }
+                
+                messagesRef.push(base);
+                if (ta) {
+                    ta.value = '';
+                    ta.style.height = 'auto';
+                }
+                PSBApp.haptic.light();
+            } catch (err) {
+                PSBApp.showToast('Не удалось отправить файл', 'error');
+            } finally {
+                if (sendBtn) sendBtn.disabled = false;
+                if (attachBtn) attachBtn.disabled = false;
+            }
         }
         
         function loadMessages() {
             messagesRef.orderByChild('timestamp').limitToLast(100).on('child_added', (snapshot) => {
+                const key = snapshot.key;
+                if (seenMessageKeys.has(key)) return;
+                seenMessageKeys.add(key);
                 const message = snapshot.val();
                 displayMessage(message);
-                
-                // Скрываем пустой чат
-                document.getElementById('empty-chat').style.display = 'none';
-                
-                // Прокручиваем вниз
+                const empty = document.getElementById('empty-chat');
+                if (empty) empty.style.display = 'none';
                 const container = document.getElementById('chat-messages');
                 container.scrollTop = container.scrollHeight;
             });
@@ -524,38 +1378,86 @@
         
         function displayMessage(message) {
             const container = document.getElementById('chat-messages');
-            const isOwn = message.userId === currentUser?.id;
+            const uid = currentUser && currentUser.id;
+            const isOwn = String(message.userId) === String(uid);
+            const teacher = isMessageFromTeacher(message);
             
             const msgEl = document.createElement('div');
-            msgEl.className = `message ${isOwn ? 'message-outgoing' : 'message-incoming'}`;
+            let cls = 'message ' + (isOwn ? 'message-outgoing' : 'message-incoming');
+            if (teacher) cls += ' message-teacher-msg';
+            msgEl.className = cls;
             
-            const time = new Date(message.timestamp).toLocaleTimeString('ru-RU', {
+            const time = new Date(message.timestamp || 0).toLocaleTimeString('ru-RU', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
+            const name = message.userName || 'Участник';
+            const badge = teacher ? '<span class="role-badge">Преподаватель</span>' : '';
             
-            msgEl.innerHTML = `
-                ${!isOwn ? `<div class="message-author">${escapeHtml(message.userName)}</div>` : ''}
-                <div class="message-text">${escapeHtml(message.text)}</div>
-                <div class="message-time">${time}</div>
-            `;
+            if (!isOwn) {
+                msgEl.innerHTML = `<div class="message-author">${escapeHtml(name)}${badge}</div>`;
+            } else if (teacher) {
+                msgEl.innerHTML = '<div class="message-author" style="opacity:.95;font-size:11px;">Вы ' + badge + '</div>';
+            }
+            
+            const hasImage = message.msgType === 'image' && (message.imageUrl || message.imageData);
+            if (hasImage) {
+                const wrap = document.createElement('div');
+                wrap.className = 'message-media';
+                const img = document.createElement('img');
+                img.className = 'message-image';
+                img.src = message.imageUrl || message.imageData;
+                img.alt = '';
+                img.loading = 'lazy';
+                wrap.appendChild(img);
+                msgEl.appendChild(wrap);
+            }
+            
+            if (message.msgType === 'file' && message.fileUrl) {
+                const a = document.createElement('a');
+                a.className = 'message-file-link';
+                a.href = message.fileUrl;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                const ic = document.createElement('i');
+                ic.className = 'fa-solid fa-file-lines';
+                ic.setAttribute('aria-hidden', 'true');
+                a.appendChild(ic);
+                a.appendChild(document.createTextNode(' ' + (message.fileName || 'Файл')));
+                msgEl.appendChild(a);
+            }
+            
+            const textStr = (message.text != null && String(message.text).trim()) ? String(message.text).trim() : '';
+            if (textStr) {
+                const t = document.createElement('div');
+                t.className = 'message-text';
+                t.textContent = textStr;
+                msgEl.appendChild(t);
+            }
+            
+            const timeEl = document.createElement('div');
+            timeEl.className = 'message-time';
+            timeEl.textContent = time;
+            msgEl.appendChild(timeEl);
             
             container.appendChild(msgEl);
         }
         
         function sendMessage() {
-            if (!isFirebaseConfigured || !currentUser) return;
+            if (!isFirebaseConfigured || !currentUser || !messagesRef) return;
             
             const input = document.getElementById('message-input');
             const text = input.value.trim();
-            
             if (!text) return;
+            
+            clearMyTypingState();
             
             const message = {
                 userId: currentUser.id,
                 userName: currentUser.name,
                 text: text,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                role: currentUser.role || 'student'
             };
             
             messagesRef.push(message);
@@ -571,14 +1473,9 @@
             this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         }
         
-        function updateOnlineCount() {
-            // Простой счётчик - в реальном приложении используйте Firebase Presence
-            document.getElementById('online-count').textContent = 'Чат студентов';
-        }
-        
         function escapeHtml(text) {
             const div = document.createElement('div');
-            div.textContent = text;
+            div.textContent = text == null ? '' : String(text);
             return div.innerHTML;
         }
     </script>

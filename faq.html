@@ -16,14 +16,7 @@
     
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "d496aabd-b8cf-4d18-946b-8228b23392f7",
-        });
-      });
-    </script>
+    <script src="js/onesignal-init.js" defer></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -226,6 +219,10 @@
         <a href="materials.html" class="nav-item" aria-label="Материалы">
             <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
             <span>Материалы</span>
+        </a>
+        <a href="chat.html" class="nav-item" aria-label="Чат">
+            <i class="fa-solid fa-comments" aria-hidden="true"></i>
+            <span>Чат</span>
         </a>
         <a href="glossary.html" class="nav-item" aria-label="Глоссарий">
             <i class="fa-solid fa-book" aria-hidden="true"></i>

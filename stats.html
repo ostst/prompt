@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Статистика обучения — ПСБ Академия">
     <meta name="theme-color" content="#2D2B84">
+    <link rel="icon" type="image/png" href="img/app-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/app-icon.png">
     
     <title>Статистика | ПСБ Академия</title>
     
+    <link rel="preconnect" href="https://cdn.onesignal.com" crossorigin>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "d496aabd-b8cf-4d18-946b-8228b23392f7",
-        });
-      });
-    </script>
+    <script src="js/onesignal-init.js" defer></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -419,12 +417,14 @@
         
         function clearStats() {
             if (confirm('Очистить всю статистику?')) {
-                PSBApp.storage.set('userStats', null);
-                PSBApp.storage.set('visitHistory', null);
-                PSBApp.storage.set('sectionVisits', null);
+                PSBApp.storage.remove('userStats');
+                PSBApp.storage.remove('visitHistory');
+                PSBApp.storage.remove('sectionVisits');
+                PSBApp.storage.remove('userEvents');
                 PSBApp.haptic.success();
                 PSBApp.showToast('Статистика очищена', 'success');
                 loadStats();
+                renderEventsStats();
             }
         }
         

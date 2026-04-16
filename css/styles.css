@@ -623,12 +623,20 @@ body.dark-mode {
     justify-content: center;
     text-decoration: none;
     color: var(--text-muted);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 500;
-    padding: 0.5rem;
+    padding: 0.45rem 0.25rem;
     border-radius: var(--border-radius-md);
     transition: all var(--transition-fast);
-    min-width: 60px;
+    min-width: 0;
+    flex: 1 1 0;
+}
+
+.bottom-nav .nav-item span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .nav-item i {
@@ -940,6 +948,11 @@ body.dark-mode {
    ======================================== */
 .event-card {
     min-width: 85%;
+    /* Одна высота у всех карточек (ориентир — вебинар №5: заголовок, блок текста, спикер, кнопка) */
+    height: 17.5rem;
+    min-height: 17.5rem;
+    max-height: 17.5rem;
+    box-sizing: border-box;
     flex-shrink: 0;
     background: var(--bg-card);
     padding: 1rem;
@@ -948,6 +961,19 @@ body.dark-mode {
     display: flex;
     flex-direction: column;
     transition: all var(--transition-normal);
+    overflow: hidden;
+}
+
+/* Зона описания: перенос по строкам, не выше ~4 строк — как у компактной карточки */
+.event-card-desc {
+    min-width: 0;
+    max-height: 4.25rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
 }
 
 .event-card.past-event {
@@ -1177,6 +1203,21 @@ body.dark-mode {
         opacity: 0;
         transform: translateY(20px);
     }
+}
+
+/* ========================================
+   Встроенный плеер записей (главная)
+   ======================================== */
+.safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+}
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.webinar-player-overlay.hidden {
+    display: none !important;
 }
 
 /* ========================================

@@ -627,6 +627,84 @@ function openLink(url, inApp = false) {
 }
 
 // ========================================
+// Встроенный просмотр записей вебинаров (iframe)
+// ========================================
+function closeWebinarPlayer() {
+    document.removeEventListener('keydown', onWebinarPlayerKeydown);
+    const overlay = document.getElementById('webinar-player-overlay');
+    const iframe = document.getElementById('webinar-player-iframe');
+    if (iframe) {
+        iframe.src = 'about:blank';
+    }
+    if (overlay) {
+        overlay.classList.add('hidden');
+        overlay.setAttribute('aria-hidden', 'true');
+    }
+    document.body.style.overflow = '';
+}
+
+function openWebinarPlayer(url) {
+    const overlay = document.getElementById('webinar-player-overlay');
+    const iframe = document.getElementById('webinar-player-iframe');
+    const externalLink = document.getElementById('webinar-player-external');
+    if (!overlay || !iframe || !url) return;
+    try {
+        const u = new URL(url, window.location.href);
+        if (u.protocol !== 'http:' && u.protocol !== 'https:') return;
+    } catch {
+        return;
+    }
+    document.removeEventListener('keydown', onWebinarPlayerKeydown);
+    document.addEventListener('keydown', onWebinarPlayerKeydown);
+    iframe.src = url;
+    if (externalLink) {
+        externalLink.href = url;
+    }
+    overlay.classList.remove('hidden');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    haptic.light();
+}
+
+function onWebinarPlayerKeydown(e) {
+    if (e.key === 'Escape') {
+        closeWebinarPlayer();
+    }
+}
+
+function initWebinarPlayer() {
+    const overlay = document.getElementById('webinar-player-overlay');
+    if (!overlay) return;
+
+    const closeBtn = overlay.querySelector('.webinar-player-close');
+    const externalLink = document.getElementById('webinar-player-external');
+
+    closeBtn?.addEventListener('click', () => {
+        closeWebinarPlayer();
+    });
+
+    externalLink?.addEventListener('click', (e) => {
+        const url = externalLink.getAttribute('href');
+        closeWebinarPlayer();
+        if (tg && url && url !== '#') {
+            e.preventDefault();
+            openLink(url);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        const a = e.target.closest('a.action-btn');
+        if (!a || !a.href) return;
+        if (!/^https?:\/\//i.test(a.href)) return;
+        if (a.dataset.openExternal === '1') return;
+        if (e.button !== 0) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        openWebinarPlayer(a.href);
+    }, true);
+}
+
+// ========================================
 // Инициализация при загрузке страницы
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -634,6 +712,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
     initPullToRefresh();
     initLazyLoading();
+    initWebinarPlayer();
     
     // Добавляем fade-in анимацию к основному контенту
     const mainContent = document.querySelector('.fade-in, main, .max-w-md');
@@ -863,5 +942,7 @@ window.PSBApp = {
     getHoursWord,
     getMinutesWord,
     visitTracker,
-    analytics
+    analytics,
+    openWebinarPlayer,
+    closeWebinarPlayer
 };

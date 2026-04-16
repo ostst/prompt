@@ -2,31 +2,33 @@
 // Service Worker - ПСБ Академия
 // ========================================
 
-const CACHE_NAME = 'psb-academy-v3';
-const STATIC_CACHE = 'psb-static-v3';
-const DYNAMIC_CACHE = 'psb-dynamic-v3';
-const BASE_PATH = '/prompt';
+const CACHE_NAME = 'psb-academy-v5';
+const STATIC_CACHE = 'psb-static-v5';
+const DYNAMIC_CACHE = 'psb-dynamic-v5';
+/** Базовый путь приложения: каталог, в котором лежит sw.js (например / или /prompt/) */
+const BASE_PATH = new URL('.', self.location.href).pathname;
 
 // Статические ресурсы для кэширования
 const STATIC_ASSETS = [
-    `${BASE_PATH}/`,
-    `${BASE_PATH}/index.html`,
-    `${BASE_PATH}/program_info.html`,
-    `${BASE_PATH}/course_program.html`,
-    `${BASE_PATH}/faq.html`,
-    `${BASE_PATH}/platform_info.html`,
-    `${BASE_PATH}/materials.html`,
-    `${BASE_PATH}/glossary.html`,
-    `${BASE_PATH}/stats.html`,
-    `${BASE_PATH}/settings.html`,
-    `${BASE_PATH}/chat.html`,
-    `${BASE_PATH}/css/styles.css`,
-    `${BASE_PATH}/js/app.js`,
-    `${BASE_PATH}/manifest.json`,
-    `${BASE_PATH}/img/app-icon.png`,
-    `${BASE_PATH}/img/Hero.png`,
-    `${BASE_PATH}/img/hero_lk.png`,
-    `${BASE_PATH}/img/hero menu.png`,
+    `${BASE_PATH}`,
+    `${BASE_PATH}index.html`,
+    `${BASE_PATH}program_info.html`,
+    `${BASE_PATH}course_program.html`,
+    `${BASE_PATH}faq.html`,
+    `${BASE_PATH}platform_info.html`,
+    `${BASE_PATH}materials.html`,
+    `${BASE_PATH}glossary.html`,
+    `${BASE_PATH}stats.html`,
+    `${BASE_PATH}settings.html`,
+    `${BASE_PATH}chat.html`,
+    `${BASE_PATH}css/styles.css`,
+    `${BASE_PATH}js/app.js`,
+    `${BASE_PATH}js/onesignal-init.js`,
+    `${BASE_PATH}manifest.json`,
+    `${BASE_PATH}img/app-icon.png`,
+    `${BASE_PATH}img/Hero.png`,
+    `${BASE_PATH}img/hero_lk.png`,
+    `${BASE_PATH}img/hero menu.png`,
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];
@@ -120,7 +122,7 @@ async function networkFirst(request) {
         }
         
         // Возвращаем offline страницу если есть
-        return caches.match(`${BASE_PATH}/index.html`);
+        return caches.match(`${BASE_PATH}index.html`);
     }
 }
 
@@ -171,8 +173,8 @@ self.addEventListener('push', (event) => {
     let data = {
         title: 'ПСБ Академия',
         body: 'Новое уведомление',
-        icon: `${BASE_PATH}/img/app-icon.png`,
-        badge: `${BASE_PATH}/img/app-icon.png`
+        icon: `${BASE_PATH}img/app-icon.png`,
+        badge: `${BASE_PATH}img/app-icon.png`
     };
     
     if (event.data) {
@@ -191,7 +193,7 @@ self.addEventListener('push', (event) => {
             vibrate: [200, 100, 200],
             tag: 'psb-notification',
             renotify: true,
-            data: data.url || `${BASE_PATH}/`
+            data: data.url || `${BASE_PATH}`
         })
     );
 });

@@ -14,16 +14,23 @@
     
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "d496aabd-b8cf-4d18-946b-8228b23392f7",
-        });
-      });
-    </script>
+    <script src="js/onesignal-init.js" defer></script>
     
     <style>
+        /* Контейнер как на главной: max-w-md + p-3 (без Tailwind на этой странице классы не работали) */
+        .settings-page {
+            box-sizing: border-box;
+            flex: 1 1 auto;
+            max-width: var(--max-width, 28rem);
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+            padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+            padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+        }
+        
         .settings-section {
             background: white;
             border-radius: 16px;
@@ -295,22 +302,200 @@
             color: #9CA3AF;
         }
         
-        /* Header dark mode */
-        .dark-mode header h1 {
+        .profile-local-wrap {
+            padding-top: 4px;
+        }
+        
+        .profile-avatar-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .user-settings-avatar.is-clickable {
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .user-settings-avatar.is-clickable:active {
+            transform: scale(0.98);
+        }
+        
+        .user-settings-avatar .fa-user {
+            color: #fff;
+            font-size: 2rem;
+        }
+        
+        .profile-photo-hint {
+            font-size: 12px;
+            color: #6B7280;
+            text-align: center;
+            margin: 0 0 18px;
+            max-width: 280px;
+            line-height: 1.35;
+        }
+        
+        .dark-mode .profile-photo-hint {
+            color: #9CA3AF;
+        }
+        
+        .profile-field {
+            margin-bottom: 14px;
+        }
+        
+        .profile-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+        
+        .dark-mode .profile-field label {
+            color: #9CA3AF;
+        }
+        
+        .profile-field input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            background: #fff;
+            color: #1F2937;
+            font-family: inherit;
+        }
+        
+        .profile-field input:focus {
+            outline: none;
+            border-color: #ED6B30;
+            box-shadow: 0 0 0 3px rgba(237, 107, 48, 0.2);
+        }
+        
+        .dark-mode .profile-field input {
+            background: #111827;
+            border-color: #374151;
             color: #F3F4F6;
         }
         
-        /* Header back button */
-        header a {
-            background: linear-gradient(135deg, #1e2a4a, #2D2B84) !important;
+        .profile-save-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2D2B84, #4F46E5);
+            color: #fff;
+            transition: opacity 0.15s, transform 0.1s;
         }
         
-        .dark-mode header a {
-            background: linear-gradient(135deg, #2D2B84, #4F46E5) !important;
+        .profile-save-btn:active {
+            transform: scale(0.98);
         }
         
-        header a i {
-            color: white !important;
+        .profile-external-wrap .text-center {
+            text-align: center;
+        }
+        
+        /* Шапка как на экране «Чат курса» */
+        body.settings-body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #F2F2F2;
+        }
+        
+        .dark-mode.settings-body,
+        body.settings-body.dark-mode {
+            background: #0f0f1a;
+        }
+        
+        .settings-layout {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            width: 100%;
+        }
+        
+        .settings-body .chat-header {
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #1e2a4a, #2D2B84);
+            color: white;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px max(12px, env(safe-area-inset-left)) 14px max(12px, env(safe-area-inset-right));
+            padding-top: max(12px, env(safe-area-inset-top));
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .settings-body .chat-header-inner {
+            max-width: 28rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .settings-body .chat-header-back {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        
+        .settings-body .chat-header-back:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+        
+        .settings-body .chat-header-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .settings-body .chat-header-title {
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+        
+        .settings-body .chat-header-subtitle {
+            font-size: 12px;
+            opacity: 0.88;
+            margin-top: 2px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .settings-body .online-count {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .settings-body .online-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            flex-shrink: 0;
         }
         
         /* Telegram Login Widget */
@@ -338,27 +523,167 @@
         .dark-mode #logout-btn {
             background: linear-gradient(135deg, #4F46E5, #6366F1) !important;
         }
+        
+        /* Панель выбора фото по нажатию на аватар */
+        .photo-source-sheet {
+            position: fixed;
+            inset: 0;
+            z-index: 10060;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .photo-source-sheet[hidden] {
+            display: none !important;
+        }
+        
+        .photo-source-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+        }
+        
+        .photo-source-panel {
+            position: relative;
+            width: 100%;
+            max-width: 28rem;
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            padding: 20px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dark-mode .photo-source-panel {
+            background: #1e2a4a;
+        }
+        
+        .photo-source-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            text-align: center;
+        }
+        
+        .dark-mode .photo-source-title {
+            color: #F9FAFB;
+        }
+        
+        .photo-source-hint {
+            font-size: 13px;
+            color: #6B7280;
+            margin: 0 0 16px;
+            text-align: center;
+        }
+        
+        .dark-mode .photo-source-hint {
+            color: #9CA3AF;
+        }
+        
+        .photo-source-action {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            border: 2px solid #E5E7EB;
+            border-radius: 14px;
+            background: #F9FAFB;
+            color: #1F2937;
+            cursor: pointer;
+            transition: background 0.12s, transform 0.1s;
+        }
+        
+        .photo-source-action:active {
+            transform: scale(0.98);
+        }
+        
+        .dark-mode .photo-source-action {
+            background: #111827;
+            border-color: #374151;
+            color: #F3F4F6;
+        }
+        
+        .photo-source-cancel {
+            width: 100%;
+            padding: 14px;
+            margin-top: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: 14px;
+            background: transparent;
+            color: #6B7280;
+            cursor: pointer;
+        }
+        
+        .dark-mode .photo-source-cancel {
+            color: #9CA3AF;
+        }
     </style>
 </head>
-<body class="bg-[#F2F2F2] min-h-screen">
-    <div class="max-w-md mx-auto px-4 py-4 pb-24">
-        
-        <!-- Header -->
-        <header class="flex items-center gap-4 mb-6">
-            <a href="index.html" class="w-10 h-10 rounded-full bg-gradient-to-r from-[#1e2a4a] to-[#2D2B84] flex items-center justify-center shadow-sm hover:opacity-90 transition">
-                <i class="fa-solid fa-chevron-left text-white"></i>
-            </a>
-            <h1 class="text-xl font-bold text-gray-900 dark-mode-text">Настройки</h1>
+<body class="settings-body">
+    <div class="settings-layout">
+        <header class="chat-header">
+            <div class="chat-header-inner">
+                <a href="index.html" class="chat-header-back" aria-label="Назад на главную">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <div class="chat-header-info">
+                    <div class="chat-header-title">Настройки</div>
+                    <div class="chat-header-subtitle online-count">
+                        <span class="online-dot" aria-hidden="true"></span>
+                        <span>Профиль и приложение</span>
+                    </div>
+                </div>
+            </div>
         </header>
+        
+        <div class="settings-page">
         
         <!-- User Profile Section -->
         <section class="settings-section" id="user-profile-section">
-            <div class="text-center py-4">
-                <div class="user-settings-avatar" id="settings-avatar">
-                    <i class="fa-solid fa-user text-white text-3xl"></i>
+            <!-- Просмотр: Telegram (мини-приложение или виджет) -->
+            <div id="profile-external-wrap" class="profile-external-wrap" style="display: none;">
+                <div class="text-center py-4">
+                    <div class="user-settings-avatar" id="settings-avatar-external">
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+                    </div>
+                    <div class="user-settings-name" id="settings-name-external">Гость</div>
+                    <div class="user-settings-email" id="settings-email-external">Не авторизован</div>
                 </div>
-                <div class="user-settings-name" id="settings-name">Гость</div>
-                <div class="user-settings-email" id="settings-email">Не авторизован</div>
+            </div>
+            
+            <!-- Редактирование: локальный профиль (браузер / PWA без Telegram) -->
+            <div id="profile-local-wrap" class="profile-local-wrap">
+                <div class="settings-title" style="margin-bottom: 12px;">Ваш профиль</div>
+                <div class="profile-avatar-block">
+                    <div class="user-settings-avatar is-clickable" id="settings-avatar-local" role="button" tabindex="0" aria-label="Изменить фото: галерея или камера">
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+                    </div>
+                    <p class="profile-photo-hint">Фото можно выбрать из галереи или снять на камеру. Хранится только на этом устройстве.</p>
+                    <input type="file" id="profile-file-gallery" class="visually-hidden" accept="image/*">
+                    <input type="file" id="profile-file-camera" class="visually-hidden" accept="image/*" capture="environment">
+                </div>
+                <div class="profile-field">
+                    <label for="profile-firstname">Имя</label>
+                    <input type="text" id="profile-firstname" name="firstname" autocomplete="given-name" placeholder="Например, Иван" maxlength="80">
+                </div>
+                <div class="profile-field">
+                    <label for="profile-lastname">Фамилия</label>
+                    <input type="text" id="profile-lastname" name="lastname" autocomplete="family-name" placeholder="Необязательно" maxlength="80">
+                </div>
+                <div class="user-settings-email" id="settings-email-local">Данные сохраняются только в этом браузере</div>
+                <button type="button" class="profile-save-btn" id="profile-save-btn">Сохранить профиль</button>
             </div>
         </section>
         
@@ -501,6 +826,14 @@
         <section class="settings-section">
             <div class="settings-title">О приложении</div>
             
+            <a href="chat.html" class="setting-item" style="cursor: pointer; text-decoration: none; color: inherit;">
+                <div>
+                    <div class="setting-label">Чат курса</div>
+                    <div class="setting-desc">Студенты и преподаватель</div>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color: #9CA3AF;"></i>
+            </a>
+            
             <div class="setting-item" style="cursor: pointer;" onclick="window.open('https://t.me/nik_hou', '_blank')">
                 <div>
                     <div class="setting-label">Поддержка</div>
@@ -523,6 +856,22 @@
             Выйти из аккаунта
         </button>
         
+        <div id="photo-source-sheet" class="photo-source-sheet" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="photo-source-title">
+            <div class="photo-source-backdrop" id="photo-source-backdrop" tabindex="-1"></div>
+            <div class="photo-source-panel">
+                <p id="photo-source-title" class="photo-source-title">Фото профиля</p>
+                <p class="photo-source-hint">Выберите источник</p>
+                <button type="button" class="photo-source-action" id="photo-source-gallery">
+                    <i class="fa-regular fa-image" aria-hidden="true"></i> Галерея
+                </button>
+                <button type="button" class="photo-source-action" id="photo-source-camera">
+                    <i class="fa-solid fa-camera" aria-hidden="true"></i> Камера
+                </button>
+                <button type="button" class="photo-source-cancel" id="photo-source-cancel">Отмена</button>
+            </div>
+        </div>
+        
+        </div>
     </div>
     
     <script src="js/app.js"></script>
@@ -534,6 +883,7 @@
         // Инициализация страницы
         document.addEventListener('DOMContentLoaded', () => {
             initSettings();
+            initLocalProfileUI();
             loadUserProfile();
             checkTelegramAuth();
             checkPushPermission();
@@ -563,57 +913,262 @@
             document.getElementById('tg-progress-reminders').checked = tgSettings.progressReminders === true;
         }
         
+        let pendingProfileAvatar = null;
+        
+        function setProfileViewMode(external) {
+            const ext = document.getElementById('profile-external-wrap');
+            const loc = document.getElementById('profile-local-wrap');
+            if (ext) ext.style.display = external ? 'block' : 'none';
+            if (loc) loc.style.display = external ? 'none' : 'block';
+        }
+        
+        function renderExternalAvatar(container, photoUrl, firstName) {
+            if (!container) return;
+            container.textContent = '';
+            if (photoUrl) {
+                const img = document.createElement('img');
+                img.src = photoUrl;
+                img.alt = '';
+                container.appendChild(img);
+            } else if (firstName) {
+                const ch = firstName.charAt(0).toUpperCase();
+                const span = document.createElement('span');
+                span.textContent = ch;
+                container.appendChild(span);
+            } else {
+                const i = document.createElement('i');
+                i.className = 'fa-solid fa-user';
+                i.setAttribute('aria-hidden', 'true');
+                container.appendChild(i);
+            }
+        }
+        
+        function renderLocalAvatar(profile) {
+            const el = document.getElementById('settings-avatar-local');
+            if (!el) return;
+            el.textContent = '';
+            const src = pendingProfileAvatar || (profile && profile.avatar);
+            const first = (document.getElementById('profile-firstname') && document.getElementById('profile-firstname').value.trim()) ||
+                (profile && profile.firstName) || '';
+            if (src) {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = '';
+                el.appendChild(img);
+            } else if (first) {
+                const span = document.createElement('span');
+                span.textContent = first.charAt(0).toUpperCase();
+                el.appendChild(span);
+            } else {
+                const i = document.createElement('i');
+                i.className = 'fa-solid fa-user';
+                i.setAttribute('aria-hidden', 'true');
+                el.appendChild(i);
+            }
+        }
+        
+        function resizeImageToDataUrl(dataUrl, maxSize, quality) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    let w = img.width;
+                    let h = img.height;
+                    if (w > maxSize || h > maxSize) {
+                        if (w > h) {
+                            h = Math.round((h * maxSize) / w);
+                            w = maxSize;
+                        } else {
+                            w = Math.round((w * maxSize) / h);
+                            h = maxSize;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    try {
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    } catch (e) {
+                        resolve(dataUrl);
+                    }
+                };
+                img.onerror = () => reject(new Error('image'));
+                img.src = dataUrl;
+            });
+        }
+        
+        async function onProfilePhotoFile(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                PSBApp.showToast('Выберите изображение', 'error');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async (ev) => {
+                try {
+                    let dataUrl = ev.target.result;
+                    dataUrl = await resizeImageToDataUrl(dataUrl, 512, 0.82);
+                    pendingProfileAvatar = dataUrl;
+                    const profile = PSBApp.storage.get('userProfile') || {};
+                    renderLocalAvatar(profile);
+                    PSBApp.haptic.light();
+                } catch {
+                    PSBApp.showToast('Не удалось обработать фото', 'error');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function initLocalProfileUI() {
+            const gal = document.getElementById('profile-file-gallery');
+            const cam = document.getElementById('profile-file-camera');
+            const avatarClick = document.getElementById('settings-avatar-local');
+            
+            const onFile = (e) => {
+                const f = e.target.files && e.target.files[0];
+                if (f) onProfilePhotoFile(f);
+                e.target.value = '';
+            };
+            if (gal) gal.addEventListener('change', onFile);
+            if (cam) cam.addEventListener('change', onFile);
+            
+            const sheet = document.getElementById('photo-source-sheet');
+            function onPhotoSheetEscape(e) {
+                if (e.key === 'Escape') closePhotoSourceSheet();
+            }
+            function closePhotoSourceSheet() {
+                if (!sheet) return;
+                sheet.hidden = true;
+                sheet.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                document.removeEventListener('keydown', onPhotoSheetEscape);
+            }
+            function openPhotoSourceSheet() {
+                if (!sheet) return;
+                sheet.hidden = false;
+                sheet.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+                document.addEventListener('keydown', onPhotoSheetEscape);
+                PSBApp.haptic.light();
+            }
+            
+            if (avatarClick) {
+                avatarClick.addEventListener('click', openPhotoSourceSheet);
+                avatarClick.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openPhotoSourceSheet();
+                    }
+                });
+            }
+            
+            document.getElementById('photo-source-backdrop')?.addEventListener('click', closePhotoSourceSheet);
+            document.getElementById('photo-source-cancel')?.addEventListener('click', closePhotoSourceSheet);
+            document.getElementById('photo-source-gallery')?.addEventListener('click', () => {
+                closePhotoSourceSheet();
+                setTimeout(() => { if (gal) gal.click(); }, 0);
+            });
+            document.getElementById('photo-source-camera')?.addEventListener('click', () => {
+                closePhotoSourceSheet();
+                setTimeout(() => { if (cam) cam.click(); }, 0);
+            });
+            
+            const fn = document.getElementById('profile-firstname');
+            const ln = document.getElementById('profile-lastname');
+            const onNameInput = () => {
+                const profile = PSBApp.storage.get('userProfile') || {};
+                renderLocalAvatar(profile);
+            };
+            if (fn) fn.addEventListener('input', onNameInput);
+            if (ln) ln.addEventListener('input', onNameInput);
+            
+            const saveBtn = document.getElementById('profile-save-btn');
+            if (saveBtn) saveBtn.addEventListener('click', saveLocalProfile);
+        }
+        
+        function saveLocalProfile() {
+            const firstname = document.getElementById('profile-firstname').value.trim();
+            const lastname = document.getElementById('profile-lastname').value.trim();
+            if (!firstname) {
+                PSBApp.showToast('Введите имя', 'error');
+                PSBApp.haptic.error();
+                return;
+            }
+            const prev = PSBApp.storage.get('userProfile') || {};
+            const profile = {
+                firstName: firstname,
+                lastName: lastname,
+                email: prev.email || '',
+                avatar: pendingProfileAvatar !== null ? pendingProfileAvatar : (prev.avatar || null),
+                registeredAt: prev.registeredAt || Date.now()
+            };
+            PSBApp.storage.set('userProfile', profile);
+            pendingProfileAvatar = null;
+            
+            const statusEl = document.getElementById('settings-email-local');
+            if (statusEl) {
+                statusEl.textContent = profile.email
+                    ? profile.email
+                    : 'Профиль сохранён на этом устройстве';
+            }
+            
+            document.getElementById('logout-btn').style.display = 'block';
+            renderLocalAvatar(profile);
+            PSBApp.showToast('Профиль сохранён', 'success');
+            PSBApp.haptic.success();
+        }
+        
         function loadUserProfile() {
-            const avatar = document.getElementById('settings-avatar');
-            const name = document.getElementById('settings-name');
-            const email = document.getElementById('settings-email');
+            const nameEl = document.getElementById('settings-name-external');
+            const emailEl = document.getElementById('settings-email-external');
+            const avatar = document.getElementById('settings-avatar-external');
             const logoutBtn = document.getElementById('logout-btn');
             
-            // Проверяем Telegram WebApp
             const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
             if (tgUser) {
-                name.textContent = `${tgUser.first_name}${tgUser.last_name ? ' ' + tgUser.last_name : ''}`;
-                email.textContent = tgUser.username ? `@${tgUser.username}` : 'Telegram пользователь';
-                if (tgUser.photo_url) {
-                    avatar.innerHTML = `<img src="${tgUser.photo_url}" alt="Аватар">`;
-                } else {
-                    avatar.innerHTML = `<span>${tgUser.first_name.charAt(0)}</span>`;
-                }
-                logoutBtn.style.display = 'none';
-                
-                // Скрываем секцию авторизации если уже в Telegram
+                setProfileViewMode(true);
+                if (nameEl) nameEl.textContent = `${tgUser.first_name}${tgUser.last_name ? ' ' + tgUser.last_name : ''}`;
+                if (emailEl) emailEl.textContent = tgUser.username ? `@${tgUser.username}` : 'Telegram пользователь';
+                renderExternalAvatar(avatar, tgUser.photo_url, tgUser.first_name);
+                if (logoutBtn) logoutBtn.style.display = 'none';
                 document.getElementById('telegram-auth-section').style.display = 'none';
                 return;
             }
             
-            // Проверяем локальный профиль
-            const profile = PSBApp.storage.get('userProfile');
-            if (profile) {
-                name.textContent = `${profile.firstName}${profile.lastName ? ' ' + profile.lastName : ''}`;
-                email.textContent = profile.email || 'Email не указан';
-                if (profile.avatar) {
-                    avatar.innerHTML = `<img src="${profile.avatar}" alt="Аватар">`;
-                } else {
-                    avatar.innerHTML = `<span>${profile.firstName.charAt(0)}</span>`;
-                }
-                logoutBtn.style.display = 'block';
-            }
-            
-            // Проверяем Telegram авторизацию
             const telegramAuth = PSBApp.storage.get('telegramAuth');
             if (telegramAuth) {
-                name.textContent = `${telegramAuth.first_name}${telegramAuth.last_name ? ' ' + telegramAuth.last_name : ''}`;
-                email.textContent = telegramAuth.username ? `@${telegramAuth.username}` : 'Telegram пользователь';
-                if (telegramAuth.photo_url) {
-                    avatar.innerHTML = `<img src="${telegramAuth.photo_url}" alt="Аватар">`;
-                } else {
-                    avatar.innerHTML = `<span>${telegramAuth.first_name.charAt(0)}</span>`;
+                setProfileViewMode(true);
+                if (nameEl) {
+                    nameEl.textContent = `${telegramAuth.first_name}${telegramAuth.last_name ? ' ' + telegramAuth.last_name : ''}`;
                 }
-                logoutBtn.style.display = 'block';
-                
-                // Скрываем секцию авторизации если авторизован
+                if (emailEl) {
+                    emailEl.textContent = telegramAuth.username ? `@${telegramAuth.username}` : 'Telegram пользователь';
+                }
+                renderExternalAvatar(avatar, telegramAuth.photo_url, telegramAuth.first_name);
+                if (logoutBtn) logoutBtn.style.display = 'block';
                 document.getElementById('telegram-auth-section').style.display = 'none';
+                return;
             }
+            
+            setProfileViewMode(false);
+            pendingProfileAvatar = null;
+            
+            const profile = PSBApp.storage.get('userProfile');
+            const fn = document.getElementById('profile-firstname');
+            const ln = document.getElementById('profile-lastname');
+            const statusEl = document.getElementById('settings-email-local');
+            
+            if (fn) fn.value = profile ? (profile.firstName || '') : '';
+            if (ln) ln.value = profile ? (profile.lastName || '') : '';
+            
+            if (statusEl) {
+                if (profile && profile.email) statusEl.textContent = profile.email;
+                else if (profile && profile.firstName) statusEl.textContent = 'Профиль сохранён на этом устройстве';
+                else statusEl.textContent = 'Данные сохраняются только в этом браузере';
+            }
+            
+            renderLocalAvatar(profile || {});
+            if (logoutBtn) logoutBtn.style.display = profile && profile.firstName ? 'block' : 'none';
         }
         
         function checkTelegramAuth() {
@@ -756,32 +1311,83 @@
             }
         }
         
-        async function checkPushPermission() {
+        function setPushToggleDesc(text) {
             const pushToggle = document.getElementById('push-enabled');
+            const desc = pushToggle && pushToggle.closest('.setting-item') && pushToggle.closest('.setting-item').querySelector('.setting-desc');
+            if (desc) desc.textContent = text;
+        }
+        
+        function checkPushPermission() {
+            const pushToggle = document.getElementById('push-enabled');
+            if (!pushToggle) return;
             
             if (!('Notification' in window)) {
                 pushToggle.disabled = true;
-                pushToggle.parentElement.parentElement.querySelector('.setting-desc').textContent = 'Не поддерживается';
+                setPushToggleDesc('Не поддерживается');
                 return;
             }
             
-            pushToggle.checked = Notification.permission === 'granted';
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function (OneSignal) {
+                try {
+                    const sub = OneSignal.User && OneSignal.User.PushSubscription;
+                    let checked = false;
+                    if (sub) {
+                        if (typeof sub.getOptedInAsync === 'function') {
+                            checked = await sub.getOptedInAsync();
+                        } else if (typeof sub.optedIn === 'boolean') {
+                            checked = sub.optedIn;
+                        } else if (sub.id) {
+                            checked = true;
+                        }
+                    }
+                    if (!sub) {
+                        checked = Notification.permission === 'granted';
+                    }
+                    pushToggle.checked = checked;
+                } catch (e) {
+                    pushToggle.checked = Notification.permission === 'granted';
+                }
+            });
         }
         
         async function togglePushNotifications(enabled) {
-            if (enabled) {
-                const permission = await Notification.requestPermission();
-                document.getElementById('push-enabled').checked = permission === 'granted';
-                
-                if (permission === 'granted') {
-                    PSBApp.showToast('Push-уведомления включены', 'success');
-                } else {
-                    PSBApp.showToast('Разрешение не получено', 'error');
+            const pushToggle = document.getElementById('push-enabled');
+            if (!pushToggle) return;
+            
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function (OneSignal) {
+                const sub = OneSignal.User && OneSignal.User.PushSubscription;
+                try {
+                    if (sub && typeof sub.optIn === 'function' && typeof sub.optOut === 'function') {
+                        if (enabled) {
+                            await sub.optIn();
+                            PSBApp.showToast('Push-уведомления включены', 'success');
+                            pushToggle.checked = true;
+                        } else {
+                            await sub.optOut();
+                            PSBApp.showToast('Push-уведомления отключены в приложении', 'info');
+                            pushToggle.checked = false;
+                        }
+                        return;
+                    }
+                    if (enabled) {
+                        const permission = await Notification.requestPermission();
+                        pushToggle.checked = permission === 'granted';
+                        if (permission === 'granted') {
+                            PSBApp.showToast('Уведомления разрешены браузером', 'success');
+                        } else {
+                            PSBApp.showToast('Разрешение не получено', 'error');
+                        }
+                    } else {
+                        PSBApp.showToast('Отключите уведомления в настройках браузера', 'info');
+                        pushToggle.checked = true;
+                    }
+                } catch (err) {
+                    PSBApp.showToast('Не удалось изменить подписку', 'error');
+                    pushToggle.checked = !enabled;
                 }
-            } else {
-                PSBApp.showToast('Отключите уведомления в настройках браузера', 'info');
-                document.getElementById('push-enabled').checked = true;
-            }
+            });
         }
         
         function toggleDarkMode(enabled) {
@@ -837,6 +1443,12 @@
                 PSBApp.storage.remove('userProfile');
                 PSBApp.storage.remove('telegramAuth');
                 PSBApp.storage.remove('skippedRegistration');
+                pendingProfileAvatar = null;
+                
+                const fn = document.getElementById('profile-firstname');
+                const ln = document.getElementById('profile-lastname');
+                if (fn) fn.value = '';
+                if (ln) ln.value = '';
                 
                 loadUserProfile();
                 checkTelegramAuth();
