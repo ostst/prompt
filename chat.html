@@ -68,11 +68,30 @@
         }
         
         .chat-header-inner {
-            max-width: 28rem;
+            max-width: 32rem;
             margin: 0 auto;
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+        
+        .chat-header-help {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+        
+        .chat-header-help:hover {
+            background: rgba(255,255,255,0.28);
         }
         
         .chat-header-back {
@@ -115,11 +134,32 @@
             display: flex;
             flex-direction: column;
             min-height: 0;
-            max-width: 28rem;
+            max-width: 32rem;
             margin: 0 auto;
             width: 100%;
             box-sizing: border-box;
             padding: 0 max(12px, env(safe-area-inset-left)) 0 max(12px, env(safe-area-inset-right));
+        }
+        
+        .chat-workspace {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            align-items: stretch;
+            min-height: 0;
+            width: 100%;
+        }
+        
+        .chat-workspace.is-visible {
+            display: flex;
+        }
+        
+        .chat-thread-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
         }
         
         .chat-messages {
@@ -129,14 +169,222 @@
             padding: 12px 0 16px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+        }
+        
+        .message-row {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            align-items: flex-start;
+        }
+        
+        .message-row--outgoing {
+            align-items: flex-end;
+        }
+        
+        .message-row-inner {
+            max-width: min(85%, 22rem);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 2px;
+            position: relative;
         }
         
         .message {
-            max-width: 80%;
+            max-width: 100%;
             padding: 10px 14px;
             border-radius: 16px;
             position: relative;
+            touch-action: pan-y;
+            transition: transform 0.08s ease-out;
+        }
+        
+        .message.is-swiping {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .message-reply-quote {
+            border-left: 3px solid #6366F1;
+            padding: 4px 8px 6px 10px;
+            margin: 0 0 8px 0;
+            border-radius: 0 10px 10px 0;
+            background: rgba(99, 102, 241, 0.08);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+        
+        .dark-mode .message-reply-quote {
+            background: rgba(99, 102, 241, 0.15);
+        }
+        
+        .message-reply-quote-name {
+            font-weight: 700;
+            color: #4F46E5;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        .dark-mode .message-reply-quote-name {
+            color: #A5B4FC;
+        }
+        
+        .message-reply-quote-text {
+            color: #6B7280;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .dark-mode .message-reply-quote-text {
+            color: #9CA3AF;
+        }
+        
+        .message-outgoing .message-reply-quote {
+            border-left-color: rgba(255, 255, 255, 0.65);
+            background: rgba(0, 0, 0, 0.12);
+        }
+        
+        .message-outgoing .message-reply-quote-name {
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .message-outgoing .message-reply-quote-text {
+            color: rgba(255, 255, 255, 0.75);
+        }
+        
+        .message-reactions-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 6px;
+            padding: 2px 2px 0;
+            max-width: 100%;
+        }
+        
+        .message-reactions-wrap[hidden] {
+            display: none !important;
+        }
+        
+        .message-reaction-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 13px;
+            line-height: 1.2;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid #E5E7EB;
+            background: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.12s, border-color 0.12s;
+        }
+        
+        .dark-mode .message-reaction-chip {
+            background: #1e2a4a;
+            border-color: #374151;
+        }
+        
+        .message-reaction-chip.is-mine {
+            border-color: #6366F1;
+            background: rgba(99, 102, 241, 0.12);
+        }
+        
+        /* Нижняя панель: долгое нажатие на сообщение / ПК: правая кнопка мыши */
+        .message-action-sheet {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .message-action-sheet[hidden] {
+            display: none !important;
+        }
+        
+        .message-action-sheet-backdrop {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border: none;
+            padding: 0;
+            margin: 0;
+            background: rgba(15, 15, 26, 0.45);
+            cursor: pointer;
+        }
+        
+        .message-action-sheet-panel {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 32rem;
+            margin: 0 auto;
+            padding: 14px 16px calc(16px + env(safe-area-inset-bottom, 0px));
+            background: #fff;
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark-mode .message-action-sheet-panel {
+            background: #1a2235;
+        }
+        
+        .message-action-sheet-emojis {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .message-action-sheet-emoji {
+            flex: 1;
+            min-width: 0;
+            max-width: 52px;
+            height: 48px;
+            border: none;
+            border-radius: 14px;
+            background: #F3F4F6;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.1s, background 0.1s;
+        }
+        
+        .dark-mode .message-action-sheet-emoji {
+            background: #243154;
+        }
+        
+        .message-action-sheet-emoji:active {
+            transform: scale(0.94);
+        }
+        
+        .message-action-sheet-reply {
+            width: 100%;
+            height: 48px;
+            border: none;
+            border-radius: 14px;
+            background: rgba(99, 102, 241, 0.14);
+            color: #4338CA;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dark-mode .message-action-sheet-reply {
+            background: rgba(129, 140, 248, 0.2);
+            color: #C7D2FE;
         }
         
         .message-incoming {
@@ -185,6 +433,38 @@
             align-self: flex-end;
             border-bottom-right-radius: 4px;
             box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+        }
+        
+        .message.message-help-call {
+            max-width: 92%;
+            align-self: center;
+            background: #FFFBEB;
+            border: 1px solid #FCD34D;
+            color: #92400E;
+            box-shadow: none;
+        }
+        
+        .dark-mode .message.message-help-call {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.45);
+            color: #FCD34D;
+        }
+        
+        .message-help-call .message-text {
+            color: inherit;
+            font-weight: 500;
+        }
+        
+        .chat-firebase-status {
+            font-size: 11px;
+            padding: 4px 8px;
+            text-align: center;
+            color: #EF4444;
+            display: none;
+        }
+        
+        .chat-firebase-status.is-visible {
+            display: block;
         }
         
         .message-author {
@@ -273,10 +553,102 @@
             color: rgba(255, 255, 255, 0.95);
         }
         
+        .chat-reply-bar {
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 12px 8px;
+            margin: 0 0 8px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+        }
+        
+        .chat-reply-bar[hidden] {
+            display: none !important;
+        }
+        
+        .dark-mode .chat-reply-bar {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: rgba(129, 140, 248, 0.35);
+        }
+        
+        .chat-reply-bar-inner {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            min-width: 0;
+        }
+        
+        .chat-reply-bar-text {
+            flex: 1;
+            min-width: 0;
+            font-size: 12px;
+            line-height: 1.35;
+        }
+        
+        .chat-reply-bar-label {
+            font-weight: 700;
+            color: #4F46E5;
+            margin-right: 6px;
+        }
+        
+        .dark-mode .chat-reply-bar-label {
+            color: #A5B4FC;
+        }
+        
+        .chat-reply-bar-name {
+            font-weight: 600;
+            color: #1F2937;
+        }
+        
+        .dark-mode .chat-reply-bar-name {
+            color: #E5E7EB;
+        }
+        
+        .chat-reply-bar-snippet {
+            display: block;
+            color: #6B7280;
+            margin-top: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .dark-mode .chat-reply-bar-snippet {
+            color: #9CA3AF;
+        }
+        
+        .chat-reply-bar-close {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.06);
+            color: #4B5563;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dark-mode .chat-reply-bar-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: #D1D5DB;
+        }
+        
         .chat-input-container {
             flex-shrink: 0;
             position: relative;
             z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
             padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
             margin: 0;
             background: #F0F2F5;
@@ -288,54 +660,100 @@
             border-color: #2d3548;
         }
         
-        .chat-emoji-panel {
+        .chat-mention-panel {
             position: absolute;
             bottom: calc(100% + 6px);
             left: 0;
             right: 0;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 12px;
+            max-height: 220px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 10px 8px;
             background: #fff;
             border-radius: 16px;
             box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
             border: 1px solid #E5E7EB;
             z-index: 100;
-            -webkit-overflow-scrolling: touch;
         }
         
-        .dark-mode .chat-emoji-panel {
+        .dark-mode .chat-mention-panel {
             background: #1e2a4a;
             border-color: #374151;
         }
         
-        .chat-emoji-panel[hidden] {
+        .chat-mention-panel[hidden] {
             display: none !important;
         }
         
-        .chat-emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
+        .chat-mention-hint {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6B7280;
+            margin-bottom: 8px;
+        }
+        
+        .dark-mode .chat-mention-hint {
+            color: #9CA3AF;
+        }
+        
+        .chat-mention-list {
+            overflow-y: auto;
+            max-height: 180px;
+            display: flex;
+            flex-direction: column;
             gap: 4px;
+            -webkit-overflow-scrolling: touch;
         }
         
-        .chat-emoji-btn {
-            font-size: 24px;
-            line-height: 1.2;
-            padding: 8px 4px;
+        .chat-mention-item {
+            text-align: left;
+            font-size: 14px;
+            padding: 10px 12px;
             border: none;
-            border-radius: 10px;
-            background: transparent;
+            border-radius: 12px;
+            background: #F3F4F6;
+            color: #1F2937;
             cursor: pointer;
+            font-family: inherit;
             transition: background 0.12s;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple Color Emoji",
-                "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", emoji, sans-serif;
-            font-variant-emoji: emoji;
         }
         
-        .chat-emoji-btn:hover,
-        .chat-emoji-btn:active {
-            background: rgba(99, 102, 241, 0.15);
+        .dark-mode .chat-mention-item {
+            background: #243154;
+            color: #F3F4F6;
+        }
+        
+        .chat-mention-item:hover,
+        .chat-mention-item:active {
+            background: rgba(99, 102, 241, 0.2);
+        }
+        
+        .chat-mention-item--curator {
+            font-weight: 600;
+            background: rgba(99, 102, 241, 0.12);
+        }
+        
+        .dark-mode .chat-mention-item--curator {
+            background: rgba(99, 102, 241, 0.22);
+        }
+        
+        .chat-mention-curator-name {
+            font-weight: 500;
+            opacity: 0.82;
+            font-size: 13px;
+        }
+        
+        .chat-mention-empty {
+            font-size: 13px;
+            color: #9CA3AF;
+            padding: 8px 4px;
+        }
+        
+        .chat-at-icon {
+            font-weight: 800;
+            font-size: 15px;
+            line-height: 1;
         }
         
         .chat-input-tools {
@@ -796,6 +1214,9 @@
                         <span id="online-count">Студенты и преподаватель</span>
                     </div>
                 </div>
+                <button type="button" class="chat-header-help" id="btn-call-curator" title="Позвать куратора" aria-label="Позвать куратора">
+                    <i class="fa-solid fa-headset" aria-hidden="true"></i>
+                </button>
             </div>
         </header>
         
@@ -810,7 +1231,7 @@
                 </div>
                 <h1 class="chat-auth-heading" id="auth-title-text">Войти в чат</h1>
                 <p class="chat-auth-lead" id="auth-desc-text">
-                    Общайтесь с однокурсниками и преподавателем: введите имя ниже или воспользуйтесь профилем / Telegram.
+                    Укажите имя для чата или откройте профиль в настройках — тогда имя подтянется автоматически. Также можно войти через Telegram.
                 </p>
                 <div class="chat-auth-block" id="guest-chat-box">
                     <label class="chat-auth-label" for="guest-chat-name">Как к вам обращаться?</label>
@@ -835,35 +1256,49 @@
             </div>
         </div>
         
-        <!-- Messages -->
-        <div class="chat-messages" id="chat-messages" style="display: none;">
-            <div class="empty-chat" id="empty-chat">
-                <div class="empty-chat-icon-wrap">
-                    <i class="fa-regular fa-comments" aria-hidden="true"></i>
+        <div class="chat-workspace" id="chat-workspace">
+            <div class="chat-thread-col">
+                <div class="chat-firebase-status" id="chat-firebase-status"></div>
+                <!-- Messages -->
+                <div class="chat-messages" id="chat-messages" style="display: none;">
+                    <div class="empty-chat" id="empty-chat">
+                        <div class="empty-chat-icon-wrap">
+                            <i class="fa-regular fa-comments" aria-hidden="true"></i>
+                        </div>
+                        <div class="empty-chat-title">Пока нет сообщений</div>
+                        <div class="empty-chat-hint">Напишите текст, отправьте фото или файл — обсуждение открыто для всех участников курса.</div>
+                    </div>
                 </div>
-                <div class="empty-chat-title">Пока нет сообщений</div>
-                <div class="empty-chat-hint">Напишите текст, отправьте фото или файл — обсуждение открыто для всех участников курса.</div>
+                
+                <!-- Поле ввода: вложения, эмодзи, текст, отправка -->
+                <div class="chat-input-container" id="chat-input-container" style="display: none;">
+            <div class="chat-reply-bar" id="chat-reply-bar" hidden role="status" aria-live="polite">
+                <div class="chat-reply-bar-inner">
+                    <div class="chat-reply-bar-text">
+                        <span class="chat-reply-bar-label">Ответ</span>
+                        <span class="chat-reply-bar-name" id="chat-reply-bar-name"></span>
+                        <span class="chat-reply-bar-snippet" id="chat-reply-bar-snippet"></span>
+                    </div>
+                    <button type="button" class="chat-reply-bar-close" id="chat-reply-bar-close" title="Отменить ответ" aria-label="Отменить ответ">×</button>
+                </div>
             </div>
-        </div>
-        
-        <!-- Поле ввода: вложения, эмодзи, текст, отправка -->
-        <div class="chat-input-container" id="chat-input-container" style="display: none;">
             <div class="chat-typing" id="chat-typing" hidden role="status" aria-live="polite">
                 <span class="chat-typing-ico" aria-hidden="true">
                     <i class="fa-solid fa-user-pen"></i>
                 </span>
                 <span class="chat-typing-label" id="chat-typing-label"></span>
             </div>
-            <div class="chat-emoji-panel" id="emoji-panel" hidden>
-                <div class="chat-emoji-grid" id="emoji-grid" role="list"></div>
+            <div class="chat-mention-panel" id="mention-panel" hidden>
+                <div class="chat-mention-hint" id="mention-hint">Список участников: нажмите на имя — вставится @имя</div>
+                <div class="chat-mention-list" id="mention-list" role="listbox"></div>
             </div>
             <div class="chat-input-tools">
                 <input type="file" id="chat-file-input" class="visually-hidden" accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" tabindex="-1">
                 <button type="button" class="chat-tool-btn" id="btn-attach" title="Прикрепить файл" aria-label="Прикрепить файл">
                     <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="chat-tool-btn" id="btn-emoji" title="Эмодзи" aria-label="Эмодзи">
-                    <i class="fa-regular fa-face-smile" aria-hidden="true"></i>
+                <button type="button" class="chat-tool-btn" id="btn-mention" title="Упомянуть участника" aria-label="Упомянуть участника">
+                    <span class="chat-at-icon" aria-hidden="true">@</span>
                 </button>
                 <div class="chat-input-wrap">
                     <textarea 
@@ -873,11 +1308,24 @@
                         rows="1"
                         maxlength="2000"
                         autocomplete="off"
+                        enterkeyhint="send"
+                        inputmode="text"
                     ></textarea>
                 </div>
                 <button type="button" class="chat-send-btn" id="send-btn" title="Отправить" aria-label="Отправить">
                     <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
                 </button>
+            </div>
+                </div>
+            <div class="message-action-sheet" id="message-action-sheet" hidden>
+                <button type="button" class="message-action-sheet-backdrop" id="message-action-sheet-backdrop" aria-label="Закрыть"></button>
+                <div class="message-action-sheet-panel" role="dialog" aria-modal="true" aria-label="Действия с сообщением">
+                    <div class="message-action-sheet-emojis" id="message-action-sheet-emojis"></div>
+                    <button type="button" class="message-action-sheet-reply" id="message-action-sheet-reply" title="Ответить" aria-label="Ответить">
+                        <i class="fa-solid fa-reply" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
             </div>
         </div>
         </main>
@@ -927,20 +1375,40 @@
             // 123456789,
         ]);
         
-        const CHAT_EMOJIS = [
-            '😀', '😃', '😄', '😁', '😅', '😂', '🙂', '😉', '😊', '😍', '🤔', '👍', '👎', '👏', '🙏',
-            '🔥', '❤️', '💛', '✨', '🎉', '💡', '📌', '✅', '❌', '📎', '☕', '📚', '💼', '🎯', '⚠️', '🇷🇺'
-        ];
+        /**
+         * Закреплённый куратор в списке @ (не из Telegram — просто включите и при желании укажите имя).
+         * SHOW_CURATOR_MENTION — показывать строку «куратор» первой; вставка в чат: @куратор
+         * CURATOR_PUBLIC_NAME — как подписать человека (видно в списке, участвует в поиске по @)
+         * CURATOR_CHAT_USER_ID — опционально: если куратор заходит в чат, его userId из Firebase `members`, чтобы не дублировать в списке
+         */
+        const SHOW_CURATOR_MENTION = true;
+        const CURATOR_PUBLIC_NAME = '';
+        const CURATOR_CHAT_USER_ID = '';
+        const CURATOR_MENTION_LABEL = 'куратор';
+        
+        /** Список участников для @ (обновляется из Firebase). */
+        let membersMentionList = [];
         
         let currentUser = null;
         let messagesRef = null;
         let typingRef = null;
+        let membersRef = null;
+        let memberPulseTimer = null;
         let typingHeartbeatId = null;
         let typingDebounceTimer = null;
         let isFirebaseConfigured = false;
         let firebaseAppStarted = false;
         let chatListenersReady = false;
         const seenMessageKeys = new Set();
+        let lastHelpRequestAt = 0;
+        const HELP_REQUEST_COOLDOWN_MS = 90000;
+        
+        /** Ответ на сообщение: свайп вправо по пузырю; реакции — долгое нажатие / ПК: правая кнопка. */
+        let pendingReply = null;
+        /** Контекст нижней панели действий с сообщением. */
+        let messageActionContext = null;
+        
+        const REACTION_CHOICES = ['👍', '❤️', '🔥', '😂', '🙏'];
         
         function safeTypingPath(userId) {
             return String(userId).replace(/[.#$\[\]/]/g, '_');
@@ -1020,6 +1488,56 @@
             label.textContent = s;
         }
         
+        function setFirebaseStatus(msg) {
+            const el = document.getElementById('chat-firebase-status');
+            if (!el) return;
+            if (msg) {
+                el.textContent = msg;
+                el.classList.add('is-visible');
+            } else {
+                el.textContent = '';
+                el.classList.remove('is-visible');
+            }
+        }
+        
+        function registerMemberProfile() {
+            if (!membersRef || !currentUser || !isFirebaseConfigured) return;
+            const key = safeTypingPath(currentUser.id);
+            const row = {
+                userName: currentUser.name || 'Участник',
+                userId: String(currentUser.id),
+                role: currentUser.role || 'student',
+                lastSeen: firebase.database.ServerValue.TIMESTAMP
+            };
+            membersRef.child(key).set(row);
+            if (memberPulseTimer) clearInterval(memberPulseTimer);
+            memberPulseTimer = setInterval(() => {
+                if (!membersRef || !currentUser) return;
+                membersRef.child(key).update({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+            }, 50000);
+        }
+        
+        function bindMembersListener() {
+            if (!membersRef) return;
+            membersRef.on('value', (snap) => {
+                const val = snap.val();
+                if (!val || typeof val !== 'object') {
+                    membersMentionList = [];
+                    return;
+                }
+                const rows = Object.keys(val).map((k) => ({ k, ...val[k] }));
+                rows.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0));
+                membersMentionList = rows
+                    .map((row) => ({
+                        name: (row.userName && String(row.userName).trim()) || 'Участник',
+                        userId: row.userId != null ? String(row.userId) : ''
+                    }))
+                    .filter((m) => currentUser && m.userId && m.userId !== String(currentUser.id));
+            }, (err) => {
+                setFirebaseStatus('Участники (@): ' + (err && err.message ? err.message : 'ошибка сети'));
+            });
+        }
+        
         function bindTypingListener() {
             if (!typingRef) return;
             typingRef.on('value', (snap) => {
@@ -1058,6 +1576,29 @@
             return TEACHER_TELEGRAM_IDS.has(Number(numericId));
         }
         
+        /** Имя из настроек / регистрации на главной (тот же userProfile, что в settings.html). */
+        function chatUserFromSavedProfile() {
+            const profile = PSBApp.storage.get('userProfile');
+            if (!profile || typeof profile !== 'object') return null;
+            const first = profile.firstName != null ? String(profile.firstName).trim() : '';
+            if (!first) return null;
+            const last = profile.lastName != null ? String(profile.lastName).trim() : '';
+            const name = last ? first + ' ' + last : first;
+            return {
+                id: ensureStableChatId(),
+                name: name.trim(),
+                role: 'student',
+                username: null
+            };
+        }
+        
+        function hasSavedProfileName() {
+            const profile = PSBApp.storage.get('userProfile');
+            if (!profile || typeof profile !== 'object') return false;
+            const first = profile.firstName != null ? String(profile.firstName).trim() : '';
+            return first.length > 0;
+        }
+        
         function buildChatUser() {
             const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
             if (tgUser) {
@@ -1080,14 +1621,9 @@
                     username: ta.username || null
                 };
             }
-            const profile = PSBApp.storage.get('userProfile');
-            if (profile && profile.firstName) {
-                return {
-                    id: ensureStableChatId(),
-                    name: `${profile.firstName}${profile.lastName ? ' ' + profile.lastName : ''}`.trim(),
-                    role: 'student',
-                    username: null
-                };
+            const fromProfile = chatUserFromSavedProfile();
+            if (fromProfile) {
+                return fromProfile;
             }
             const guestName = PSBApp.storage.get('guestChatDisplayName');
             if (guestName && String(guestName).trim()) {
@@ -1116,18 +1652,30 @@
                 if (e.key === 'Enter') onGuestJoin();
             });
             const gn = document.getElementById('guest-chat-name');
-            if (gn) gn.value = PSBApp.storage.get('guestChatDisplayName') || '';
+            if (gn) {
+                gn.value = hasSavedProfileName() ? '' : (PSBApp.storage.get('guestChatDisplayName') || '');
+            }
             document.addEventListener('click', (e) => {
-                const panel = document.getElementById('emoji-panel');
-                const btnEmoji = document.getElementById('btn-emoji');
-                if (!panel || panel.hidden || !btnEmoji) return;
-                if (btnEmoji.contains(e.target) || panel.contains(e.target)) return;
+                const panel = document.getElementById('mention-panel');
+                const btnM = document.getElementById('btn-mention');
+                if (!panel || panel.hidden || !btnM) return;
+                if (btnM.contains(e.target) || panel.contains(e.target)) return;
                 panel.hidden = true;
             });
             checkAuth();
+            window.addEventListener('pageshow', (e) => {
+                if (e.persisted) checkAuth();
+            });
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') checkAuth();
+            });
         });
         
         function onGuestJoin() {
+            if (hasSavedProfileName()) {
+                checkAuth();
+                return;
+            }
             const inp = document.getElementById('guest-chat-name');
             const v = inp && inp.value.trim();
             if (!v) {
@@ -1146,6 +1694,7 @@
                 return;
             }
             document.getElementById('auth-required').style.display = 'flex';
+            document.getElementById('chat-workspace')?.classList.remove('is-visible');
             const box = document.getElementById('guest-chat-box');
             if (box) box.style.display = 'block';
         }
@@ -1174,22 +1723,41 @@
             if (!typingRef) {
                 typingRef = firebase.database().ref('typing');
             }
+            if (!membersRef) {
+                membersRef = firebase.database().ref('members');
+            }
             if (currentUser && typingRef) {
                 typingRef.child(safeTypingPath(currentUser.id)).onDisconnect().remove();
             }
             
             document.getElementById('auth-required').style.display = 'none';
+            const workspace = document.getElementById('chat-workspace');
+            if (workspace) workspace.classList.add('is-visible');
             document.getElementById('chat-messages').style.display = 'flex';
             document.getElementById('chat-input-container').style.display = 'flex';
+            setFirebaseStatus('');
+            
+            firebase.database().ref('.info/connected').on('value', (snap) => {
+                if (snap.val() === true) {
+                    setFirebaseStatus('');
+                } else {
+                    setFirebaseStatus('Нет связи с сервером…');
+                }
+            });
+            
+            registerMemberProfile();
             
             if (!chatListenersReady) {
                 chatListenersReady = true;
                 loadMessages();
                 bindTypingListener();
+                bindMembersListener();
+                document.getElementById('btn-call-curator')?.addEventListener('click', callCuratorOrAdmin);
                 const input = document.getElementById('message-input');
                 input.addEventListener('input', function onComposerInput() {
                     autoResize.call(this);
                     onComposerTypingInput();
+                    checkMentionTrigger();
                 });
                 input.addEventListener('blur', () => clearMyTypingState());
                 input.addEventListener('keydown', (e) => {
@@ -1202,29 +1770,145 @@
             }
         }
         
-        function initChatComposer() {
-            const grid = document.getElementById('emoji-grid');
-            if (grid && !grid.dataset.ready) {
-                grid.dataset.ready = '1';
-                CHAT_EMOJIS.forEach((em) => {
-                    const b = document.createElement('button');
-                    b.type = 'button';
-                    b.className = 'chat-emoji-btn';
-                    b.setAttribute('aria-label', 'Вставить эмодзи');
-                    b.textContent = em;
-                    b.addEventListener('click', () => {
-                        insertAtCursor(document.getElementById('message-input'), em);
-                        const panel = document.getElementById('emoji-panel');
-                        if (panel) panel.hidden = true;
-                        PSBApp.haptic.light();
-                    });
-                    grid.appendChild(b);
+        function closeMentionPanel() {
+            const panel = document.getElementById('mention-panel');
+            if (panel) panel.hidden = true;
+        }
+        
+        function fillMentionList(filterStr) {
+            const list = document.getElementById('mention-list');
+            if (!list) return;
+            const q = (filterStr || '').toLowerCase().trim();
+            const curatorId = String(CURATOR_CHAT_USER_ID || '').trim();
+            const curatorPublic = String(CURATOR_PUBLIC_NAME || '').trim();
+            let rest = membersMentionList.slice();
+            if (curatorId) {
+                rest = rest.filter((m) => m.userId !== curatorId);
+            }
+            const labelLc = CURATOR_MENTION_LABEL.toLowerCase();
+            const pubLc = curatorPublic.toLowerCase();
+            const curatorMatches =
+                SHOW_CURATOR_MENTION &&
+                (!q ||
+                    labelLc.indexOf(q) >= 0 ||
+                    (curatorPublic && pubLc.indexOf(q) >= 0));
+            if (q) {
+                rest = rest.filter((m) => m.name.toLowerCase().indexOf(q) >= 0);
+            }
+            const rows = [];
+            if (curatorMatches) {
+                rows.push({
+                    name: CURATOR_MENTION_LABEL,
+                    insertName: CURATOR_MENTION_LABEL,
+                    isCurator: true,
+                    publicName: curatorPublic
                 });
             }
-            document.getElementById('btn-emoji')?.addEventListener('click', (e) => {
+            rest.forEach((m) => rows.push({ name: m.name, insertName: m.name, isCurator: false }));
+            list.innerHTML = '';
+            if (!rows.length) {
+                const empty = document.createElement('div');
+                empty.className = 'chat-mention-empty';
+                const hasPool = membersMentionList.length > 0 || SHOW_CURATOR_MENTION;
+                empty.textContent = hasPool
+                    ? 'Никого по такому запросу'
+                    : 'Других участников пока нет — зайдите позже или пригласите в чат';
+                list.appendChild(empty);
+                return;
+            }
+            rows.forEach((m) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className =
+                    'chat-mention-item' + (m.isCurator ? ' chat-mention-item--curator' : '');
+                b.setAttribute('role', 'option');
+                if (m.isCurator && m.publicName) {
+                    const lab = document.createElement('span');
+                    lab.textContent = CURATOR_MENTION_LABEL;
+                    b.appendChild(lab);
+                    b.appendChild(document.createTextNode(' · '));
+                    const nm = document.createElement('span');
+                    nm.className = 'chat-mention-curator-name';
+                    nm.textContent = m.publicName;
+                    b.appendChild(nm);
+                } else {
+                    b.textContent = m.name;
+                }
+                b.addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    pickMention(m.insertName || m.name);
+                });
+                list.appendChild(b);
+            });
+        }
+        
+        function openMentionPicker(withFilter) {
+            const panel = document.getElementById('mention-panel');
+            if (!panel) return;
+            fillMentionList(withFilter != null ? withFilter : '');
+            panel.hidden = false;
+        }
+        
+        function checkMentionTrigger() {
+            const ta = document.getElementById('message-input');
+            const panel = document.getElementById('mention-panel');
+            if (!ta || !panel) return;
+            const v = ta.value;
+            const pos = ta.selectionStart;
+            const before = v.slice(0, pos);
+            const m = before.match(/@([^\s\n@]*)$/);
+            if (m) {
+                fillMentionList(m[1]);
+                panel.hidden = false;
+            } else {
+                panel.hidden = true;
+            }
+        }
+        
+        function pickMention(name) {
+            const ta = document.getElementById('message-input');
+            if (!ta) return;
+            const v = ta.value;
+            const pos = ta.selectionStart;
+            const before = v.slice(0, pos);
+            const after = v.slice(pos);
+            const match = before.match(/@([^\s\n@]*)$/);
+            const insert = '@' + name + ' ';
+            if (match) {
+                const start = before.length - match[0].length;
+                ta.value = v.slice(0, start) + insert + after;
+                const newPos = start + insert.length;
+                ta.selectionStart = ta.selectionEnd = newPos;
+            } else {
+                insertAtCursor(ta, insert);
+            }
+            closeMentionPanel();
+            autoResize.call(ta);
+            ta.focus();
+            PSBApp.haptic.light();
+        }
+        
+        function initChatComposer() {
+            document.getElementById('chat-reply-bar-close')?.addEventListener('click', () => clearPendingReply());
+            document.getElementById('message-action-sheet-backdrop')?.addEventListener('click', () =>
+                closeMessageActionSheet()
+            );
+            document.getElementById('message-action-sheet-reply')?.addEventListener('click', () => {
+                if (!messageActionContext) return;
+                setPendingReply(messageActionContext.msgKey, messageActionContext.message);
+                closeMessageActionSheet();
+            });
+            document.getElementById('btn-mention')?.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const panel = document.getElementById('emoji-panel');
-                if (panel) panel.hidden = !panel.hidden;
+                const panel = document.getElementById('mention-panel');
+                if (panel && !panel.hidden) {
+                    closeMentionPanel();
+                    return;
+                }
+                insertAtCursor(document.getElementById('message-input'), '@');
+                openMentionPicker('');
+                const ta = document.getElementById('message-input');
+                if (ta) ta.focus();
             });
             document.getElementById('btn-attach')?.addEventListener('click', () => {
                 document.getElementById('chat-file-input')?.click();
@@ -1348,7 +2032,21 @@
                     }
                 }
                 
-                messagesRef.push(base);
+                if (pendingReply) {
+                    base.replyTo = {
+                        key: pendingReply.key,
+                        userName: pendingReply.userName,
+                        snippet: pendingReply.snippet
+                    };
+                }
+                messagesRef
+                    .push(base)
+                    .then(() => {
+                        clearPendingReply();
+                    })
+                    .catch((err) => {
+                        PSBApp.showToast('Не отправлено: ' + (err && err.message ? err.message : 'ошибка'), 'error');
+                    });
                 if (ta) {
                     ta.value = '';
                     ta.style.height = 'auto';
@@ -1362,29 +2060,319 @@
             }
         }
         
+        function getMessageSnippetForReply(message) {
+            if (!message || typeof message !== 'object') return '';
+            if (message.msgType === 'image') return '📷 Фото';
+            if (message.msgType === 'file') return '📎 ' + (message.fileName || 'Файл');
+            if (message.msgType === 'help' || message.helpRequest) return 'Запрос к куратору';
+            const t = message.text != null ? String(message.text).trim() : '';
+            if (t) return t.length > 160 ? t.slice(0, 160) + '…' : t;
+            if (message.imageUrl || message.imageData) return '📷 Фото';
+            return 'Сообщение';
+        }
+        
+        function createReplyQuoteEl(message) {
+            if (!message.replyTo || typeof message.replyTo !== 'object') return null;
+            const rq = message.replyTo;
+            const wrap = document.createElement('div');
+            wrap.className = 'message-reply-quote';
+            const nameEl = document.createElement('span');
+            nameEl.className = 'message-reply-quote-name';
+            nameEl.textContent = rq.userName != null ? String(rq.userName) : 'Сообщение';
+            const textEl = document.createElement('span');
+            textEl.className = 'message-reply-quote-text';
+            textEl.textContent = rq.snippet != null ? String(rq.snippet) : '';
+            wrap.appendChild(nameEl);
+            wrap.appendChild(textEl);
+            return wrap;
+        }
+        
+        function setPendingReply(msgKey, message) {
+            pendingReply = {
+                key: msgKey,
+                userName: message.userName || 'Участник',
+                snippet: getMessageSnippetForReply(message)
+            };
+            const bar = document.getElementById('chat-reply-bar');
+            const nm = document.getElementById('chat-reply-bar-name');
+            const sn = document.getElementById('chat-reply-bar-snippet');
+            if (nm) nm.textContent = pendingReply.userName;
+            if (sn) sn.textContent = pendingReply.snippet;
+            if (bar) bar.hidden = false;
+            const ta = document.getElementById('message-input');
+            if (ta) ta.focus();
+        }
+        
+        function clearPendingReply() {
+            pendingReply = null;
+            const bar = document.getElementById('chat-reply-bar');
+            if (bar) bar.hidden = true;
+        }
+        
+        function closeMessageActionSheet() {
+            const sheet = document.getElementById('message-action-sheet');
+            if (sheet) sheet.hidden = true;
+            messageActionContext = null;
+        }
+        
+        function openMessageActionSheet(msgKey, message) {
+            messageActionContext = { msgKey: msgKey, message: message };
+            const emojiWrap = document.getElementById('message-action-sheet-emojis');
+            const sheet = document.getElementById('message-action-sheet');
+            if (!emojiWrap || !sheet) return;
+            emojiWrap.innerHTML = '';
+            REACTION_CHOICES.forEach((em) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'message-action-sheet-emoji';
+                b.textContent = em;
+                b.addEventListener('click', () => {
+                    toggleReactionOnMessage(msgKey, em);
+                    closeMessageActionSheet();
+                });
+                emojiWrap.appendChild(b);
+            });
+            sheet.hidden = false;
+        }
+        
+        function aggregateReactionsMap(reactions) {
+            if (!reactions || typeof reactions !== 'object') return [];
+            const mySafe = currentUser ? safeTypingPath(String(currentUser.id)) : '';
+            const byEmoji = {};
+            Object.keys(reactions).forEach((uid) => {
+                const em = reactions[uid];
+                if (em == null || em === '') return;
+                if (!byEmoji[em]) {
+                    byEmoji[em] = { emoji: em, count: 0, mine: false };
+                }
+                byEmoji[em].count++;
+                if (uid === mySafe) byEmoji[em].mine = true;
+            });
+            return Object.values(byEmoji);
+        }
+        
+        function renderReactionsWrap(wrap, msgKey, reactions) {
+            if (!wrap) return;
+            wrap.innerHTML = '';
+            const groups = aggregateReactionsMap(reactions);
+            if (!groups.length) {
+                wrap.hidden = true;
+                return;
+            }
+            wrap.hidden = false;
+            groups.forEach((g) => {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'message-reaction-chip' + (g.mine ? ' is-mine' : '');
+                chip.appendChild(document.createTextNode(g.emoji));
+                const c = document.createElement('span');
+                c.textContent = String(g.count);
+                c.style.fontSize = '11px';
+                c.style.opacity = '0.85';
+                c.style.marginLeft = '3px';
+                chip.appendChild(c);
+                chip.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleReactionOnMessage(msgKey, g.emoji);
+                });
+                wrap.appendChild(chip);
+            });
+        }
+        
+        function toggleReactionOnMessage(msgKey, emoji) {
+            if (!messagesRef || !currentUser) return;
+            const safe = safeTypingPath(String(currentUser.id));
+            const r = messagesRef.child(msgKey).child('reactions').child(safe);
+            r.once('value', (snap) => {
+                const cur = snap.val();
+                if (cur === emoji) r.remove();
+                else r.set(emoji);
+            });
+        }
+        
+        function attachMessageGestures(msgEl, msgKey, message) {
+            let sx = 0;
+            let sy = 0;
+            let tracking = false;
+            let moved = false;
+            let lpTimer = null;
+            let holdSheetOpen = false;
+            let captureOn = false;
+            
+            function clearLp() {
+                if (lpTimer) {
+                    clearTimeout(lpTimer);
+                    lpTimer = null;
+                }
+            }
+            
+            msgEl.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                openMessageActionSheet(msgKey, message);
+            });
+            
+            msgEl.addEventListener('pointerdown', (e) => {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                holdSheetOpen = false;
+                moved = false;
+                sx = e.clientX;
+                sy = e.clientY;
+                tracking = true;
+                msgEl.classList.add('is-swiping');
+                lpTimer = setTimeout(() => {
+                    lpTimer = null;
+                    if (!moved) {
+                        holdSheetOpen = true;
+                        openMessageActionSheet(msgKey, message);
+                        if (PSBApp.haptic) PSBApp.haptic.medium();
+                    }
+                }, 480);
+            });
+            
+            msgEl.addEventListener('pointermove', (e) => {
+                if (!tracking) return;
+                const dx = e.clientX - sx;
+                const dy = e.clientY - sy;
+                if (Math.abs(dx) > 10 || Math.abs(dy) > 10) moved = true;
+                if (moved) clearLp();
+                if (holdSheetOpen) return;
+                if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
+                    if (!captureOn) {
+                        try {
+                            msgEl.setPointerCapture(e.pointerId);
+                            captureOn = true;
+                        } catch (_) {}
+                    }
+                    const t = Math.min(Math.max(dx, 0), 64);
+                    msgEl.style.transform = 'translateX(' + t + 'px)';
+                }
+            });
+            
+            function endPointer(e) {
+                if (!tracking) return;
+                const dx = e.clientX - sx;
+                const dy = e.clientY - sy;
+                tracking = false;
+                clearLp();
+                msgEl.classList.remove('is-swiping');
+                msgEl.style.transform = '';
+                if (captureOn) {
+                    try {
+                        msgEl.releasePointerCapture(e.pointerId);
+                    } catch (_) {}
+                    captureOn = false;
+                }
+                if (holdSheetOpen) {
+                    holdSheetOpen = false;
+                    return;
+                }
+                if (dx > 48 && Math.abs(dx) > Math.abs(dy) * 0.65) {
+                    setPendingReply(msgKey, message);
+                    if (PSBApp.haptic) PSBApp.haptic.light();
+                }
+            }
+            
+            msgEl.addEventListener('pointerup', endPointer);
+            msgEl.addEventListener('pointercancel', (e) => {
+                tracking = false;
+                clearLp();
+                holdSheetOpen = false;
+                msgEl.classList.remove('is-swiping');
+                msgEl.style.transform = '';
+                if (captureOn) {
+                    try {
+                        msgEl.releasePointerCapture(e.pointerId);
+                    } catch (_) {}
+                    captureOn = false;
+                }
+            });
+        }
+        
+        function updateMessageRowReactions(row, reactions) {
+            const wrap = row.querySelector('.message-reactions-wrap');
+            if (!wrap || !row.dataset.msgKey) return;
+            renderReactionsWrap(wrap, row.dataset.msgKey, reactions);
+        }
+        
         function loadMessages() {
             messagesRef.orderByChild('timestamp').limitToLast(100).on('child_added', (snapshot) => {
                 const key = snapshot.key;
                 if (seenMessageKeys.has(key)) return;
                 seenMessageKeys.add(key);
                 const message = snapshot.val();
-                displayMessage(message);
+                displayMessage(message, key);
                 const empty = document.getElementById('empty-chat');
                 if (empty) empty.style.display = 'none';
                 const container = document.getElementById('chat-messages');
                 container.scrollTop = container.scrollHeight;
+            }, (err) => {
+                setFirebaseStatus('Чат недоступен: ' + (err && err.code ? err.code : (err && err.message) || 'ошибка') + '. Проверьте правила Firebase для узла messages.');
+                PSBApp.showToast('Не удалось загрузить сообщения', 'error');
+            });
+            messagesRef.on('child_changed', (snapshot) => {
+                const key = snapshot.key;
+                const val = snapshot.val();
+                const container = document.getElementById('chat-messages');
+                if (!container || !val) return;
+                const esc =
+                    typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+                        ? CSS.escape(key)
+                        : String(key).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+                const row = container.querySelector('.message-row[data-msg-key="' + esc + '"]');
+                if (!row) return;
+                updateMessageRowReactions(row, val.reactions || {});
             });
         }
         
-        function displayMessage(message) {
+        function callCuratorOrAdmin() {
+            if (!isFirebaseConfigured || !currentUser || !messagesRef) {
+                PSBApp.showToast('Чат не готов', 'error');
+                return;
+            }
+            const now = Date.now();
+            if (now - lastHelpRequestAt < HELP_REQUEST_COOLDOWN_MS) {
+                PSBApp.showToast('Подождите минуту перед следующим запросом', 'info');
+                return;
+            }
+            lastHelpRequestAt = now;
+            const message = {
+                userId: currentUser.id,
+                userName: currentUser.name,
+                text: '🔔 Запрос помощи: ' + (currentUser.name || 'Участник') + ' просит связаться куратор или администратор.',
+                timestamp: Date.now(),
+                role: currentUser.role || 'student',
+                msgType: 'help',
+                helpRequest: true
+            };
+            messagesRef.push(message)
+                .then(() => {
+                    PSBApp.showToast('Запрос отправлен в чат', 'success');
+                    PSBApp.haptic.medium();
+                })
+                .catch((err) => {
+                    lastHelpRequestAt = 0;
+                    PSBApp.showToast('Не удалось отправить: ' + (err && err.message ? err.message : 'ошибка'), 'error');
+                });
+        }
+        
+        function displayMessage(message, msgKey) {
             const container = document.getElementById('chat-messages');
             const uid = currentUser && currentUser.id;
             const isOwn = String(message.userId) === String(uid);
             const teacher = isMessageFromTeacher(message);
+            const isHelp = message.msgType === 'help' || message.helpRequest === true;
+            
+            const row = document.createElement('div');
+            row.className = 'message-row ' + (isOwn ? 'message-row--outgoing' : 'message-row--incoming');
+            row.dataset.msgKey = msgKey;
+            
+            const inner = document.createElement('div');
+            inner.className = 'message-row-inner';
             
             const msgEl = document.createElement('div');
             let cls = 'message ' + (isOwn ? 'message-outgoing' : 'message-incoming');
             if (teacher) cls += ' message-teacher-msg';
+            if (isHelp) cls += ' message-help-call';
             msgEl.className = cls;
             
             const time = new Date(message.timestamp || 0).toLocaleTimeString('ru-RU', {
@@ -1394,11 +2382,18 @@
             const name = message.userName || 'Участник';
             const badge = teacher ? '<span class="role-badge">Преподаватель</span>' : '';
             
-            if (!isOwn) {
+            if (isHelp) {
+                msgEl.innerHTML = '<div class="message-author" style="font-size:11px;opacity:.9;">Запрос к куратору</div>';
+            } else if (!isOwn) {
                 msgEl.innerHTML = `<div class="message-author">${escapeHtml(name)}${badge}</div>`;
             } else if (teacher) {
                 msgEl.innerHTML = '<div class="message-author" style="opacity:.95;font-size:11px;">Вы ' + badge + '</div>';
+            } else {
+                msgEl.innerHTML = '<div class="message-author" style="opacity:.85;font-size:11px;">Вы</div>';
             }
+            
+            const rqEl = createReplyQuoteEl(message);
+            if (rqEl) msgEl.appendChild(rqEl);
             
             const hasImage = message.msgType === 'image' && (message.imageUrl || message.imageData);
             if (hasImage) {
@@ -1440,7 +2435,18 @@
             timeEl.textContent = time;
             msgEl.appendChild(timeEl);
             
-            container.appendChild(msgEl);
+            inner.appendChild(msgEl);
+            
+            const reactWrap = document.createElement('div');
+            reactWrap.className = 'message-reactions-wrap';
+            reactWrap.hidden = true;
+            inner.appendChild(reactWrap);
+            
+            row.appendChild(inner);
+            container.appendChild(row);
+            
+            renderReactionsWrap(reactWrap, msgKey, message.reactions);
+            attachMessageGestures(msgEl, msgKey, message);
         }
         
         function sendMessage() {
@@ -1451,6 +2457,7 @@
             if (!text) return;
             
             clearMyTypingState();
+            closeMentionPanel();
             
             const message = {
                 userId: currentUser.id,
@@ -1459,13 +2466,24 @@
                 timestamp: Date.now(),
                 role: currentUser.role || 'student'
             };
+            if (pendingReply) {
+                message.replyTo = {
+                    key: pendingReply.key,
+                    userName: pendingReply.userName,
+                    snippet: pendingReply.snippet
+                };
+            }
             
-            messagesRef.push(message);
-            
-            input.value = '';
-            input.style.height = 'auto';
-            
-            PSBApp.haptic.light();
+            messagesRef.push(message)
+                .then(() => {
+                    input.value = '';
+                    input.style.height = 'auto';
+                    clearPendingReply();
+                    PSBApp.haptic.light();
+                })
+                .catch((err) => {
+                    PSBApp.showToast('Не удалось отправить: ' + (err && err.message ? err.message : 'ошибка') + '. Проверьте интернет и правила Firebase.', 'error');
+                });
         }
         
         function autoResize() {

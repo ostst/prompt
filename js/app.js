@@ -855,7 +855,8 @@ const analytics = {
             'materials.html': '📚 Материалы',
             'glossary.html': '📖 Глоссарий',
             'faq.html': '❓ FAQ',
-            'stats.html': '📊 Статистика'
+            'stats.html': '📊 Статистика',
+            'chat.html': '💬 Чат'
         };
         return names[page] || page;
     }

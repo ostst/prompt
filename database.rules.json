@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "messages": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["timestamp"]
+    },
+    "typing": {
+      ".read": true,
+      ".write": true
+    },
+    "members": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

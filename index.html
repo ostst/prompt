@@ -2240,186 +2240,112 @@
         }
         
         // ========================================
-        // PWA INSTALL BANNER
+        // PWA: модальное окно только при первом запуске (только главная, не чат и не другие страницы)
         // ========================================
-        function showPWAInstallBanner() {
-            // Не показываем если уже установлено как PWA
-            if (window.matchMedia('(display-mode: standalone)').matches) return;
-            
-            // Если в Telegram - показываем специальный баннер
-            const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
-            
-            // Проверяем, не закрывали ли уже баннер
-            const dismissed = PSBApp.storage.get('pwaBannerDismissed');
-            if (dismissed) {
-                const dismissedDate = new Date(dismissed);
-                const daysSinceDismissed = (Date.now() - dismissedDate) / (1000 * 60 * 60 * 24);
-                // Показываем снова через 7 дней
-                if (daysSinceDismissed < 7) return;
+        function schedulePWAFirstLaunchModal() {
+            // Миграция: кто уже закрыл старый нижний баннер — считаем инструкцию показанной
+            if (!PSBApp.storage.get('pwaFirstLaunchInstallDone') && PSBApp.storage.get('pwaBannerDismissed')) {
+                PSBApp.storage.set('pwaFirstLaunchInstallDone', PSBApp.storage.get('pwaBannerDismissed'));
             }
-            
-            // Определяем платформу
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            const isAndroid = /Android/.test(navigator.userAgent);
-            
-            let instructions = '';
-            
-            const textColor = isDark ? '#E5E7EB' : '#374151';
-            const iconBg = isDark ? '#374151' : '#F3F4F6';
-            
-            if (isIOS) {
-                instructions = `
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">1</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Нажмите <span class="pwa-step-icon" style="background: ${iconBg}"><i class="fa-solid fa-arrow-up-from-bracket text-[#007AFF] text-xs"></i></span> внизу экрана
-                        </div>
-                    </div>
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">2</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Выберите <b>«На экран "Домой"»</b>
-                        </div>
-                    </div>
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">3</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Нажмите <b>«Добавить»</b>
-                        </div>
-                    </div>
-                `;
-            } else if (isAndroid) {
-                instructions = `
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">1</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Нажмите <span class="pwa-step-icon" style="background: ${iconBg}"><i class="fa-solid fa-ellipsis-vertical text-xs" style="color: ${isDark ? '#D1D5DB' : '#4B5563'}"></i></span> в правом верхнем углу
-                        </div>
-                    </div>
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">2</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Выберите <b>«Установить приложение»</b> или <b>«Добавить на главный экран»</b>
-                        </div>
-                    </div>
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">3</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Подтвердите установку
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Desktop
-                instructions = `
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">1</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Нажмите <span class="pwa-step-icon" style="background: ${iconBg}"><i class="fa-solid fa-plus text-xs" style="color: ${isDark ? '#D1D5DB' : '#4B5563'}"></i></span> в адресной строке браузера
-                        </div>
-                    </div>
-                    <div class="pwa-step">
-                        <div class="pwa-step-num">2</div>
-                        <div class="pwa-step-text" style="color: ${textColor}">
-                            Выберите <b>«Установить»</b>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            const isDark = document.body.classList.contains('dark-mode');
-            
-            // Если в Telegram - показываем кнопку открытия в браузере
-            if (inTelegram) {
-                const banner = document.createElement('div');
-                banner.className = 'pwa-banner';
-                banner.id = 'pwa-banner';
-                banner.innerHTML = `
-                    <button class="pwa-banner-close" onclick="dismissPWABanner()">
-                        <i class="fa-solid fa-times text-sm" style="color: #9CA3AF"></i>
-                    </button>
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2D2B84] to-[#4F46E5] flex items-center justify-center shadow-lg">
-                            <i class="fa-solid fa-mobile-screen text-white text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-[15px]" style="color: ${isDark ? '#FFFFFF' : '#1F2937'}">Установить приложение</h3>
-                            <p class="text-xs" style="color: ${isDark ? '#D1D5DB' : '#6B7280'}">Полноценное PWA с уведомлениями</p>
-                        </div>
-                    </div>
-                    <p class="text-sm mb-4" style="color: ${isDark ? '#D1D5DB' : '#4B5563'}">
-                        Для установки PWA-версии с push-уведомлениями, откройте приложение в браузере:
-                    </p>
-                    <button onclick="openInBrowser()" class="w-full py-3 px-4 rounded-xl bg-[#2D2B84] text-white font-semibold text-sm flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        Открыть в браузере
-                    </button>
-                    <button onclick="dismissPWABanner()" class="w-full mt-2 py-2.5 px-4 rounded-xl font-semibold text-sm" style="background: ${isDark ? '#374151' : '#F3F4F6'}; color: ${isDark ? '#D1D5DB' : '#374151'}">
-                        Продолжить в Telegram
-                    </button>
-                `;
-                document.body.appendChild(banner);
+            if (PSBApp.storage.get('pwaFirstLaunchInstallDone')) return;
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                PSBApp.storage.set('pwaFirstLaunchInstallDone', Date.now());
                 return;
             }
-            
-            const banner = document.createElement('div');
-            banner.className = 'pwa-banner';
-            banner.id = 'pwa-banner';
-            banner.innerHTML = `
-                <button class="pwa-banner-close" onclick="dismissPWABanner()">
-                    <i class="fa-solid fa-times text-sm" style="color: ${isDark ? '#9CA3AF' : '#9CA3AF'}"></i>
-                </button>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#2D2B84] to-[#4F46E5] flex items-center justify-center shadow-lg">
-                        <i class="fa-solid fa-mobile-screen text-white text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-[15px]" style="color: ${isDark ? '#FFFFFF' : '#1F2937'}">Установите приложение</h3>
-                        <p class="text-xs" style="color: ${isDark ? '#D1D5DB' : '#6B7280'}">Быстрый доступ с главного экрана</p>
-                    </div>
-                </div>
-                <div class="rounded-xl p-3 mb-4" style="background: ${isDark ? '#0f0f1a' : '#F9FAFB'}">
-                    ${instructions}
-                </div>
-                <div class="flex gap-2">
-                    <button onclick="dismissPWABanner()" class="flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm" style="background: ${isDark ? '#374151' : '#F3F4F6'}; color: ${isDark ? '#D1D5DB' : '#374151'}">
-                        Позже
-                    </button>
-                    <button onclick="dismissPWABanner(true)" class="flex-1 py-2.5 px-4 rounded-xl bg-[#2D2B84] text-white font-semibold text-sm">
-                        Понятно!
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(banner);
+            const tick = () => {
+                if (document.getElementById('registration-overlay') || document.getElementById('onboarding')) {
+                    setTimeout(tick, 400);
+                    return;
+                }
+                showPWAFirstLaunchInstallModal();
+            };
+            setTimeout(tick, 500);
         }
         
-        function dismissPWABanner(understood = false) {
-            const banner = document.getElementById('pwa-banner');
-            if (banner) {
-                banner.style.animation = 'fadeOut 0.3s ease-out forwards';
-                setTimeout(() => banner.remove(), 300);
+        function showPWAFirstLaunchInstallModal() {
+            if (PSBApp.storage.get('pwaFirstLaunchInstallDone')) return;
+            if (window.matchMedia('(display-mode: standalone)').matches) return;
+            if (document.getElementById('pwa-first-launch-modal')) return;
+            
+            const inTelegram = window.Telegram?.WebApp?.platform && window.Telegram.WebApp.platform !== 'unknown';
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            const cardBg = isDark ? '#242b45' : '#ffffff';
+            const fg = isDark ? '#F3F4F6' : '#1F2937';
+            const sub = isDark ? '#9CA3AF' : '#6B7280';
+            
+            let stepsHtml = '';
+            if (inTelegram) {
+                stepsHtml = '<p style="margin:0;line-height:1.5;font-size:14px;color:' + fg + ';">Для установки ярлыка на экран и push-уведомлений откройте этот сайт в <b>Safari</b> или <b>Chrome</b> (кнопка ниже).</p>';
+            } else if (isIOS) {
+                stepsHtml =
+                    '<p style="margin:0 0 10px;line-height:1.5;font-size:14px;color:' + fg + ';">1. Нажмите <b>«Поделиться»</b> <span style="opacity:.85">(□↑)</span> внизу Safari.</p>' +
+                    '<p style="margin:0 0 10px;line-height:1.5;font-size:14px;color:' + fg + ';">2. Выберите <b>«На экран «Домой»»</b>.</p>' +
+                    '<p style="margin:0;line-height:1.5;font-size:14px;color:' + fg + ';">3. Нажмите <b>«Добавить»</b>.</p>';
+            } else if (isAndroid) {
+                stepsHtml =
+                    '<p style="margin:0 0 10px;line-height:1.5;font-size:14px;color:' + fg + ';">1. Откройте меню браузера <b>⋮</b> (справа вверху).</p>' +
+                    '<p style="margin:0 0 10px;line-height:1.5;font-size:14px;color:' + fg + ';">2. Выберите <b>«Установить приложение»</b> или <b>«Добавить на главный экран»</b>.</p>' +
+                    '<p style="margin:0;line-height:1.5;font-size:14px;color:' + fg + ';">3. Подтвердите установку.</p>';
+            } else {
+                stepsHtml =
+                    '<p style="margin:0 0 10px;line-height:1.5;font-size:14px;color:' + fg + ';">1. В адресной строке <b>Chrome</b> или <b>Edge</b> нажмите иконку установки <b>(⊕ или монитор со стрелкой)</b>.</p>' +
+                    '<p style="margin:0;line-height:1.5;font-size:14px;color:' + fg + ';">2. Подтвердите <b>«Установить»</b>.</p>';
             }
             
+            const telegramExtra = inTelegram
+                ? '<button type="button" id="pwa-first-open-browser" style="width:100%;padding:12px 16px;margin-bottom:10px;border:none;border-radius:14px;font-weight:600;font-size:14px;cursor:pointer;background:linear-gradient(135deg,#2D2B84,#4F46E5);color:#fff;"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-right:8px"></i>Открыть в браузере</button>'
+                : '';
+            
+            const wrap = document.createElement('div');
+            wrap.id = 'pwa-first-launch-modal';
+            wrap.style.cssText = 'position:fixed;inset:0;z-index:100050;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) 16px 16px;box-sizing:border-box;';
+            wrap.innerHTML =
+                '<div role="dialog" aria-modal="true" aria-labelledby="pwa-first-title" style="max-width:360px;width:100%;border-radius:20px;padding:22px 20px;box-shadow:0 24px 60px rgba(0,0,0,.35);background:' +
+                cardBg +
+                ';color:' +
+                fg +
+                ';">' +
+                '<h2 id="pwa-first-title" style="margin:0 0 8px;font-size:17px;font-weight:700;">Добавить на рабочий стол</h2>' +
+                '<p style="margin:0 0 14px;font-size:13px;line-height:1.45;color:' +
+                sub +
+                ';">Так приложение откроется как отдельная иконка (удобнее, чем вкладка).</p>' +
+                '<div style="margin-bottom:18px;">' +
+                stepsHtml +
+                '</div>' +
+                telegramExtra +
+                '<button type="button" id="pwa-first-ok" style="width:100%;padding:12px 16px;border:none;border-radius:14px;font-weight:600;font-size:15px;cursor:pointer;background:linear-gradient(135deg,#2D2B84,#4F46E5);color:#fff;">Понятно</button>' +
+                '</div>';
+            
+            wrap.addEventListener('click', (e) => {
+                if (e.target === wrap) dismissPWAFirstLaunchModal(false);
+            });
+            document.body.appendChild(wrap);
+            document.getElementById('pwa-first-ok')?.addEventListener('click', () => dismissPWAFirstLaunchModal(true));
+            document.getElementById('pwa-first-open-browser')?.addEventListener('click', () => openInBrowser());
+        }
+        
+        function dismissPWAFirstLaunchModal(showSuccessToast) {
+            const el = document.getElementById('pwa-first-launch-modal');
+            if (el) el.remove();
+            PSBApp.storage.set('pwaFirstLaunchInstallDone', Date.now());
             PSBApp.storage.set('pwaBannerDismissed', Date.now());
             PSBApp.haptic.light();
-            
-            if (understood) {
+            if (showSuccessToast) {
                 PSBApp.showToast('Отлично! Следуйте инструкции', 'success');
             }
         }
         
         function openInBrowser() {
-            const url = 'https://ostst.github.io/prompt/';
-            
-            // Пробуем открыть через Telegram WebApp
+            const url = new URL('./', window.location.href).href;
             if (window.Telegram?.WebApp?.openLink) {
                 window.Telegram.WebApp.openLink(url);
             } else {
                 window.open(url, '_blank');
             }
-            
-            dismissPWABanner();
+            dismissPWAFirstLaunchModal(false);
             PSBApp.haptic.success();
         }
         
@@ -2858,18 +2784,22 @@
                     }
                 }, 800);
                 
-                // Показываем баннер установки PWA (после онбординга)
-                setTimeout(showPWAInstallBanner, 2000);
+                // Модалка «Добавить на рабочий стол» — только первый запуск приложения (главная), после регистрации/онбординга
+                schedulePWAFirstLaunchModal();
                 
-                // Показываем попап подтверждения просмотра (после всех других попапов)
+                // Показываем попап подтверждения просмотра, когда нет других окон
                 setTimeout(() => {
-                    // Не показываем если есть другие попапы
-                    if (!document.getElementById('registration-overlay') && 
-                        !document.getElementById('onboarding-overlay') &&
-                        !document.getElementById('pwa-banner')) {
+                    const tryConfirm = () => {
+                        if (document.getElementById('registration-overlay') ||
+                            document.getElementById('onboarding') ||
+                            document.getElementById('pwa-first-launch-modal')) {
+                            setTimeout(tryConfirm, 350);
+                            return;
+                        }
                         showConfirmPopup();
-                    }
-                }, 3000);
+                    };
+                    tryConfirm();
+                }, 800);
             });
         });
     </script>
