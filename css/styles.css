@@ -657,6 +657,35 @@ body.dark-mode {
     transform: scale(1.1);
 }
 
+/* Непрочитанные сообщения в чате (красная точка на иконке) */
+.nav-item[href*="chat.html"] {
+    position: relative;
+}
+
+.nav-chat-unread-dot {
+    display: none;
+    position: absolute;
+    /* Уголок иконки (точка вложена в <i> ~20×20px) */
+    top: -2px;
+    right: -4px;
+    left: auto;
+    margin-left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #EF4444;
+    box-shadow: 0 0 0 2px var(--bg-card);
+    pointer-events: none;
+}
+
+.nav-chat-unread-dot.nav-chat-unread-dot--visible {
+    display: block;
+}
+
+.dark-mode .nav-chat-unread-dot {
+    box-shadow: 0 0 0 2px var(--bg-card);
+}
+
 /* ========================================
    Карточки
    ======================================== */

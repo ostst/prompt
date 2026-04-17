@@ -1,5 +1,9 @@
 {
   "rules": {
+    "meta": {
+      ".read": false,
+      ".write": false
+    },
     "messages": {
       ".read": true,
       ".write": true,

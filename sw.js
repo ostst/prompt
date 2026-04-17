@@ -1,10 +1,13 @@
+importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
+// ↑ OneSignal: первой строкой. Дальше — кэш PWA.
+
 // ========================================
 // Service Worker - ПСБ Академия
 // ========================================
 
-const CACHE_NAME = 'psb-academy-v5';
-const STATIC_CACHE = 'psb-static-v5';
-const DYNAMIC_CACHE = 'psb-dynamic-v5';
+const CACHE_NAME = 'psb-academy-v6';
+const STATIC_CACHE = 'psb-static-v6';
+const DYNAMIC_CACHE = 'psb-dynamic-v6';
 /** Базовый путь приложения: каталог, в котором лежит sw.js (например / или /prompt/) */
 const BASE_PATH = new URL('.', self.location.href).pathname;
 
@@ -166,60 +169,50 @@ async function staleWhileRevalidate(request) {
     return cachedResponse || fetchPromise;
 }
 
-// Push уведомления
+// ========================================
+// Push-уведомления (fallback — если OneSignal SW не перехватил)
+// ========================================
+// OneSignal уже обрабатывает push через importScripts выше.
+// Эти обработчики срабатывают только если OneSignal SDK недоступен (оффлайн, CDN недоступен).
+
 self.addEventListener('push', (event) => {
-    // Push received
-    
-    let data = {
-        title: 'ПСБ Академия',
-        body: 'Новое уведомление',
-        icon: `${BASE_PATH}img/app-icon.png`,
-        badge: `${BASE_PATH}img/app-icon.png`
-    };
-    
+    // OneSignal обычно перехватывает раньше. Этот блок — страховка.
     if (event.data) {
-        try {
-            data = { ...data, ...event.data.json() };
-        } catch (e) {
-            data.body = event.data.text();
-        }
+        let data = {};
+        try { data = event.data.json(); } catch (_) { data = { title: 'ПСБ Академия', body: event.data.text() }; }
+        const title = data.title || data.headings?.ru || data.headings?.en || 'ПСБ Академия';
+        const body = data.body || data.contents?.ru || data.contents?.en || '';
+        const icon = data.icon || `${BASE_PATH}img/app-icon.png`;
+        const url = data.url || data.launch_url || `${BASE_PATH}index.html`;
+        event.waitUntil(
+            self.registration.showNotification(title, {
+                body,
+                icon,
+                badge: `${BASE_PATH}img/app-icon.png`,
+                data: { url },
+                tag: data.tag || 'psb-push',
+            })
+        );
     }
-    
-    event.waitUntil(
-        self.registration.showNotification(data.title, {
-            body: data.body,
-            icon: data.icon,
-            badge: data.badge,
-            vibrate: [200, 100, 200],
-            tag: 'psb-notification',
-            renotify: true,
-            data: data.url || `${BASE_PATH}`
-        })
-    );
 });
 
-// Клик по уведомлению
 self.addEventListener('notificationclick', (event) => {
-    // Notification click
-    
     event.notification.close();
-    
+    const url = (event.notification.data && event.notification.data.url)
+        || `${BASE_PATH}index.html`;
     event.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true })
-            .then(clientList => {
-                // Если приложение уже открыто - фокусируемся на нём
-                for (const client of clientList) {
-                    if (client.url.includes(self.location.origin) && 'focus' in client) {
-                        client.navigate(event.notification.data);
-                        return client.focus();
-                    }
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+            // Если уже есть открытое окно — фокусируем и навигируем
+            for (const client of list) {
+                if ('focus' in client) {
+                    client.focus();
+                    if ('navigate' in client) client.navigate(url);
+                    return;
                 }
-                
-                // Иначе открываем новое окно
-                if (clients.openWindow) {
-                    return clients.openWindow(event.notification.data);
-                }
-            })
+            }
+            // Иначе открываем новое окно
+            if (clients.openWindow) return clients.openWindow(url);
+        })
     );
 });
 

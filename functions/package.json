@@ -1,0 +1,13 @@
+{
+  "name": "psb-academy-functions",
+  "description": "Push-уведомления о чате через OneSignal при новом сообщении в Realtime Database",
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^4.9.0"
+  },
+  "private": true
+}

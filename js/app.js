@@ -947,3 +947,198 @@ window.PSBApp = {
     openWebinarPlayer,
     closeWebinarPlayer
 };
+
+/**
+ * Чат: красная точка на «Чат» + уведомления браузера.
+ * Встроено в app.js, чтобы не зависеть от отдельной загрузки chat-notify.js.
+ */
+(function initPSBChatUnread() {
+    if (window.__psbChatUnreadBooted) return;
+    window.__psbChatUnreadBooted = true;
+
+    const FIREBASE_CHAT_CFG = {
+        apiKey: 'AIzaSyDhUac_lBghIEQ8Sj15iCsWu7GVZcCOA3Y',
+        authDomain: 'psb-academy-chat.firebaseapp.com',
+        databaseURL: 'https://psb-academy-chat-default-rtdb.europe-west1.firebasedatabase.app',
+        projectId: 'psb-academy-chat',
+        storageBucket: 'psb-academy-chat.firebasestorage.app',
+        messagingSenderId: '701758501216',
+        appId: '1:701758501216:web:6311fcc657b0d350626e05'
+    };
+
+    let messagesRef = null;
+
+    function getLocalChatUserId() {
+        const P = window.PSBApp;
+        if (!P || !P.storage) return '';
+        const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+        if (tgUser) return 'tg_' + tgUser.id;
+        const ta = P.storage.get('telegramAuth');
+        if (ta && ta.id) return 'tg_' + ta.id;
+        return String(P.storage.get('chatStableUserId') || '');
+    }
+
+    function setChatNavBadge(show) {
+        function paint() {
+            document.querySelectorAll('a.nav-item[href*="chat.html"]').forEach((a) => {
+                const icon = a.querySelector('i');
+                if (!icon) return;
+                icon.style.position = 'relative';
+                let dot = icon.querySelector('.nav-chat-unread-dot');
+                if (!dot) {
+                    dot = document.createElement('span');
+                    dot.className = 'nav-chat-unread-dot';
+                    dot.setAttribute('aria-hidden', 'true');
+                    icon.appendChild(dot);
+                }
+                dot.classList.toggle('nav-chat-unread-dot--visible', !!show);
+            });
+        }
+        paint();
+        requestAnimationFrame(paint);
+        setTimeout(paint, 120);
+    }
+
+    function normalizeMentionUserIds(msg) {
+        const m = msg && msg.mentionUserIds;
+        if (m == null) return null;
+        if (Array.isArray(m)) return m.map((x) => String(x)).filter(Boolean);
+        if (typeof m === 'object') {
+            return Object.keys(m)
+                .map((k) => m[k])
+                .filter((v) => v != null && v !== '')
+                .map((x) => String(x));
+        }
+        return null;
+    }
+
+    function shouldAlertChatMessageForUser(msg, uid) {
+        const ids = normalizeMentionUserIds(msg);
+        if (ids && ids.length > 0) {
+            if (!uid) return false;
+            return ids.some((id) => String(id) === String(uid));
+        }
+        return true;
+    }
+
+    function onLatestMessage(snap) {
+        const P = window.PSBApp;
+        if (!P || !P.storage) return;
+
+        if (!snap || typeof snap.val !== 'function') {
+            setChatNavBadge(false);
+            return;
+        }
+        const raw = snap.val();
+        if (raw === null || raw === undefined) {
+            setChatNavBadge(false);
+            return;
+        }
+
+        let key = null;
+        let msg = null;
+        if (typeof snap.forEach === 'function') {
+            snap.forEach(function (child) {
+                key = child.key;
+                msg = child.val();
+                return false;
+            });
+        } else if (typeof raw === 'object') {
+            key = Object.keys(raw)[0];
+            msg = key != null ? raw[key] : null;
+        }
+
+        if (!msg || !key) {
+            setChatNavBadge(false);
+            return;
+        }
+
+        const ts = Number(msg.timestamp) || 0;
+        const lastRead = Number(P.storage.get('chatLastReadAt', 0)) || 0;
+        const uid = getLocalChatUserId();
+        const isOwn = uid && String(msg.userId) === String(uid);
+
+        if (isOwn || ts <= lastRead) {
+            setChatNavBadge(false);
+            return;
+        }
+        if (!shouldAlertChatMessageForUser(msg, uid)) {
+            setChatNavBadge(false);
+            return;
+        }
+
+        setChatNavBadge(true);
+        /* Всплывающие уведомления о чате — Cloud Function + OneSignal (работают при закрытом приложении). */
+    }
+
+    function startListener() {
+        if (!window.PSBApp || typeof firebase === 'undefined' || !firebase.database) return;
+        try {
+            if (!firebase.apps || firebase.apps.length === 0) {
+                firebase.initializeApp(FIREBASE_CHAT_CFG);
+            }
+        } catch (e) {
+            return;
+        }
+        messagesRef = firebase.database().ref('messages');
+        // limitToLast(1) по ключу — не требует .indexOn по timestamp в правилах RTDB
+        messagesRef.limitToLast(1).on(
+            'value',
+            onLatestMessage,
+            function onChatUnreadErr(err) {
+                safeError('PSB chat unread listener:', err);
+            }
+        );
+    }
+
+    function loadFirebaseAndStart() {
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            startListener();
+            return;
+        }
+        const a = document.createElement('script');
+        a.src = 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js';
+        a.onload = function () {
+            const b = document.createElement('script');
+            b.src = 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js';
+            b.onload = startListener;
+            document.head.appendChild(b);
+        };
+        document.head.appendChild(a);
+    }
+
+    function markChatMessagesRead(ts) {
+        const P = window.PSBApp;
+        if (!P || !P.storage) return;
+        const t = Number(ts) || 0;
+        if (!t) return;
+        const prev = Number(P.storage.get('chatLastReadAt', 0)) || 0;
+        if (t > prev) P.storage.set('chatLastReadAt', t);
+        setChatNavBadge(false);
+    }
+
+    function syncChatNotifySettings() {
+        if (!window.PSBApp || !messagesRef) return;
+        messagesRef.limitToLast(1).once('value', onLatestMessage);
+    }
+
+    window.PSBApp.markChatMessagesRead = markChatMessagesRead;
+    window.PSBApp.syncChatNotifySettings = syncChatNotifySettings;
+    window.PSBApp.setChatNavBadge = setChatNavBadge;
+
+    function boot() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadFirebaseAndStart);
+        } else {
+            loadFirebaseAndStart();
+        }
+        document.addEventListener('visibilitychange', function () {
+            if (messagesRef) syncChatNotifySettings();
+        });
+        window.addEventListener('focus', function () {
+            if (messagesRef) syncChatNotifySettings();
+        });
+    }
+
+    boot();
+})();

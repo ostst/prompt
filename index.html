@@ -1988,7 +1988,7 @@
                     </div>
                     <div class="flex-1">
                         <p class="font-bold text-sm text-gray-900 dark:text-white mb-1">Включить напоминания?</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Мы напомним вам о вебинарах за час до начала</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Разрешите уведомления — напоминания о вебинарах придут push’ем, в том числе когда приложение закрыто (OneSignal + сервер).</p>
                         <div class="flex gap-2">
                             <button onclick="requestNotificationPermission()" class="flex-1 bg-[#2D2B84] text-white text-xs font-bold py-2 px-3 rounded-lg">
                                 Включить
@@ -2008,10 +2008,27 @@
         }
         
         function requestNotificationPermission() {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    PSBApp.showToast('Уведомления включены!', 'success');
-                    PSBApp.haptic.success();
+            // Подписываем через OneSignal — только так push придёт при закрытом приложении.
+            // Нативный Notification.requestPermission() даёт разрешение браузеру,
+            // но не регистрирует пользователя в OneSignal для серверных push-уведомлений.
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function (OneSignal) {
+                try {
+                    const sub = OneSignal.User && OneSignal.User.PushSubscription;
+                    if (sub && typeof sub.optIn === 'function') {
+                        await sub.optIn();
+                        PSBApp.showToast('Push-уведомления включены!', 'success');
+                        PSBApp.haptic.success();
+                    } else {
+                        const perm = await Notification.requestPermission();
+                        if (perm === 'granted') {
+                            PSBApp.showToast('Уведомления включены!', 'success');
+                            PSBApp.haptic.success();
+                        }
+                    }
+                } catch (e) {
+                    const perm = await Notification.requestPermission();
+                    if (perm === 'granted') PSBApp.showToast('Уведомления включены!', 'success');
                 }
                 dismissNotificationPrompt();
             });
@@ -2026,40 +2043,13 @@
             PSBApp.storage.set('notificationPromptShown', true);
         }
         
+        /** Напоминания за 1 ч до вебинара: Cloud Function → OneSignal (работает при закрытом приложении). Локальный setTimeout не используем — без дублей. */
         function scheduleNotification(webinar) {
-            const webinarDate = new Date(webinar.date);
-            const notifyTime = webinarDate.getTime() - (60 * 60 * 1000); // За 1 час
-            const now = Date.now();
-            
-            if (notifyTime > now) {
-                const delay = notifyTime - now;
-                
-                // Ограничиваем setTimeout (макс ~24 дня)
-                if (delay < 2147483647) {
-                    setTimeout(() => {
-                        showWebinarNotification(webinar);
-                    }, delay);
-                    
-                    // Уведомление запланировано
-                }
-            }
+            void webinar;
         }
         
         function showWebinarNotification(webinar) {
-            if (Notification.permission === 'granted') {
-                const notification = new Notification('ПСБ Академия', {
-                    body: `Вебинар "${webinar.element.dataset.title}" начнётся через 1 час!`,
-                    icon: 'img/app-icon.png',
-                    badge: 'img/app-icon.png',
-                    tag: 'webinar-reminder',
-                    requireInteraction: true
-                });
-                
-                notification.onclick = () => {
-                    window.focus();
-                    notification.close();
-                };
-            }
+            void webinar;
         }
 
         // ========================================

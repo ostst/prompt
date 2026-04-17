@@ -730,6 +730,24 @@
             </div>
         </section>
         
+        <!-- Чат: точка на иконке + уведомления -->
+        <section class="settings-section" id="chat-settings-section" aria-labelledby="chat-settings-title" style="scroll-margin-top: 88px;">
+            <div class="settings-title" id="chat-settings-title">Чат курса</div>
+            <p class="setting-desc" style="margin: -8px 0 12px; line-height: 1.45;">
+                Красная точка на вкладке «Чат» внизу показывает непрочитанные сообщения. Ниже — всплывающие уведомления браузера (нужно разрешение в браузере).
+            </p>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Уведомления о сообщениях в чате</div>
+                    <div class="setting-desc">Всплывающие оповещения, когда вам пишут (не на странице чата)</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="chat-notifications-enabled" onchange="toggleChatNotifications(this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </section>
+        
         <!-- Push Notifications -->
         <section class="settings-section">
             <div class="settings-title">Push-уведомления</div>
@@ -737,7 +755,7 @@
             <div class="setting-item">
                 <div>
                     <div class="setting-label">Push-уведомления</div>
-                    <div class="setting-desc">Уведомления в браузере/PWA</div>
+                    <div class="setting-desc">Браузер и PWA: в том числе при закрытом или свёрнутом приложении (OneSignal). Включите и дайте разрешение в браузере.</div>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="push-enabled" onchange="togglePushNotifications(this.checked)">
@@ -748,7 +766,7 @@
             <div class="setting-item">
                 <div>
                     <div class="setting-label">Напоминания о вебинарах</div>
-                    <div class="setting-desc">За 1 час до начала</div>
+                    <div class="setting-desc">За 1 час до начала (сервер + push). Обновите расписание в Firebase при смене дат на главной.</div>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="webinar-reminders" checked onchange="saveSetting('webinarReminders', this.checked)">
@@ -905,6 +923,8 @@
             
             document.getElementById('webinar-reminders').checked = settings.webinarReminders !== false;
             document.getElementById('haptic-enabled').checked = settings.hapticEnabled !== false;
+            const chatN = document.getElementById('chat-notifications-enabled');
+            if (chatN) chatN.checked = settings.chatNotifications !== false;
             
             // Telegram настройки
             const tgSettings = PSBApp.storage.get('telegramSettings') || {};
@@ -1349,6 +1369,22 @@
                     pushToggle.checked = Notification.permission === 'granted';
                 }
             });
+        }
+        
+        async function toggleChatNotifications(enabled) {
+            const settings = PSBApp.storage.get('appSettings') || {};
+            settings.chatNotifications = enabled;
+            PSBApp.storage.set('appSettings', settings);
+            PSBApp.haptic.selection();
+            if (enabled && 'Notification' in window && Notification.permission === 'default') {
+                const p = await Notification.requestPermission();
+                if (p !== 'granted') {
+                    PSBApp.showToast('Без разрешения браузера уведомления о чате недоступны', 'info');
+                }
+            }
+            if (typeof PSBApp.syncChatNotifySettings === 'function') {
+                PSBApp.syncChatNotifySettings();
+            }
         }
         
         async function togglePushNotifications(enabled) {
