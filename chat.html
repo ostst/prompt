@@ -2321,6 +2321,15 @@
         }
         
         function loadMessages() {
+            let scrollTimer = null;
+            function scrollToBottom() {
+                if (scrollTimer) clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    const container = document.getElementById('chat-messages');
+                    if (container) container.scrollTop = container.scrollHeight;
+                }, 50);
+            }
+
             messagesRef.orderByChild('timestamp').limitToLast(100).on('child_added', (snapshot) => {
                 const key = snapshot.key;
                 if (seenMessageKeys.has(key)) return;
@@ -2336,10 +2345,7 @@
                 }
                 const empty = document.getElementById('empty-chat');
                 if (empty) empty.style.display = 'none';
-                const container = document.getElementById('chat-messages');
-                requestAnimationFrame(() => {
-                    container.scrollTop = container.scrollHeight;
-                });
+                scrollToBottom();
             }, (err) => {
                 setFirebaseStatus('Чат недоступен: ' + (err && err.code ? err.code : (err && err.message) || 'ошибка') + '. Проверьте правила Firebase для узла messages.');
                 PSBApp.showToast('Не удалось загрузить сообщения', 'error');

@@ -5,9 +5,9 @@ importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 // Service Worker - ПСБ Академия
 // ========================================
 
-const CACHE_NAME = 'psb-academy-v6';
-const STATIC_CACHE = 'psb-static-v6';
-const DYNAMIC_CACHE = 'psb-dynamic-v6';
+const CACHE_NAME = 'psb-academy-v7';
+const STATIC_CACHE = 'psb-static-v7';
+const DYNAMIC_CACHE = 'psb-dynamic-v7';
 /** Базовый путь приложения: каталог, в котором лежит sw.js (например / или /prompt/) */
 const BASE_PATH = new URL('.', self.location.href).pathname;
 
