@@ -2337,7 +2337,9 @@
                 const empty = document.getElementById('empty-chat');
                 if (empty) empty.style.display = 'none';
                 const container = document.getElementById('chat-messages');
-                container.scrollTop = container.scrollHeight;
+                requestAnimationFrame(() => {
+                    container.scrollTop = container.scrollHeight;
+                });
             }, (err) => {
                 setFirebaseStatus('Чат недоступен: ' + (err && err.code ? err.code : (err && err.message) || 'ошибка') + '. Проверьте правила Firebase для узла messages.');
                 PSBApp.showToast('Не удалось загрузить сообщения', 'error');
