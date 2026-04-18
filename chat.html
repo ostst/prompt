@@ -2321,13 +2321,23 @@
         }
         
         function loadMessages() {
+            // initialLoad: первые N сообщений грузятся разом — скроллим один раз после всех.
+            // Новые сообщения (после загрузки) — скроллим сразу.
+            let initialLoadDone = false;
             let scrollTimer = null;
-            function scrollToBottom() {
+
+            function scrollToBottom(immediate) {
+                const container = document.getElementById('chat-messages');
+                if (!container) return;
+                if (immediate) {
+                    container.scrollTop = container.scrollHeight;
+                    return;
+                }
                 if (scrollTimer) clearTimeout(scrollTimer);
                 scrollTimer = setTimeout(() => {
-                    const container = document.getElementById('chat-messages');
-                    if (container) container.scrollTop = container.scrollHeight;
-                }, 50);
+                    container.scrollTop = container.scrollHeight;
+                    initialLoadDone = true;
+                }, 300);
             }
 
             messagesRef.orderByChild('timestamp').limitToLast(100).on('child_added', (snapshot) => {
@@ -2345,7 +2355,8 @@
                 }
                 const empty = document.getElementById('empty-chat');
                 if (empty) empty.style.display = 'none';
-                scrollToBottom();
+                // После первичной загрузки — immediate scroll на новые сообщения
+                scrollToBottom(initialLoadDone);
             }, (err) => {
                 setFirebaseStatus('Чат недоступен: ' + (err && err.code ? err.code : (err && err.message) || 'ошибка') + '. Проверьте правила Firebase для узла messages.');
                 PSBApp.showToast('Не удалось загрузить сообщения', 'error');

@@ -728,9 +728,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ========================================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        // Регистрируем относительно текущего пути
-        const swPath = './sw.js';
-        navigator.serviceWorker.register(swPath, { scope: './' })
+        // Определяем scope динамически — работает и на GitHub Pages (/prompt/) и на любом другом хосте
+        const swScope = new URL('./sw.js', location.href).href.replace('sw.js', '');
+        navigator.serviceWorker.register('./sw.js', { scope: swScope })
             .then(reg => safeLog('Service Worker registered:', reg.scope))
             .catch(err => safeError('Service Worker registration failed:', err));
     });
